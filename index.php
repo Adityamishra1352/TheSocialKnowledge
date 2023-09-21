@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Social Knowledge</title>
+    <link rel="stylesheet" href="assets/css/homepage.css">
+    <meta name="description" content="Learn C++ from quality blogs with proper guidelines and solved examples at Social Knoeledge.">
+    <meta name="keywords" content="C++, coding, courses, tutorials, blogs, examples, Course Master">
+    <meta name="author" content="Aditya Mishra">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="The Social Knowledge">
+    <meta property="og:description" content="Learn C++ from quality blogs with proper guidelines and solved examples at Social Knowledge.">
+    <meta property="og:image" content="walling-XLqiL-rz4V8-unsplash.jpg">
+    <meta property="og:url" content="https://thesocialknowledge.in/course%20pages/test.html">
+    <link rel="shortcut icon" href="assets/images/websitelogo.jpg" type="image/png">
+</head>
+<body>
+    <div class="page">
+    <nav>
+        <h4>The Social Knowledge</h4>
+        <a href="assets/courses/courses.php">Courses</a>
+        <a href="assets/test/test.php">Test</a>
+        
+        <a href="assets/sorting_visualizer/index.php">Sorting Visualizer</a>
+        <button onclick="window.location.href=(`contactus.php`)" class="contactus">Contact Us</button>
+        <a href="assets/accounts/login.php"><button class="login">Log in</button></a>
+        <a href="assets/accounts/signup.php"><button class="signup">Sign Up</button></a>
+        <button onclick="window.location.href=(`feedback.php`)" class="feedback">Feedback</button>
+    </nav>
+    <div class="learn">
+        <section class="description">
+        <h1>Learn C++ From The Blogs AnyTime, <br>AnyWhere</h1>
+        <p>Finding quality blogs with proper guidelines about coding is really hard. <br> We provide quality courses with solved examples.</p>
+        </section>
+        <section class="image">
+            <img src="assets/images/walling-XLqiL-rz4V8-unsplash.jpg" alt="">
+        </section>
+    </div>
+    </div>
+</body>
+</html>

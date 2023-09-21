@@ -1,0 +1,66 @@
+body {
+    background: #ffe77aff;
+}
+
+.main_page {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0px 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: all 0.3s ease;
+    background-color: #fff;
+    width: 450px;
+    padding: 25px 30px;
+    border-radius: 5px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.main_page button {
+    /* margin: 5px; */
+    /* height: 30px; */
+    padding: 10px;
+    width: 100px;
+    border: 1px solid #6fc27c;
+    border-radius: 5px;
+    outline: none;
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 1s ease;
+}
+
+.main_page button:hover {
+    color: #2c5f2dff;
+    background-color: #aef3b8;
+}
+
+.main_page .heading {
+    position: relative;
+    z-index: 99;
+    height: 70px;
+    padding: 30px;
+    background: #fff;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0px 3px 5px 1px rgb(0, 0, 0, 0.1);
+}
+
+.main_page textarea {
+    font-size: 17px;
+}
+#likedWebsite{
+    padding: 10px;
+    border: 2px solid #6fc27c;
+    border-radius: 10px;
+}
