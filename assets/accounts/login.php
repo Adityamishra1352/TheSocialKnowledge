@@ -14,12 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 if($rowLogin['admin']==1){
                     $_SESSION['admin']=true;
                     $_SESSION['user_id']=$user_id;
+                    $_SESSION['loggedin'] = true;
                     header('location:admin/admin.php');
                     exit();
                 }
                 elseif($rowLogin['organiser']==1){
                     $_SESSION['organiser']=true;
                     $_SESSION['user_id']=$user_id;
+                    $_SESSION['loggedin'] = true;
                     header('location:organiser/organiser.php');
                     exit();
                 }

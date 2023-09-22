@@ -32,13 +32,24 @@
                 <ul class="d-flex">
                     <?php 
                     session_start();
+                    // echo $_SESSION['user_id'];
                     if(!isset($_SESSION['loggedin'])|| $_SESSION['user_id']==NULL){
                         echo '<button class="btn btn-outline-danger me-2"
                         onclick="window.location.href=(`../accounts/login.php`)">Login</button>';
                     }
                     else{
+                        if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                            echo '<button class="btn btn-outline-danger me-2"
+                            onclick="window.location.href=(`../accounts/admin/admin.php`)">Admin Controls</button>';
+                        }
+                        elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                            echo '<button class="btn btn-outline-danger me-2"
+                            onclick="window.location.href=(`../accounts/organiser/organiser.php`)">Organiser Controls</button>';
+                        }
+                        else{
                         echo '<button class="btn btn-outline-danger me-2"
                         onclick="window.location.href=(`../accounts/dashboard.php`)">Dashboard</button>';
+                        }
                     }
                     ?>
                     

@@ -22,11 +22,27 @@
         <h4>The Social Knowledge</h4>
         <a href="assets/courses/courses.php">Courses</a>
         <a href="assets/test/test.php">Test</a>
-        
         <a href="assets/sorting_visualizer/index.php">Sorting Visualizer</a>
         <button onclick="window.location.href=(`contactus.php`)" class="contactus">Contact Us</button>
-        <a href="assets/accounts/login.php"><button class="login">Log in</button></a>
-        <a href="assets/accounts/signup.php"><button class="signup">Sign Up</button></a>
+        <?php
+        session_start();
+        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!=true){
+            echo '<a href="assets/accounts/login.php"><button class="login">Log in</button></a>
+            <a href="assets/accounts/signup.php"><button class="signup">Sign Up</button></a>';
+        } 
+        else{
+            if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                echo '<a href="assets/accounts/admin/admin.php"><button class="login">Admin Panel</button></a>';
+            }
+            elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                echo '<a href="assets/accounts/organiser/organiser.php"><button class="login">Organiser Panel</button></a>';
+            }
+            else{
+            echo '<a href="assets/accounts/dashboard.php"><button class="login">Dashboard</button></a>';
+            }
+        }
+        ?>
+        
         <button onclick="window.location.href=(`feedback.php`)" class="feedback">Feedback</button>
     </nav>
     <div class="learn">

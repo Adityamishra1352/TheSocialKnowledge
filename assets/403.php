@@ -11,7 +11,7 @@
     <style>
         
 body {
-  background-image: url(images/wallpaperflare.com_wallpaper\ \(13\).jpg);
+  background-image: url(images/pxfuel.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
 }
@@ -29,14 +29,14 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 11rem;
     position:absolute;
-    right: 113%;
+    right: 120%;
     top: 8%;
   }
 
 .far {
   position: absolute;
   font-size: 8.5rem;
-  right: 86%;
+  right: 94%;
   top: 15%;
   color: black;
 }
@@ -46,7 +46,7 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 11rem;
     position:absolute;
-    right: 65%;
+    right: 73%;
     top: 8%;
   }
 
@@ -55,7 +55,7 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 1.6rem;
     position:absolute;
-    right: 60%;
+    right: 67%;
     top: 40%;
     width: 75%;
   }

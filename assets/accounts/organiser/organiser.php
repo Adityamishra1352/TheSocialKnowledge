@@ -1,9 +1,9 @@
-<!-- <?php
+<?php
 session_start();
-if (!isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
-
+if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
+    header('location:../../403.php');
 }
-?> -->
+?>
 <!DOCTYPE html>
 <html lang="en">
 
