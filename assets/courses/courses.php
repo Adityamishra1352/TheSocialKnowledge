@@ -13,16 +13,16 @@ session_start();
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php">The Social Knowledge</a>
+    <a class="navbar-brand" href="../../index.php">The Social Knowledge</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Sorting Visualizer</a>
+          <a class="nav-link active" aria-current="page" href="../sorting_visualizer/index.php">Sorting Visualizer</a>
         </li>
         <!-- when logged in will show dashboard or signup login -->
         <!-- <li class="nav-item">

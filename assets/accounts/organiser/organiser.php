@@ -1,4 +1,5 @@
 <!-- <?php
+session_start();
 if (!isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
 
 }
@@ -41,8 +42,54 @@ if (!isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
             </div>
         </div>
     </nav>
-    <div class="container">
-        
+    <div class="container my-2">
+        <ul>
+            <li><h4>Quizes Posted By You!!</h4></li>
+        </ul>
+        <div class="container">
+            <div class="row">
+                <?php
+                include '../../_dbconnect.php';
+                $organiser_id = $_SESSION['user_id'];
+                $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id'";
+                $fetch_result = mysqli_query($conn, $quizfetch_sql);
+                while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
+                    $test_id = $rowQuiz['test_id'];
+                    $heading = $rowQuiz['heading'];
+                    $timeDate = $rowQuiz['time'];
+                    $description = $rowQuiz['description'];
+                    echo '<div class="col"><div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">' . $heading . '</h5>
+                  <p class="card-text text-secondary">' . $timeDate . '</p>
+                  <p class="card-text">' . $description . '</p>
+                  <a href="quiz.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+                </div>
+              </div></div>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="container my-3">
+        <ul><li><h4>Add A Quiz!!</h4></li></ul>
+        <div class="p-2" style="width: 40%;">
+            <form action="createQuiz.php" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:</label>
+                    <input type="text" name="heading" class="form-control" id="exampleInputEmail1">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Description:</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="description">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Time:</label>
+                    <input type="date" class="form-control" id="exampleInputEmail1" name="time">
+                </div>
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+            </form>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
