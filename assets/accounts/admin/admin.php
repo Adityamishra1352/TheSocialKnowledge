@@ -106,7 +106,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                   <p class="card-text text-secondary">' . $timeDate . '</p>
                   <p class="card-text">' . $description . '</p>
                   <p class="card-text text-secondary">' . $nameOrganiser . '</p>
-                  <a href="quiz.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
+                  <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
                   <a href="quiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div></div>';

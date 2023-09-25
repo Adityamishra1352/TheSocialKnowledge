@@ -44,17 +44,28 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
     </nav>
     <div class="container my-2">
         <ul>
-            <li><h4>Quizes Posted By You!!</h4></li>
+            <li>
+                <h4>Quizes Posted By You!!</h4>
+            </li>
         </ul>
         <div class="container">
             <div class="row">
                 <?php
                 include '../../_dbconnect.php';
+                $questionsExist = "Add Questions";
                 $organiser_id = $_SESSION['user_id'];
-                $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id'";
+                $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=1";
                 $fetch_result = mysqli_query($conn, $quizfetch_sql);
                 while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                     $test_id = $rowQuiz['test_id'];
+                    $questions_sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                    $questions_result = mysqli_query($conn, $questions_sql);
+                    if ($questions_result) {
+                        $numRows = mysqli_num_rows($questions_result);
+                        if ($numRows > 1) {
+                            $questionsExist = "View Questions";
+                        }
+                    }
                     $heading = $rowQuiz['heading'];
                     $timeDate = $rowQuiz['time'];
                     $description = $rowQuiz['description'];
@@ -63,7 +74,8 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $timeDate . '</p>
                   <p class="card-text">' . $description . '</p>
-                  <a href="quiz.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+                  <a href="addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
+                  <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div></div>';
                 }
@@ -72,7 +84,11 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
         </div>
     </div>
     <div class="container my-3">
-        <ul><li><h4>Add A Quiz!!</h4></li></ul>
+        <ul>
+            <li>
+                <h4>Add A Quiz!!</h4>
+            </li>
+        </ul>
         <div class="p-2" style="width: 40%;">
             <form action="createQuiz.php" method="post">
                 <div class="mb-3">

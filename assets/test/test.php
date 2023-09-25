@@ -61,7 +61,7 @@
         <div class="row">
             <?php 
             include '../_dbconnect.php';
-            $test_sql="SELECT * FROM `test`";
+            $test_sql="SELECT * FROM `test` WHERE `displayed`=1";
             $test_result=mysqli_query($conn,$test_sql);
             while($rowTest=mysqli_fetch_assoc($test_result)){
                 $test_id=$rowTest['test_id'];
