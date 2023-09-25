@@ -9,7 +9,6 @@ foreach ($_POST as $key => $value) {
         $questionObj = [];
         $questionObj['question'] = $questionText;
         $questions[] = $questionObj;
-        echo "hii";
     }
     if (strpos($key, "option-") === 0) {
         list(, $questionNum, $optionNum) = explode("-", $key);
