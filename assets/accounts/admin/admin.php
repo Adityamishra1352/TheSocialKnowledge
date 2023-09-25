@@ -80,7 +80,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
     </div>
     <div class="container my-3">
         <ul>
-            <li><h4>Quizes Posted On The Website!!</h4></li>
+            <li><h4>Quizes Visible On The Website!!</h4></li>
         </ul>
         <div class="container">
             <div class="row">
@@ -93,7 +93,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                 while($rowFetchOrganiser=mysqli_fetch_assoc($organiserFetch_result)){
                     $nameOrganiser=$rowFetchOrganiser['fname']." ". $rowFetchOrganiser['lname'];
                 }
-                $quizfetch_sql = "SELECT * FROM `test`";
+                $quizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=1";
                 $fetch_result = mysqli_query($conn, $quizfetch_sql);
                 while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                     $test_id = $rowQuiz['test_id'];
@@ -107,12 +107,72 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                   <p class="card-text">' . $description . '</p>
                   <p class="card-text text-secondary">' . $nameOrganiser . '</p>
                   <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
-                  <a href="quiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
+                  <a href="../organiser/deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div></div>';
                 }
                 ?>
             </div>
+        </div>
+    </div>
+    <div class="container my-3">
+        <ul>
+            <li><h4>Quizes Not Visible On The Website!!</h4></li>
+        </ul>
+        <div class="container">
+            <div class="row">
+                <?php
+                include '../../_dbconnect.php';
+                $nameOrganiser=null;
+                $organiser_id = $_SESSION['user_id'];
+                $organiserFetch="SELECT * FROM `users` WHERE `user_id`='$organiser_id'";
+                $organiserFetch_result=mysqli_query($conn,$organiserFetch);
+                while($rowFetchOrganiser=mysqli_fetch_assoc($organiserFetch_result)){
+                    $nameOrganiser=$rowFetchOrganiser['fname']." ". $rowFetchOrganiser['lname'];
+                }
+                $quizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=0";
+                $fetch_result = mysqli_query($conn, $quizfetch_sql);
+                while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
+                    $test_id = $rowQuiz['test_id'];
+                    $heading = $rowQuiz['heading'];
+                    $timeDate = $rowQuiz['time'];
+                    $description = $rowQuiz['description'];
+                    echo '<div class="col"><div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">' . $heading . '</h5>
+                  <p class="card-text text-secondary">' . $timeDate . '</p>
+                  <p class="card-text">' . $description . '</p>
+                  <p class="card-text text-secondary">' . $nameOrganiser . '</p>
+                  <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
+                </div>
+              </div></div>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-3">
+        <ul><li><h4>Manage Course Tests:</h4></li></ul>
+        <div class="container">
+            <?php 
+            $coursequizfetch_sql = "SELECT * FROM `coursetests`";
+            $coursefetch_result = mysqli_query($conn, $coursequizfetch_sql);
+            while ($rowCourseQuiz = mysqli_fetch_assoc($coursefetch_result)) {
+                $test_id = $rowCourseQuiz['coursetest_id'];
+                $heading = $rowCourseQuiz['coursetest_name'];
+                $description = $rowCourseQuiz['coursetest_description'];
+                echo '<div class="col"><div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">' . $heading . '</h5>
+              <p class="card-text">' . $description . '</p>
+              <p class="card-text text-secondary">' . $nameOrganiser . '</p>
+              <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
+              <a href="../organiser/deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
+            </div>
+          </div></div>';
+            }
+            ?>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

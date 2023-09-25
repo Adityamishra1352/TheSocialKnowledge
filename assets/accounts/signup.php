@@ -38,6 +38,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
       }, false);
     </script> -->
     <link rel="shortcut icon" href="/TheSocialKnowledge/assets/images/websitelogo.jpg" type="image/png">
+    
 </head>
 
 <body>
