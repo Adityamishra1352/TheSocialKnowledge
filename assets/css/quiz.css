@@ -1,0 +1,28 @@
+.ques_text{
+    font-size: 23px;
+    font-weight: 600;
+}
+.option_list{
+    padding: 20px 0;
+    display: block;
+}
+.option_list .option{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.option_list .option:hover{
+    color: black;
+    background: #bbddc1;
+    border-color: #b8daff;
+}
+.option_list .option.disabled{
+    pointer-events: none;
+}

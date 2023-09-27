@@ -27,25 +27,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
                 </ul>
-                <!-- <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> -->
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
+                    aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                    <div class="progress-bar bg-danger" style="width: 0%"></div>
+                </div>
             </div>
         </div>
     </nav>
@@ -83,26 +69,62 @@
     <div class="container">
         <main id="documentation">
             <article>
-            <?php
-            include '../../_dbconnect.php'; 
-            $page_id=$_GET['page_id'];
-            $fetch_topic="SELECT * FROM `c++course` WHERE `page_id`='$page_id'";
-            $result=mysqli_query($conn, $fetch_topic);
-            while($row=mysqli_fetch_assoc($result)){
-                $heading=$row['heading'];
-                $description=$row['description'];
-                $code=$row['code'];
-                echo '<h2>'.$heading.'</h2>';
-                echo '<section>'.$description.'</section>';
-                echo $code;
-            }
-            ?>
+                <?php
+                include '../../_dbconnect.php';
+                $page_id = $_GET['page_id'];
+                $fetch_topic = "SELECT * FROM `c++course` WHERE `page_id`='$page_id'";
+                $result = mysqli_query($conn, $fetch_topic);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $heading = $row['heading'];
+                    $description = $row['description'];
+                    $code = $row['code'];
+                    echo '<h2>' . $heading . '</h2>';
+                    echo '<section>' . $description . '</section>';
+                    echo $code;
+                }
+                ?>
             </article>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <script>
+        var startTime = new Date().getTime();
+        var wordCount = 0;
+        var progressBar = document.querySelector('.progress .progress-bar');
+        var totalTime=0;
+
+        function sendTimeSpent() {
+            var endTime = new Date().getTime();
+            var timeSpentInSeconds = Math.floor((endTime - startTime) / 1000);
+            totalTime += timeSpentInSeconds;
+            console.log("Time spent on this page: " + totalTime + " seconds");
+        }
+
+        window.addEventListener('beforeunload', sendTimeSpent);
+
+        function countWords(elementId) {
+            var element = document.getElementById(elementId);
+            if (element) {
+                var text = element.textContent || element.innerText;
+                var wordCount = text.split(/\s+/).filter(Boolean).length;
+                return wordCount;
+            }
+            return 0;
+        }
+
+        window.addEventListener('load', function () {
+            wordCount = countWords('documentation');
+        });
+        var timeToRead=0.008*wordCount;
+        if(timeToRead==totalTime){
+            console.log("Progress increased");
+        }
+        else{
+            console.log("Cheater huhhh");
+        }
+    </script>
 </body>
 
 </html>
