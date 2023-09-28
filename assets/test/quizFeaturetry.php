@@ -40,10 +40,9 @@ function fetchQuestions(testId) {
                     answer: question.correct_answer,
                     options: question.options
                 };
-
-                console.log(`Question ${i + 1}: ${newQuestion.question}`);
-                console.log(`Options: ${newQuestion.options.join(', ')}`);
-                console.log(`Correct Answer: ${newQuestion.answer}`);
+                // console.log(`Question ${i + 1}: ${newQuestion.question}`);
+                // console.log(`Options: ${newQuestion.options.join(', ')}`);
+                // console.log(`Correct Answer: ${newQuestion.answer}`);
                 questions.push(newQuestion);
             }
             shuffleArray(questions);
@@ -119,7 +118,6 @@ fetchQuestions(testId);
         </div>
     </div>
 
-    <!-- Quiz Box -->
     <div class="quiz_box">
         <header>
             <div class="title"><?php echo $heading;?></div>
@@ -131,36 +129,39 @@ fetchQuestions(testId);
         </header>
         <section>
             <div class="que_text">
-                <!-- Here I've inserted question from JavaScript -->
             </div>
             <div class="option_list">
-                <!-- Here I've inserted options from JavaScript -->
             </div>
         </section>
-
-        <!-- footer of Quiz Box -->
         <footer>
             <div class="total_que">
-                <!-- Here I've inserted Question Count Number from JavaScript -->
             </div>
             <button class="next_btn bd-outline-success">Next Que</button>
         </footer>
     </div>
-
-    <!-- Result Box -->
     <div class="result_box">
         <div class="icon">
             <i class="fas fa-crown"></i>
         </div>
         <div class="complete_text">You've completed the Quiz!</div>
         <div class="score_text">
-            <!-- Here I've inserted Score Result from JavaScript -->
         </div>
         <div class="buttons">
-            <button class="restart">Replay Quiz</button>
+            <button class="viewAnswers">View Answers</button>
             <button class="quit">Quit Quiz</button>
         </div>
-    </div>        
+    </div>
+    <div class="answers_box">
+            <section>
+                <div class="currentQuestion">
+                </div>
+                <div class="answerMessage">
+                </div>
+            </section>
+            <div class="buttons">
+            <button class="nextAnswer">Next Answer</button>
+            </div>
+        </div>        
     </div>
     <script src="../javascript/test.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

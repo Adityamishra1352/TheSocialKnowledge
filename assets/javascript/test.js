@@ -24,26 +24,32 @@ let counter;
 let counterLine;
 let widthValue = 0;
 
-const restart_quiz = result_box.querySelector(".buttons .restart");
+const view_answers = result_box.querySelector(".buttons .viewAnswers");
+const answers_box = document.querySelector(".answers_box");
 const quit_quiz = result_box.querySelector(".buttons .quit");
-restart_quiz.onclick = () => {
-  quiz_box.classList.add("activeQuiz");
+// restart_quiz.onclick = () => {
+//   quiz_box.classList.add("activeQuiz");
+//   result_box.classList.remove("activeResult");
+//   timeValue = 15;
+//   que_count = 0;
+//   que_numb = 1;
+//   userScore = 0;
+//   widthValue = 0;
+//   showQuetions(que_count);
+//   queCounter(que_numb);
+//   clearInterval(counter);
+//   clearInterval(counterLine);
+//   startTimer(timeValue);
+//   startTimerLine(widthValue);
+//   timeText.textContent = "Time Left";
+//   next_btn.classList.remove("show");
+// };
+view_answers.onclick = () => {
+  answers_box.classList.add("activeAnswers");
   result_box.classList.remove("activeResult");
-  timeValue = 15;
-  que_count = 0;
-  que_numb = 1;
-  userScore = 0;
-  widthValue = 0;
-  showQuetions(que_count);
-  queCounter(que_numb);
-  clearInterval(counter);
-  clearInterval(counterLine);
-  startTimer(timeValue);
-  startTimerLine(widthValue);
-  timeText.textContent = "Time Left";
-  next_btn.classList.remove("show");
+  countQuestions = 0;
+  viewAnswers();
 };
-
 quit_quiz.onclick = () => {
   window.location.reload();
 };
@@ -72,11 +78,7 @@ next_btn.onclick = () => {
 function showQuetions(index) {
   const que_text = document.querySelector(".que_text");
   let que_tag =
-    "<span>" +
-    (index+1) +
-    ". " +
-    questions[index].question +
-    "</span>";
+    "<span>" + (index + 1) + ". " + questions[index].question + "</span>";
   let option_tag =
     '<div class="option"><span>' +
     questions[index].options[0] +
@@ -100,6 +102,7 @@ function showQuetions(index) {
 }
 let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
 let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+const answers = [];
 function optionSelected(answer) {
   clearInterval(counter);
   clearInterval(counterLine);
@@ -126,6 +129,12 @@ function optionSelected(answer) {
       }
     }
   }
+  const questionObject = {
+    question: questions[que_count].question,
+    answer: userAns,
+    correctAnswer: questions[que_count].answer,
+  };
+  answers.push(questionObject);
   for (i = 0; i < allOptions; i++) {
     option_list.children[i].classList.add("disabled");
   }
@@ -136,6 +145,7 @@ function showResult() {
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
+  console.log(answers);
   const scoreText = result_box.querySelector(".score_text");
   if (userScore > 3) {
     let scoreTag =
@@ -212,4 +222,39 @@ function queCounter(index) {
     questions.length +
     "</p> Questions</span>";
   bottom_ques_counter.innerHTML = totalQueCounTag;
+}
+function viewAnswers() {
+  const currentQuestion = document.querySelector(".currentQuestion");
+  const answerMessage = document.querySelector(".answerMessage");
+  const nextAnswer = document.querySelector(".nextAnswer");
+
+  if (answers[countQuestions]) {
+    let ques_text = "<h3>" + answers[countQuestions].question + "</h3>";
+    currentQuestion.innerHTML = ques_text;
+
+    if (
+      answers[countQuestions].answer == answers[countQuestions].correctAnswer
+    ) {
+      let answered = "<span>You have answered correctly!!";
+      answerMessage.innerHTML = answered;
+    } else {
+      let answered =
+        "<span>You got the answer wrong. The correct option is: " +
+        answers[countQuestions].correctAnswer +
+        " ,while you chose " +
+        answers[countQuestions].answer;
+      answerMessage.innerHTML = answered;
+    }
+
+    nextAnswer.onclick = () => {
+      countQuestions++;
+      viewAnswers();
+    };
+  } else {
+    nextAnswer.value = "Results Page";
+    nextAnswer.onclick = () => {
+      answers_box.classList.remove("activeAnswers");
+      result_box.classList.add("activeResult");
+    };
+  }
 }
