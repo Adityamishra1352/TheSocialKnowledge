@@ -140,14 +140,23 @@ function optionSelected(answer) {
   }
   next_btn.classList.add("show");
 }
-
+const certificate_box=document.querySelector(".certificate_box");
+const certificate_btn=document.querySelector(".getCertificate");
 function showResult() {
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
   console.log(answers);
+  let passValue=Math.floor(questions.length*0.7);
+  let moderateValue=Math.floor(questions.length*0.3);
   const scoreText = result_box.querySelector(".score_text");
-  if (userScore > 3) {
+  if (userScore > passValue) {
+    certificate_btn.textContent="Get Certificate";
+    certificate_btn.onclick=()=>{
+        certificate_box.classList.add("activeCertificate");
+        result_box.classList.remove("activeResult");
+        getCertificate();
+    }
     let scoreTag =
       "<span>and congrats! , You got <p>" +
       userScore +
@@ -155,7 +164,8 @@ function showResult() {
       questions.length +
       "</p></span>";
     scoreText.innerHTML = scoreTag;
-  } else if (userScore > 1) {
+  } else if (userScore > moderateValue) {
+    certificate_btn.style.display="none";
     let scoreTag =
       "<span>and nice , You got <p>" +
       userScore +
@@ -164,6 +174,7 @@ function showResult() {
       "</p></span>";
     scoreText.innerHTML = scoreTag;
   } else {
+    certificate_btn.style.display="none";
     let scoreTag =
       "<span>and sorry , You got only <p>" +
       userScore +
@@ -173,7 +184,23 @@ function showResult() {
     scoreText.innerHTML = scoreTag;
   }
 }
-
+const certi = document.querySelector("#certificatepdf");
+const getCertificate_btn=document.querySelector(".certification");
+const goBackResult_btn=document.querySelector("#gobacktoresult");
+function getCertificate(){
+    //have to add formattedId to each specific certificate
+    getCertificate_btn.onclick=()=>{
+        certi.style.display="block";
+        let formattedId="SSK1";
+        let val=fname+" "+lname;
+        generatePdf(val, formattedId);
+        getCertificate_btn.disabled=true;
+    }
+    goBackResult_btn.onclick=()=>{
+        certificate_box.classList.remove("activeCertificate");
+        result_box.classList.add("activeResult");
+    }
+}
 function startTimer(time) {
   counter = setInterval(timer, 1000);
   function timer() {
