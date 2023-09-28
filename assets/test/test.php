@@ -74,7 +74,7 @@
                   <h5 class="card-title">'.$heading.'</h5>
                   <p class="card-text text-secondary">'.$timeDate.'</p>
                   <p class="card-text">'.$description.'</p>
-                  <a href="quizmain.php?testid='.$test_id.'" class="btn btn-outline-success">Attend Test</a>
+                  <a href="quizFeaturetry.php?testid='.$test_id.'" class="btn btn-outline-success">Attend Test</a>
                 </div>
               </div></div>';
             }
