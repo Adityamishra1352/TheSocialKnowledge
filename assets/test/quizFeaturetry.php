@@ -24,6 +24,7 @@ while ($quizRow = mysqli_fetch_assoc($quiz_result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/quizFeature.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <script>
 const questions = [];
 
@@ -45,10 +46,17 @@ function fetchQuestions(testId) {
                 console.log(`Correct Answer: ${newQuestion.answer}`);
                 questions.push(newQuestion);
             }
+            shuffleArray(questions);
         })
         .catch(error => {
             console.error('Error fetching questions:', error);
         });
+}
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 const testId = <?php echo $test_id ?>;
