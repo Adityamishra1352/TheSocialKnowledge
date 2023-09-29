@@ -189,11 +189,13 @@ const getCertificate_btn=document.querySelector(".certification");
 const goBackResult_btn=document.querySelector("#gobacktoresult");
 function getCertificate(){
     //have to add formattedId to each specific certificate
+    let formattedId="SK"+testId+(certificate_id+1);
+    console.log(formattedId);
     getCertificate_btn.onclick=()=>{
         certi.style.display="block";
-        let formattedId="SSK1";
         let val=fname+" "+lname;
         generatePdf(val, formattedId);
+        sendCertificateIdToPHP(formattedId);
         getCertificate_btn.disabled=true;
     }
     goBackResult_btn.onclick=()=>{
@@ -285,3 +287,25 @@ function viewAnswers() {
     };
   }
 }
+function sendCertificateIdToPHP(formattedId) {
+    const data = {
+      certificate_formatted: formattedId,
+      user_id:user_id,
+      test_id:testId
+    };  
+    fetch('storeCertificateId.php', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Certificate ID sent to PHP:', data);
+    })
+    .catch(error => {
+      console.error('Error sending data to PHP:', error);
+    });
+  }
+  

@@ -20,6 +20,12 @@ while ($rowUser = mysqli_fetch_assoc($user_result)) {
     $fname = $rowUser['fname'];
     $lname = $rowUser['lname'];
 }
+$certificate_id=null;
+$certificate_sql="SELECT * FROM `certificates` ORDER BY `certificate_id` DESC LIMIT 1";
+$certificate_result=mysqli_query($conn,$certificate_sql);
+while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
+    $certificate_id=$rowCertificate['certificate_id'];
+}
 ?>
 
 
@@ -68,7 +74,9 @@ while ($rowUser = mysqli_fetch_assoc($user_result)) {
         }
         const fname = "<?php echo $fname; ?>";
         const lname = "<?php echo $lname; ?>";
-        const testId = <?php echo $test_id ?>;
+        const testId = <?php echo $test_id; ?>;
+        const certificate_id=<?php echo $certificate_id;?>;
+        const user_id=<?php echo $user_id;?>;
         fetchQuestions(testId);
 
     </script>
@@ -131,7 +139,7 @@ while ($rowUser = mysqli_fetch_assoc($user_result)) {
         <div class="quiz_box">
             <header>
                 <div class="title">
-                    <?php echo $heading; ?>
+                    <?php echo $heading; ?>: Quiz
                 </div>
                 <div class="timer">
                     <div class="time_left_txt">Time Left</div>
@@ -180,7 +188,6 @@ while ($rowUser = mysqli_fetch_assoc($user_result)) {
                 <!-- <label for="name"><b>Type Your Name</b></label> -->
                 <!-- <input type="text" name="Name" id="name" placeholder="Enter your name" required> -->
                 <div class="buttons container my-2">
-                    <label>Tap on the button to get your certificate:</label> <br>
                     <button class="certification btn btn-outline-success">Get Certificate</button>
                     <button id="gobacktoresult" class="btn btn-outline-success">Go Back to the Reusult Page</button>
                     <button onclick="window.location.href='../../index.php'" class="btn btn-outline-success">Home</button>
