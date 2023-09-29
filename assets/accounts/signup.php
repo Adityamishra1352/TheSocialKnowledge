@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         window.alert("Right-click is not allowed on this page!");
       }, false);
     </script> -->
-    <link rel="shortcut icon" href="/TheSocialKnowledge/assets/images/websitelogo.jpg" type="image/png">
+    <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     
 </head>
 

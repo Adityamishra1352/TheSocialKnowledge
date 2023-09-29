@@ -41,6 +41,7 @@ while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
     <link rel="stylesheet" href="../css/quizFeature.css">
     <script src="certificategenerator/certificate-gen.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
         const questions = [];
         function fetchQuestions(testId) {

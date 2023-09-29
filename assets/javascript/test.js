@@ -291,7 +291,8 @@ function sendCertificateIdToPHP(formattedId) {
     const data = {
       certificate_formatted: formattedId,
       user_id:user_id,
-      test_id:testId
+      test_id:testId,
+      userScore:userScore
     };  
     fetch('storeCertificateId.php', {
       method: 'POST',

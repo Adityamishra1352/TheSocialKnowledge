@@ -76,7 +76,7 @@ a:hover {
       <div class="err">4</div>
       <i class="far fa-question-circle fa-spin"></i>
       <div class="err2">3</div>
-      <div class="msg">You are not authorised to visit this section!!<p>Let's Login <a href="accounts/login.php">Login</a>.</p></div>
+      <div class="msg">You are not authorised to visit this section!!<p>Let's <a href="accounts/login.php">Login</a>.</p></div>
     </div>
 </body>
 </html>

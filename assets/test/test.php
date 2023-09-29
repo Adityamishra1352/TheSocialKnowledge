@@ -30,51 +30,50 @@
                     </li>
                 </ul>
                 <ul class="d-flex">
-                    <?php 
+                    <?php
                     session_start();
                     // echo $_SESSION['user_id'];
-                    if(!isset($_SESSION['loggedin'])|| $_SESSION['user_id']==NULL){
+                    if (!isset($_SESSION['loggedin']) || $_SESSION['user_id'] == NULL) {
                         echo '<button class="btn btn-outline-danger me-2"
                         onclick="window.location.href=(`../accounts/login.php`)">Login</button>';
-                    }
-                    else{
-                        if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                    } else {
+                        if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
                             echo '<button class="btn btn-outline-danger me-2"
                             onclick="window.location.href=(`../accounts/admin/admin.php`)">Admin Controls</button>';
-                        }
-                        elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                        } elseif (isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
                             echo '<button class="btn btn-outline-danger me-2"
                             onclick="window.location.href=(`../accounts/organiser/organiser.php`)">Organiser Controls</button>';
-                        }
-                        else{
-                        echo '<button class="btn btn-outline-danger me-2"
+                        } else {
+                            echo '<button class="btn btn-outline-danger me-2"
                         onclick="window.location.href=(`../accounts/dashboard.php`)">Dashboard</button>';
                         }
                     }
                     ?>
-                    
+
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container my-2">
         <div class="row">
-            <?php 
+            <?php
             include '../_dbconnect.php';
-            $test_sql="SELECT * FROM `test` WHERE `displayed`=1";
-            $test_result=mysqli_query($conn,$test_sql);
-            while($rowTest=mysqli_fetch_assoc($test_result)){
-                $test_id=$rowTest['test_id'];
-                $heading=$rowTest['heading'];
-                $timeDate=$rowTest['time'];
-                $description=$rowTest['description'];
+            $test_sql = "SELECT * FROM `test` WHERE `displayed`=1";
+            $test_result = mysqli_query($conn, $test_sql);
+            while ($rowTest = mysqli_fetch_assoc($test_result)) {
+                $test_id = $rowTest['test_id'];
+                $heading = $rowTest['heading'];
+                $timeDate = $rowTest['time'];
+                $timestamp = strtotime($timeDate);
+                $formattedDate = date('d F Y', $timestamp);         
+                $description = $rowTest['description'];
                 echo '<div class="col"><div class="card" style="width: 18rem;">
-                <img src="https://source.unsplash.com/400x400/?'.$heading.'" class="card-img-top" alt="'.$heading.'">
+                <img src="https://source.unsplash.com/400x400/?' . $heading . '" class="card-img-top" alt="' . $heading . '">
                 <div class="card-body">
-                  <h5 class="card-title">'.$heading.'</h5>
-                  <p class="card-text text-secondary">'.$timeDate.'</p>
-                  <p class="card-text">'.$description.'</p>
-                  <a href="quizFeaturetry.php?testid='.$test_id.'" class="btn btn-outline-success">Attend Test</a>
+                  <h5 class="card-title">' . $heading . '</h5>
+                  <p class="card-text text-secondary">' . $formattedDate . '</p>
+                  <p class="card-text">' . $description . '</p>
+                  <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
                 </div>
               </div></div>';
             }

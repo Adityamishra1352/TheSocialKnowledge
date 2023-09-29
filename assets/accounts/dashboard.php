@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>The Social Knowledge: Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
 </head>
 
 <body>
@@ -166,7 +167,50 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>';
         }
         ?>
-
+        <div class="container my-2">
+            <ul>
+                <li>
+                    <h4>Certificates you have achieved:</h4>
+                </li>
+            </ul>
+            <div class="container p-1">
+                <div class="row">
+                    <?php
+                    $certificateGot = "SELECT * FROM `certificates` WHERE `user_id`='$user_id'";
+                    $certificate_result = mysqli_query($conn, $certificateGot);
+                    while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
+                        $test_id = $rowCertificate['test_id'];
+                        $certificate_id = $rowCertificate['certificate_id'];
+                        $heading = null;
+                        $test_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
+                        $test_result = mysqli_query($conn, $test_sql);
+                        while ($rowTest = mysqli_fetch_assoc($test_result)) {
+                            $heading = $rowTest['heading'];
+                        }
+                        $score = $rowCertificate['score'];
+                        $time = $rowCertificate['time'];
+                        $timestamp = strtotime($time);
+                        $formattedDate = date('d F Y', $timestamp);
+                echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
+                <div class="row g-0">
+                  <div class="col-md-7">
+                    <div class="card-body">
+                    <h5 class="card-title">' . $heading . '</h5>
+                    <p class="text-secondary">' . $formattedDate . '</p>
+                    <p class="card-text">You scored ' . $score . ' in this quiz.</p>
+                    <a href="certificate.php?certificate_id=' . $certificate_id . '" class="btn btn-primary m-0">Certificate</a>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <img src="https://source.unsplash.com/500x500/?' . $heading . ',programming" class="img-fluid rounded-end" alt="..." style="height:100%">
+                  </div>
+                </div>
+              </div></div>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
