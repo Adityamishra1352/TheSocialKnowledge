@@ -17,6 +17,29 @@
 <body>
     <section>
         <div class="row">
+            <h1>OUR MENTOR</h1>
+        </div>
+        <div class="row">
+            <div class="column"></div>
+        <div class="column center">
+            <div class="card">
+                <div class="img-container">
+                    <img src="assets/images/DineshVerma.jpg" class="mentorImage"/>
+                </div>
+                <h3>Dinesh Kumar Verma</h3>
+                <p>Mentor</p>
+                <div class="icons">
+                    <a href="mailto:dinesh.verma@juetguna.in">
+                        <i class="far fa-envelope"></i>
+                    </a>
+                    <a href="https://www.juet.ac.in/Department/faculty.php?id=82&department=Computer%20Science">
+                    <i class="fas fa-globe"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
             <h1>OUR TEAM</h1>
         </div>
         <div class="row">

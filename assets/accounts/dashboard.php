@@ -67,17 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     data-bs-target="#changePassword">
                     Change Password
                 </button>
+                <button class="d-flex btn btn-outline-danger mx-1" onclick="window.location.href=('logout.php')">
+                    Logout
+                </button>
             </div>
         </div>
     </nav>
     <?php
-        if (isset($_GET["password"]) && $_GET["password"] == "true") {
-            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+    if (isset($_GET["password"]) && $_GET["password"] == "true") {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Success!!</strong> Your password has been changed!!.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        }
-        ?>
+    }
+    ?>
     <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
