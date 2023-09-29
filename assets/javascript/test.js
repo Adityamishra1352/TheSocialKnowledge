@@ -146,7 +146,6 @@ function showResult() {
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
-  console.log(answers);
   let passValue=Math.floor(questions.length*0.7);
   let moderateValue=Math.floor(questions.length*0.3);
   const scoreText = result_box.querySelector(".score_text");
@@ -287,6 +286,7 @@ function viewAnswers() {
     };
   }
 }
+// const answersString=JSON.stringify(answers);
 function sendCertificateIdToPHP(formattedId) {
     const data = {
       certificate_formatted: formattedId,
