@@ -1,13 +1,25 @@
+<?php 
+// if($_SERVER['REQUEST_METHOD']=="POST"){
+    $course_id=$_GET['course_id'];
+    $page_no=$_GET['page_no'];
+    include '../_dbconnect.php';
+        $course_sql="SELECT * FROM `courses` WHERE `course_id`='$course_id'";
+        $course_result=mysqli_query($conn,$course_sql);
+        while($rowCourse=mysqli_fetch_assoc($course_result)){
+            $courseHeading=$rowCourse['heading'];
+        }
+// }
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Social Knowledge: C++ Programming</title>
+    <title>The Social Knowledge: <?php echo $courseHeading;?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/c++course.css">
+    <link rel="stylesheet" href="../css/c++course.css">
 </head>
 
 <body>
@@ -36,33 +48,17 @@
         </div>
     </nav>
     <nav id="sidebar">
-        <h2>C++ Programming</h2>
+        <h2><?php echo $courseHeading;?></h2>
         <ul>
-            <li><a class="nav-item" href="c++course.php?page_id=1">Introduction</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=2">C++ Syntax</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=3">C++ Output</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=4">C++ Variables</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=5">C++ User Input</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=6">C++ Data Types</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=7">C++ Operators</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=8">C++ Strings</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=9">C++ Math</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=10">C++ Booleans</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=11">C++ Conditions</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=12">C++ Switch</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=13">C++ Loops</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=14">C++ Break/Continue</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=15">C++ Array</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=16">C++ Structures</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=17">C++ Pointers</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=24">C++ Functions</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=18">C++ Function Parameters</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=19">C++ Function Overloading</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=20">C++ Recursion</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=25">C++ OOP</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=21">C++ Classes/Objects</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=22">C++ Class Methods</a></li>
-            <li><a class="nav-item" href="c++course.php?page_id=23">C++ Constructors</a></li>
+            <?php 
+            $content_sql="SELECT * FROM `course_content` WHERE `course_id`='$course_id'";
+            $content_result=mysqli_query($conn,$content_sql);
+            while($rowContent=mysqli_fetch_assoc($content_result)){
+                $navContent=$rowContent['nav_content'];
+                $pageNoContent=$rowContent['page_no'];
+                echo '<li><a class="nav-item" href="course.php?course_id='.$course_id.'&page_no='.$pageNoContent.'">'.$navContent.'</a></li>';
+            }
+            ?>
         </ul>
 
     </nav>
@@ -70,17 +66,16 @@
         <main id="documentation">
             <article>
                 <?php
-                include '../../_dbconnect.php';
-                $page_id = $_GET['page_id'];
-                $fetch_topic = "SELECT * FROM `c++course` WHERE `page_id`='$page_id'";
+                include '../_dbconnect.php';
+                $page_no = $_GET['page_no'];
+                $fetch_topic = "SELECT * FROM `course_content` WHERE `page_no`='$page_no'";
                 $result = mysqli_query($conn, $fetch_topic);
                 while ($row = mysqli_fetch_assoc($result)) {
                     $heading = $row['heading'];
                     $description = $row['description'];
-                    $code = $row['code'];
                     echo '<h2>' . $heading . '</h2>';
                     echo '<section>' . $description . '</section>';
-                    echo $code;
+                    echo '<div class="d-flex"><a class="btn btn-outline-success" href="course.php?course_id='.$course_id.'&page_no='.($page_no+1).'" style="width:30%">Next</a></div>';
                 }
                 ?>
             </article>

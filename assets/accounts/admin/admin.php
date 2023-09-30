@@ -34,6 +34,9 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                     <li class="nav-item">
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="users.php">View Users</a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"

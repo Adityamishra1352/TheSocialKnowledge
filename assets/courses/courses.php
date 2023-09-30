@@ -45,14 +45,27 @@ session_start();
   </div>
 </nav>
 <div class="container mx-2">
-<div class="card my-2" style="width: 18rem;">
-  <img src="https://source.unsplash.com/400x400/?c++ programming" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">C++ Programming</h5>
-    <p class="card-text">C++ is a cross-platform language that can be used to create high-performance applications. C++ was developed by Bjarne Stroustrup...</p>
-    <a href="c++programming/c++course.php?page_id=1" class="btn btn-primary">Start Course</a>
+  <div class="row">
+  <?php 
+  include '../_dbconnect.php';
+  $course_sql="SELECT * FROM `courses`";
+  $course_result=mysqli_query($conn,$course_sql);
+  while($rowCourse=mysqli_fetch_assoc($course_result)){
+    $heading=$rowCourse['heading'];
+    $description=$rowCourse['description'];
+    $course_id=$rowCourse['course_id'];
+    echo '<div class="col"><div class="card my-2" style="width: 18rem;">
+    <img src="https://source.unsplash.com/400x400/?'.$heading.'" class="card-img-top" alt="'.$heading.'">
+    <div class="card-body">
+      <h5 class="card-title">'.$heading.'</h5>
+      <p class="card-text">'.$description.'</p>
+      <a href="course.php?course_id='.$course_id.'&page_no=1" class="btn btn-primary">Start Course</a>
+    </div>
+  </div></div>';
+  }
+  ?>
   </div>
-</div>
+
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

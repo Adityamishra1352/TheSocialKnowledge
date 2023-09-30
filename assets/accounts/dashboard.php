@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $uniqueName = uniqid() . $user_id . '_' . $fileName;
         $destination = $uploadDir . $uniqueName;
         if (move_uploaded_file($fileTmp, $destination)) {
-            $sql = "UPDATE `users`SET `profileImage`='$destination' WHERE `users`.`user_id`='$user_id'";
+            $sql = "UPDATE `users`SET `profileImage`='$uniqueName' WHERE `users`.`user_id`='$user_id'";
             $resultprofile = mysqli_query($conn, $sql);
         } else {
             echo "Error uploading the image.";
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if ($profileImage == NULL) {
                 $pic = '../uploads/default.jpg';
             } else {
-                $pic = $rowUser['profileImage'];
+                $pic ='../uploads/'. $rowUser['profileImage'];
             }
             echo '<div class="card mb-3" style="max-width: 800px;">
             <div class="row g-0">
