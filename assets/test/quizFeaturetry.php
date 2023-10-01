@@ -16,19 +16,28 @@ $lname = null;
 $user_id = $_SESSION['user_id'];
 $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
 $user_result = mysqli_query($conn, $user_sql);
+$test_array = 0;
 while ($rowUser = mysqli_fetch_assoc($user_result)) {
     $fname = $rowUser['fname'];
     $lname = $rowUser['lname'];
+    $test_array = $rowUser['test_array'];
 }
-$certificate_id=null;
-$certificate_sql="SELECT * FROM `certificates` ORDER BY `certificate_id` DESC LIMIT 1";
-$certificate_result=mysqli_query($conn,$certificate_sql);
-while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
-    $certificate_id=$rowCertificate['certificate_id'];
+$decodedArray = json_decode($test_array);
+$alreadyAppeared=0;
+if (is_array($decodedArray)) {
+    foreach ($decodedArray as $element) {
+        if($test_id==$element){
+            $alreadyAppeared=1;
+        }
+    }
+}
+$certificate_id = null;
+$certificate_sql = "SELECT * FROM `certificates` ORDER BY `certificate_id` DESC LIMIT 1";
+$certificate_result = mysqli_query($conn, $certificate_sql);
+while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
+    $certificate_id = $rowCertificate['certificate_id'];
 }
 ?>
-
-
 <!doctype html>
 <html lang="en">
 
@@ -43,6 +52,7 @@ while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
+        let alreadyAppeared=<?php echo $alreadyAppeared;?>;
         const questions = [];
         function fetchQuestions(testId) {
             fetch(`getQuestions.php?testid=${testId}`)
@@ -76,14 +86,33 @@ while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
         const fname = "<?php echo $fname; ?>";
         const lname = "<?php echo $lname; ?>";
         const testId = <?php echo $test_id; ?>;
-        const certificate_id=<?php echo $certificate_id;?>;
-        const user_id=<?php echo $user_id;?>;
+        const certificate_id = <?php echo $certificate_id; ?>;
+        const user_id = <?php echo $user_id; ?>;
         fetchQuestions(testId);
-
     </script>
 </head>
 
 <body>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="display: none;">
+  Launch static backdrop modal
+</button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="../../index.php">The Social Knowledge</a>
@@ -191,7 +220,8 @@ while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
                 <div class="buttons container my-2">
                     <button class="certification btn btn-outline-success">Get Certificate</button>
                     <button id="gobacktoresult" class="btn btn-outline-success">Go Back to the Reusult Page</button>
-                    <button onclick="window.location.href='../../index.php'" class="btn btn-outline-success">Home</button>
+                    <button onclick="window.location.href='../../index.php'"
+                        class="btn btn-outline-success">Home</button>
                 </div>
                 <iframe src="" id="certificatepdf" frameborder="0" style="width: 400px;height:400px;"></iframe>
             </div>
@@ -209,6 +239,11 @@ while($rowCertificate=mysqli_fetch_assoc($certificate_result)){
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4"></script>
+    <script>
+        if(alreadyAppeared==1){
+            document.getElementById('openModalButton').click();
+        }
+    </script>
     <!-- <script>
         const timeCount = document.querySelector(".timer .time_sec");
         const timeLine = document.querySelector(".time_line");

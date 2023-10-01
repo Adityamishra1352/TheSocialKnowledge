@@ -1,22 +1,49 @@
-<?php 
-// if($_SERVER['REQUEST_METHOD']=="POST"){
-    $course_id=$_GET['course_id'];
-    $page_no=$_GET['page_no'];
+<?php
+session_start();
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    $course_id = $_GET['course_id'];
+    $page_no = $_GET['page_no'];
     include '../_dbconnect.php';
-        $course_sql="SELECT * FROM `courses` WHERE `course_id`='$course_id'";
-        $course_result=mysqli_query($conn,$course_sql);
-        while($rowCourse=mysqli_fetch_assoc($course_result)){
-            $courseHeading=$rowCourse['heading'];
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+        $user_id = $_SESSION['user_id'];
+        $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
+        $user_result = mysqli_query($conn, $user_sql);
+        if ($rowUser = mysqli_fetch_assoc($user_result)) {
+            $courses = json_decode($rowUser['courses_array'], true);
+            if (!is_array($courses)) {
+                $courses = array();
+            }
+            if (!in_array($course_id, $courses)) {
+                $courses[] = $course_id;
+                $updated_courses = json_encode($courses);
+                $update_sql = "UPDATE `users` SET `courses_array`='$updated_courses' WHERE `user_id`='$user_id'";
+                if (mysqli_query($conn, $update_sql)) {
+                    echo "Course added to your courses!";
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                }
+            } else {
+                echo "Course is already in your courses!";
+            }
         }
-// }
+    }
+    $course_sql = "SELECT * FROM `courses` WHERE `course_id`='$course_id'";
+    $course_result = mysqli_query($conn, $course_sql);
+    while ($rowCourse = mysqli_fetch_assoc($course_result)) {
+        $courseHeading = $rowCourse['heading'];
+    }
+}
 ?>
+
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Social Knowledge: <?php echo $courseHeading;?></title>
+    <title>The Social Knowledge:
+        <?php echo $courseHeading; ?>
+    </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/c++course.css">
@@ -48,15 +75,17 @@
         </div>
     </nav>
     <nav id="sidebar">
-        <h2><?php echo $courseHeading;?></h2>
+        <h2>
+            <?php echo $courseHeading; ?>
+        </h2>
         <ul>
-            <?php 
-            $content_sql="SELECT * FROM `course_content` WHERE `course_id`='$course_id'";
-            $content_result=mysqli_query($conn,$content_sql);
-            while($rowContent=mysqli_fetch_assoc($content_result)){
-                $navContent=$rowContent['nav_content'];
-                $pageNoContent=$rowContent['page_no'];
-                echo '<li><a class="nav-item" href="course.php?course_id='.$course_id.'&page_no='.$pageNoContent.'">'.$navContent.'</a></li>';
+            <?php
+            $content_sql = "SELECT * FROM `course_content` WHERE `course_id`='$course_id'";
+            $content_result = mysqli_query($conn, $content_sql);
+            while ($rowContent = mysqli_fetch_assoc($content_result)) {
+                $navContent = $rowContent['nav_content'];
+                $pageNoContent = $rowContent['page_no'];
+                echo '<li><a class="nav-item" href="course.php?course_id=' . $course_id . '&page_no=' . $pageNoContent . '">' . $navContent . '</a></li>';
             }
             ?>
         </ul>
@@ -75,7 +104,7 @@
                     $description = $row['description'];
                     echo '<h2>' . $heading . '</h2>';
                     echo '<section>' . $description . '</section>';
-                    echo '<div class="d-flex"><a class="btn btn-outline-success" href="course.php?course_id='.$course_id.'&page_no='.($page_no+1).'" style="width:30%">Next</a></div>';
+                    echo '<div class="d-flex"><a class="btn btn-outline-success" href="course.php?course_id=' . $course_id . '&page_no=' . ($page_no + 1) . '" style="width:30%">Next</a></div>';
                 }
                 ?>
             </article>
@@ -88,7 +117,7 @@
         var startTime = new Date().getTime();
         var wordCount = 0;
         var progressBar = document.querySelector('.progress .progress-bar');
-        var totalTime=0;
+        var totalTime = 0;
 
         function sendTimeSpent() {
             var endTime = new Date().getTime();
@@ -112,11 +141,11 @@
         window.addEventListener('load', function () {
             wordCount = countWords('documentation');
         });
-        var timeToRead=0.008*wordCount;
-        if(timeToRead==totalTime){
+        var timeToRead = 0.008 * wordCount;
+        if (timeToRead == totalTime) {
             console.log("Progress increased");
         }
-        else{
+        else {
             console.log("Cheater huhhh");
         }
     </script>

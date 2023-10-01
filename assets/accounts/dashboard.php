@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>The Social Knowledge: Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
+    <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
 </head>
 
 <body>
@@ -136,22 +136,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
     </div>
     <div class="container my-2">
-        <?php
-        include '../_dbconnect.php';
-        $pic = null;
-        $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
-        $user_result = mysqli_query($conn, $user_sql);
-        while ($rowUser = mysqli_fetch_assoc($user_result)) {
-            $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
-            $description = $rowUser['description'];
-            $location = $rowUser['location'];
-            $profileImage = $rowUser['profileImage'];
-            if ($profileImage == NULL) {
-                $pic = '../uploads/default.jpg';
-            } else {
-                $pic ='../uploads/'. $rowUser['profileImage'];
-            }
-            echo '<div class="card mb-3" style="max-width: 800px;">
+        <div class="container">
+            <?php
+            include '../_dbconnect.php';
+            $pic = null;
+            $courses_array = null;
+            $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
+            $user_result = mysqli_query($conn, $user_sql);
+            while ($rowUser = mysqli_fetch_assoc($user_result)) {
+                $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
+                $description = $rowUser['description'];
+                $location = $rowUser['location'];
+                $profileImage = $rowUser['profileImage'];
+                $courses_array = $rowUser['courses_array'];
+                if ($profileImage == NULL) {
+                    $pic = '../uploads/default.jpg';
+                } else {
+                    $pic = '../uploads/' . $rowUser['profileImage'];
+                }
+                echo '<div class="card mb-3" style="max-width: 800px;">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="' . $pic . '" class="img-fluid rounded-start" alt="Profile Image">
@@ -165,8 +168,45 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
             </div>
         </div>';
-        }
-        ?>
+            }
+            ?>
+            <div class="container p-2">
+                <ul>
+                    <li>
+                        <h4>Courses that you have enrolled in:</h4>
+                    </li>
+                </ul>
+                <div class="container row my-2 p-1">
+                    <?php
+                    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                        $decodedArray = json_decode($courses_array);
+
+                        if (is_array($decodedArray)) {
+                            foreach ($decodedArray as $element) {
+                                $course_id = $element;
+                                $course_sql = "SELECT * FROM `courses` WHERE `course_id`='$course_id'";
+                                $course_result = mysqli_query($conn, $course_sql);
+                                $rowCourse = mysqli_fetch_assoc($course_result);
+                                $course_heading=$rowCourse['heading'];
+                                echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
+                <div class="row g-0">
+                  <div class="col-md-7">
+                    <div class="card-body">
+                    <h5 class="card-title">' . $course_heading . '</h5>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <img src="https://source.unsplash.com/500x500/?' . $course_heading . ',programming" class="img-fluid rounded-end" alt="..." style="height:100%">
+                  </div>
+                </div>
+              </div></div>';
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
         <div class="container my-2">
             <ul>
                 <li>
@@ -191,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $time = $rowCertificate['time'];
                         $timestamp = strtotime($time);
                         $formattedDate = date('d F Y', $timestamp);
-                echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
+                        echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
                 <div class="row g-0">
                   <div class="col-md-7">
                     <div class="card-body">
