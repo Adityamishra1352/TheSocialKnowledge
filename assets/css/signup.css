@@ -6,15 +6,7 @@
     padding: 100px;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-p{
-    float: left;
-    margin-right: 600px;
-}
-a{
-    margin: 10px;
-    color: inherit;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 .input-field form{
     display: grid;
@@ -30,21 +22,9 @@ a{
     grid-column-end: 3;
 }
 input{
-    margin: 10px;
-    height: 30px;
-    padding: 10px;
     border-radius: 5px;
     border: 0;
     background-color: inherit;
-}
-button{
-    width: 20%;
-    height: 6%;
-    outline: none;
-    border: 0;
-    background: lightblue;
-    border-radius: 15px;
-    cursor: pointer;
 }
 /* .passwordmessage{
     background-color: azure;
@@ -67,9 +47,6 @@ button{
         width:110%;
     }
     .passwordmessage{
-        width: max-content;
-    }
-    .buttons button{
         width: max-content;
     }
 }

@@ -43,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
+    <style>
+        .gridStructure{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -187,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 $course_sql = "SELECT * FROM `courses` WHERE `course_id`='$course_id'";
                                 $course_result = mysqli_query($conn, $course_sql);
                                 $rowCourse = mysqli_fetch_assoc($course_result);
-                                $course_heading=$rowCourse['heading'];
+                                $course_heading = $rowCourse['heading'];
                                 echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
                 <div class="row g-0">
                   <div class="col-md-7">
@@ -213,8 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <h4>Certificates you have achieved:</h4>
                 </li>
             </ul>
-            <div class="container p-1">
-                <div class="row">
+            <d class="container p-1 gridStructure">
                     <?php
                     $certificateGot = "SELECT * FROM `certificates` WHERE `user_id`='$user_id'";
                     $certificate_result = mysqli_query($conn, $certificateGot);
@@ -231,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $time = $rowCertificate['time'];
                         $timestamp = strtotime($time);
                         $formattedDate = date('d F Y', $timestamp);
-                        echo '<div class="col"><div class="card mb-3" style="max-width: 400px;">
+                        echo '<div class="card mb-3" style="max-width: 400px;">
                 <div class="row g-0">
                   <div class="col-md-7">
                     <div class="card-body">
@@ -245,10 +251,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <img src="https://source.unsplash.com/500x500/?' . $heading . ',programming" class="img-fluid rounded-end" alt="..." style="height:100%">
                   </div>
                 </div>
-              </div></div>';
+              </div>';
                     }
                     ?>
-                </div>
             </div>
         </div>
     </div>

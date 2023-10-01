@@ -6,12 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Sorting Visualizer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   </head>
   <body>
     <header>
-        <h2 style="margin-left: 15px;">The Social Knowledge:Sorting Visualizer</h2>
+        <h2 style="margin-left: 15px;">The Social Knowledge</h2>
         <h3 id="speed">Speed
             <input id="speed_input" type="range" min="20" max="300" stepDown=10 value=60>
         </h3>
