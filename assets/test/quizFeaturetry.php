@@ -2,40 +2,49 @@
 session_start();
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     header('location:../403.php');
-}
-include '../_dbconnect.php';
-$test_id = $_GET['testid'];
-$quiz_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
-$quiz_result = mysqli_query($conn, $quiz_sql);
-$heading = null;
-while ($quizRow = mysqli_fetch_assoc($quiz_result)) {
-    $heading = $quizRow['heading'];
-}
-$fname = null;
-$lname = null;
-$user_id = $_SESSION['user_id'];
-$user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
-$user_result = mysqli_query($conn, $user_sql);
-$test_array = 0;
-while ($rowUser = mysqli_fetch_assoc($user_result)) {
-    $fname = $rowUser['fname'];
-    $lname = $rowUser['lname'];
-    $test_array = $rowUser['test_array'];
-}
-$decodedArray = json_decode($test_array);
-$alreadyAppeared=0;
-if (is_array($decodedArray)) {
-    foreach ($decodedArray as $element) {
-        if($test_id==$element){
-            $alreadyAppeared=1;
-        }
+} else {
+    include '../_dbconnect.php';
+    $test_id = $_GET['testid'];
+    $quiz_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
+    $quiz_result = mysqli_query($conn, $quiz_sql);
+    $heading = null;
+    while ($quizRow = mysqli_fetch_assoc($quiz_result)) {
+        $heading = $quizRow['heading'];
     }
-}
-$certificate_id = null;
-$certificate_sql = "SELECT * FROM `certificates` ORDER BY `certificate_id` DESC LIMIT 1";
-$certificate_result = mysqli_query($conn, $certificate_sql);
-while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
-    $certificate_id = $rowCertificate['certificate_id'];
+    $fname = null;
+    $lname = null;
+    $user_id = $_SESSION['user_id'];
+    $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
+    $user_result = mysqli_query($conn, $user_sql);
+    $test_array = 0;
+    while ($rowUser = mysqli_fetch_assoc($user_result)) {
+        $fname = $rowUser['fname'];
+        $lname = $rowUser['lname'];
+        $test_array = $rowUser['test_array'];
+    }
+
+    $decodedArray = json_decode($test_array);
+    $alreadyAppeared = 0;
+    if (is_array($decodedArray)) {
+        if (in_array($test_id, $decodedArray)) {
+            $alreadyAppeared = 1;
+        }
+        else {
+            $decodedArray[] = $test_id;
+            $updatedArray = json_encode($decodedArray);
+            $update_sql = "UPDATE `users` SET `test_array`='$updatedArray' WHERE `user_id`='$user_id'";
+            $updateresult = mysqli_query($conn, $update_sql);
+        }
+    } else {
+        $decodedArray = [];
+    }
+
+    $certificate_id = null;
+    $certificate_sql = "SELECT * FROM `certificates` ORDER BY `certificate_id` DESC LIMIT 1";
+    $certificate_result = mysqli_query($conn, $certificate_sql);
+    while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
+        $certificate_id = $rowCertificate['certificate_id'];
+    }
 }
 ?>
 <!doctype html>
@@ -52,7 +61,7 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
-        let alreadyAppeared=<?php echo $alreadyAppeared;?>;
+        let alreadyAppeared = <?php echo $alreadyAppeared; ?>;
         const questions = [];
         function fetchQuestions(testId) {
             fetch(`getQuestions.php?testid=${testId}`)
@@ -90,29 +99,10 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
         const user_id = <?php echo $user_id; ?>;
         fetchQuestions(testId);
     </script>
+
 </head>
 
 <body>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="display: none;">
-  Launch static backdrop modal
-</button>
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
-  </div>
-</div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="../../index.php">The Social Knowledge</a>
@@ -150,6 +140,10 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
             </div>
         </div>
     </nav>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+        <strong>Hey!!</strong> You have already attended the test.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <div class="container my-2 content">
         <div class="info_box">
             <div class="info-title"><span>Some Rules of this Quiz</span></div>
@@ -161,7 +155,7 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
                 <div class="info">5. You'll get points on the basis of your correct answers.</div>
             </div>
             <div class="buttons">
-                <button class="quit">Exit Quiz</button>
+                <button class="quit" onclick="window.location.href=(`../../index.php`)">Exit Quiz</button>
                 <button class="restart">Continue</button>
             </div>
         </div>
@@ -227,6 +221,14 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
             </div>
         </div>
     </div>
+    <script>
+        if (alreadyAppeared == 1) {
+            document.querySelector(".alert").style.display="block";
+            document.querySelector(".info_box .restart").disabled=true;
+            document.querySelector(".info_box .restart").style.background="red";
+            document.querySelector(".info_box .restart").style.border="red";
+        }
+    </script>
     <script src="../javascript/test.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
@@ -239,11 +241,7 @@ while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4"></script>
-    <script>
-        if(alreadyAppeared==1){
-            document.getElementById('openModalButton').click();
-        }
-    </script>
+
     <!-- <script>
         const timeCount = document.querySelector(".timer .time_sec");
         const timeLine = document.querySelector(".time_line");

@@ -50,9 +50,9 @@ view_answers.onclick = () => {
   countQuestions = 0;
   viewAnswers();
 };
-quit_quiz.onclick = () => {
-  window.location.reload();
-};
+// quit_quiz.onclick = () => {
+//   window.location.href=("../../index.php");
+// };
 
 const next_btn = document.querySelector("footer .next_btn");
 const bottom_ques_counter = document.querySelector("footer .total_que");
@@ -309,4 +309,6 @@ function sendCertificateIdToPHP(formattedId) {
       console.error('Error sending data to PHP:', error);
     });
   }
+function updateProfile(){
   
+}
