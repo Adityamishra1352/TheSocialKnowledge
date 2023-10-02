@@ -50,9 +50,9 @@ view_answers.onclick = () => {
   countQuestions = 0;
   viewAnswers();
 };
-// quit_quiz.onclick = () => {
-//   window.location.href=("../../index.php");
-// };
+quit_quiz.onclick = () => {
+  window.location.href = "../../index.php";
+};
 
 const next_btn = document.querySelector("footer .next_btn");
 const bottom_ques_counter = document.querySelector("footer .total_que");
@@ -100,8 +100,6 @@ function showQuetions(index) {
     option[i].setAttribute("onclick", "optionSelected(this)");
   }
 }
-let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
-let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
 const answers = [];
 function optionSelected(answer) {
   clearInterval(counter);
@@ -109,25 +107,9 @@ function optionSelected(answer) {
   let userAns = answer.textContent;
   let correcAns = questions[que_count].answer;
   const allOptions = option_list.children.length;
-
+  answer.classList.add("correct");
   if (userAns == correcAns) {
     userScore += 1;
-    answer.classList.add("correct");
-    answer.insertAdjacentHTML("beforeend", tickIconTag);
-    console.log("Correct Answer");
-    console.log("Your correct answers = " + userScore);
-  } else {
-    answer.classList.add("incorrect");
-    answer.insertAdjacentHTML("beforeend", crossIconTag);
-    console.log("Wrong Answer");
-
-    for (i = 0; i < allOptions; i++) {
-      if (option_list.children[i].textContent == correcAns) {
-        option_list.children[i].setAttribute("class", "option correct");
-        option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag);
-        console.log("Auto selected correct answer.");
-      }
-    }
   }
   const questionObject = {
     question: questions[que_count].question,
@@ -140,22 +122,22 @@ function optionSelected(answer) {
   }
   next_btn.classList.add("show");
 }
-const certificate_box=document.querySelector(".certificate_box");
-const certificate_btn=document.querySelector(".getCertificate");
+const certificate_box = document.querySelector(".certificate_box");
+const certificate_btn = document.querySelector(".getCertificate");
 function showResult() {
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
-  let passValue=Math.floor(questions.length*0.7);
-  let moderateValue=Math.floor(questions.length*0.3);
+  let passValue = Math.floor(questions.length * 0.7);
+  let moderateValue = Math.floor(questions.length * 0.3);
   const scoreText = result_box.querySelector(".score_text");
   if (userScore > passValue) {
-    certificate_btn.textContent="Get Certificate";
-    certificate_btn.onclick=()=>{
-        certificate_box.classList.add("activeCertificate");
-        result_box.classList.remove("activeResult");
-        getCertificate();
-    }
+    certificate_btn.textContent = "Get Certificate";
+    certificate_btn.onclick = () => {
+      certificate_box.classList.add("activeCertificate");
+      result_box.classList.remove("activeResult");
+      getCertificate();
+    };
     let scoreTag =
       "<span>and congrats! , You got <p>" +
       userScore +
@@ -164,7 +146,7 @@ function showResult() {
       "</p></span>";
     scoreText.innerHTML = scoreTag;
   } else if (userScore > moderateValue) {
-    certificate_btn.style.display="none";
+    certificate_btn.style.display = "none";
     let scoreTag =
       "<span>and nice , You got <p>" +
       userScore +
@@ -173,7 +155,7 @@ function showResult() {
       "</p></span>";
     scoreText.innerHTML = scoreTag;
   } else {
-    certificate_btn.style.display="none";
+    certificate_btn.style.display = "none";
     let scoreTag =
       "<span>and sorry , You got only <p>" +
       userScore +
@@ -184,23 +166,23 @@ function showResult() {
   }
 }
 const certi = document.querySelector("#certificatepdf");
-const getCertificate_btn=document.querySelector(".certification");
-const goBackResult_btn=document.querySelector("#gobacktoresult");
-function getCertificate(){
-    //have to add formattedId to each specific certificate
-    let formattedId="SK"+testId+(certificate_id+1);
-    console.log(formattedId);
-    getCertificate_btn.onclick=()=>{
-        certi.style.display="block";
-        let val=fname+" "+lname;
-        generatePdf(val, formattedId);
-        sendCertificateIdToPHP(formattedId);
-        getCertificate_btn.disabled=true;
-    }
-    goBackResult_btn.onclick=()=>{
-        certificate_box.classList.remove("activeCertificate");
-        result_box.classList.add("activeResult");
-    }
+const getCertificate_btn = document.querySelector(".certification");
+const goBackResult_btn = document.querySelector("#gobacktoresult");
+function getCertificate() {
+  //have to add formattedId to each specific certificate
+  let formattedId = "SK" + testId + (certificate_id + 1);
+  console.log(formattedId);
+  getCertificate_btn.onclick = () => {
+    certi.style.display = "block";
+    let val = fname + " " + lname;
+    generatePdf(val, formattedId);
+    sendCertificateIdToPHP(formattedId);
+    getCertificate_btn.disabled = true;
+  };
+  goBackResult_btn.onclick = () => {
+    certificate_box.classList.remove("activeCertificate");
+    result_box.classList.add("activeResult");
+  };
 }
 function startTimer(time) {
   counter = setInterval(timer, 1000);
@@ -216,13 +198,6 @@ function startTimer(time) {
       timeText.textContent = "Time Off";
       const allOptions = option_list.children.length;
       let correcAns = questions[que_count].answer;
-      for (i = 0; i < allOptions; i++) {
-        if (option_list.children[i].textContent == correcAns) {
-          option_list.children[i].setAttribute("class", "option correct");
-          option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag);
-          console.log("Time Off: Auto selected correct answer.");
-        }
-      }
       for (i = 0; i < allOptions; i++) {
         option_list.children[i].classList.add("disabled");
       }
@@ -288,27 +263,25 @@ function viewAnswers() {
 }
 // const answersString=JSON.stringify(answers);
 function sendCertificateIdToPHP(formattedId) {
-    const data = {
-      certificate_formatted: formattedId,
-      user_id:user_id,
-      test_id:testId,
-      userScore:userScore
-    };  
-    fetch('storeCertificateId.php', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  const data = {
+    certificate_formatted: formattedId,
+    user_id: user_id,
+    test_id: testId,
+    userScore: userScore,
+  };
+  fetch("storeCertificateId.php", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Certificate ID sent to PHP:", data);
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Certificate ID sent to PHP:', data);
-    })
-    .catch(error => {
-      console.error('Error sending data to PHP:', error);
+    .catch((error) => {
+      console.error("Error sending data to PHP:", error);
     });
-  }
-function updateProfile(){
-  
 }
+function updateProfile() {}

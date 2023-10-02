@@ -4,6 +4,10 @@ include '../_dbconnect.php';
 $user_id = $_SESSION['user_id'];
 $uploadDir = '../uploads/';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $usersql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
+    $usersqlresult = mysqli_query($conn, $usersql);
+    $row = mysqli_fetch_assoc($usersqlresult);
+    $currentProfileImage = $row['profileImage'];
     if (isset($_FILES['profileImage'])) {
         $file = $_FILES['profileImage'];
         $fileName = $file['name'];
@@ -11,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $fileError = $file['error'];
         $uniqueName = uniqid() . $user_id . '_' . $fileName;
         $destination = $uploadDir . $uniqueName;
+        if (!empty($currentProfileImage) && file_exists($uploadDir . $currentProfileImage)) {
+            unlink($uploadDir . $currentProfileImage);
+        }
         if (move_uploaded_file($fileTmp, $destination)) {
             $sql = "UPDATE `users`SET `profileImage`='$uniqueName' WHERE `users`.`user_id`='$user_id'";
             $resultprofile = mysqli_query($conn, $sql);
@@ -18,9 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo "Error uploading the image.";
         }
     }
-    $usersql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
-    $usersqlresult = mysqli_query($conn, $usersql);
-    $row = mysqli_fetch_assoc($usersqlresult);
     $description = $_POST['description'];
     $location = $_POST['location'];
     if ($description != null) {
