@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../_dbconnect.php';
+$message=0;
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fname = $_POST['firstName'];
     $lname = $_POST['lastName'];
@@ -10,16 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fetch_result = mysqli_query($conn, $fetch_email);
     $num = mysqli_num_rows($fetch_result);
     if ($num >= 1) {
-        echo "email already exists";
+        $message=2;
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
         $result_signup = mysqli_query($conn, $signup_sql);
         if ($result_signup) {
-            $_SESSION['user_email'] = $email;
-            echo "successfully signed up";
+            $message=1;
+            header('location:signup.php?message='.$message);
         }
     }
+}
+if (isset($_GET['message'])) {
+    $message = $_GET['message'];
+} else {
+    $message = 0;
 }
 ?>
 <html lang="en">
@@ -62,6 +68,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
             </div>
         </nav>
+        <?php 
+        if($message==1){
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Successfully Signed Up</strong> Continue to login.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        elseif($message==2){
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Email already exists</strong> You should use another email.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        ?>
         <div class="account-info">
             <div id="signup_form">
                 <h1>Create new account.</h1>

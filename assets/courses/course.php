@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         </h2>
         <ul>
             <?php
-            $content_sql = "SELECT * FROM `course_content` WHERE `course_id`='$course_id'";
+            $content_sql = "SELECT * FROM `course_content` WHERE `course_id`='$course_id' AND `displayed`=1";
             $content_result = mysqli_query($conn, $content_sql);
             while ($rowContent = mysqli_fetch_assoc($content_result)) {
                 $navContent = $rowContent['nav_content'];

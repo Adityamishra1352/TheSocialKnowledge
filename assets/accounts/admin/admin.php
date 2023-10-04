@@ -3,6 +3,7 @@ session_start();
 if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
     header('location:../../403.php');
 }
+include '../../_dbconnect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,11 +46,39 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
             </div>
         </div>
     </nav>
+    <div class="container my-2 p-1">
+        <ul>
+            <li>
+                <h4>Current Running Courses:</h4>
+            </li>
+        </ul>
+        <div class="container mx-2" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+            <?php
+            $course_sql = "SELECT * FROM `courses`";
+            $course_result = mysqli_query($conn, $course_sql);
+            while ($rowCourse = mysqli_fetch_assoc($course_result)) {
+                $heading = $rowCourse['heading'];
+                $description = $rowCourse['description'];
+                $course_id = $rowCourse['course_id'];
+                echo '<div class="card my-2" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">' . $heading . '</h5>
+      <p class="card-text">' . $description . '</p>
+      <a href="course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">Start Course</a>
+      <a href="deleteCourse.php?course_id='.$course_id.'" class="btn btn-danger">Delete</a>
+    </div></div>';
+            }
+            ?>
+        </div>
+    </div>
     <div class="container my-3">
-        <ul><li><h4>Organisers:</h4></li></ul>
+        <ul>
+            <li>
+                <h4>Organisers:</h4>
+            </li>
+        </ul>
         <div class="row my-2">
             <?php
-            include '../../_dbconnect.php';
             $viewOrganisers = "SELECT * FROM `users` WHERE `organiser`=1";
             $viewOrganiser_result = mysqli_query($conn, $viewOrganisers);
             while ($rowOrganiser = mysqli_fetch_assoc($viewOrganiser_result)) {
@@ -70,31 +99,38 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
         </div>
     </div>
     <div class="container addOrgainsers my-3">
-        <ul><li><h4>Add Another Organiser:</h4></li></ul>
+        <ul>
+            <li>
+                <h4>Add Another Organiser:</h4>
+            </li>
+        </ul>
         <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> The new organiser must be
             the user of the website.</span>
-            <form method="post" action="addOrganiser.php" style="width: 40%;">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address:</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                </div>
-                <button type="submit" class="btn btn-outline-success">Submit</button>
-            </form>
+        <form method="post" action="addOrganiser.php" style="width: 40%;">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address:</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    name="email">
+            </div>
+            <button type="submit" class="btn btn-outline-success">Submit</button>
+        </form>
     </div>
     <div class="container my-3">
         <ul>
-            <li><h4>Quizes Visible On The Website!!</h4></li>
+            <li>
+                <h4>Quizes Visible On The Website!!</h4>
+            </li>
         </ul>
         <div class="container">
             <div class="row">
                 <?php
                 include '../../_dbconnect.php';
-                $nameOrganiser=null;
+                $nameOrganiser = null;
                 $organiser_id = $_SESSION['user_id'];
-                $organiserFetch="SELECT * FROM `users` WHERE `user_id`='$organiser_id'";
-                $organiserFetch_result=mysqli_query($conn,$organiserFetch);
-                while($rowFetchOrganiser=mysqli_fetch_assoc($organiserFetch_result)){
-                    $nameOrganiser=$rowFetchOrganiser['fname']." ". $rowFetchOrganiser['lname'];
+                $organiserFetch = "SELECT * FROM `users` WHERE `user_id`='$organiser_id'";
+                $organiserFetch_result = mysqli_query($conn, $organiserFetch);
+                while ($rowFetchOrganiser = mysqli_fetch_assoc($organiserFetch_result)) {
+                    $nameOrganiser = $rowFetchOrganiser['fname'] . " " . $rowFetchOrganiser['lname'];
                 }
                 $quizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=1";
                 $fetch_result = mysqli_query($conn, $quizfetch_sql);
@@ -120,18 +156,20 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
     </div>
     <div class="container my-3">
         <ul>
-            <li><h4>Quizes Not Visible On The Website!!</h4></li>
+            <li>
+                <h4>Quizes Not Visible On The Website!!</h4>
+            </li>
         </ul>
         <div class="container">
             <div class="row">
                 <?php
                 include '../../_dbconnect.php';
-                $nameOrganiser=null;
+                $nameOrganiser = null;
                 $organiser_id = $_SESSION['user_id'];
-                $organiserFetch="SELECT * FROM `users` WHERE `user_id`='$organiser_id'";
-                $organiserFetch_result=mysqli_query($conn,$organiserFetch);
-                while($rowFetchOrganiser=mysqli_fetch_assoc($organiserFetch_result)){
-                    $nameOrganiser=$rowFetchOrganiser['fname']." ". $rowFetchOrganiser['lname'];
+                $organiserFetch = "SELECT * FROM `users` WHERE `user_id`='$organiser_id'";
+                $organiserFetch_result = mysqli_query($conn, $organiserFetch);
+                while ($rowFetchOrganiser = mysqli_fetch_assoc($organiserFetch_result)) {
+                    $nameOrganiser = $rowFetchOrganiser['fname'] . " " . $rowFetchOrganiser['lname'];
                 }
                 $quizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=0";
                 $fetch_result = mysqli_query($conn, $quizfetch_sql);
@@ -156,9 +194,13 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
     </div>
 
     <div class="container my-3">
-        <ul><li><h4>Manage Course Tests:</h4></li></ul>
+        <ul>
+            <li>
+                <h4>Manage Course Tests:</h4>
+            </li>
+        </ul>
         <div class="container">
-            <?php 
+            <?php
             $coursequizfetch_sql = "SELECT * FROM `coursetests`";
             $coursefetch_result = mysqli_query($conn, $coursequizfetch_sql);
             while ($rowCourseQuiz = mysqli_fetch_assoc($coursefetch_result)) {
