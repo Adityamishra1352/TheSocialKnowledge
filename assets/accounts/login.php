@@ -1,11 +1,11 @@
 <?php
 session_start();
+$wrongPass = 0;
+$doesntExist = 0;
 include '../_dbconnect.php';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $wrongPass = 0;
-    $doesntExist = 0;
     $sql = "SELECT * FROM `users` WHERE `email`='$email'";
     $fetch_email = mysqli_query($conn, $sql);
     if ($num = mysqli_num_rows($fetch_email)) {
