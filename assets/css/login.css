@@ -6,15 +6,7 @@
     padding: 100px;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-p{
-    float: left;
-    margin-right: 600px;
-}
-a{
-    margin: 10px;
-    color: inherit;
-    font-weight: bolder;
+    height: 500px;
 }
 .input-field{
     display: grid;
@@ -35,15 +27,7 @@ input{
     border-radius: 5px;
     border: 0;
 }
-button{
-    width: 20%;
-    height: 6%;
-    outline: none;
-    border: 0;
-    background: lightblue;
-    border-radius: 15px;
-    cursor: pointer;
-}
+
 @media only screen and (max-width:600px){
     .page{
         margin: 1%;
