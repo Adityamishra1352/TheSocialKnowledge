@@ -1,33 +1,42 @@
-<?php
+<?php 
 session_start();
 include '../_dbconnect.php';
-$message=0;
+$message = 0;
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fname = $_POST['firstName'];
     $lname = $_POST['lastName'];
     $email = $_POST['emailAddress'];
     $password = $_POST['passWord'];
-    $fetch_email = "SELECT * FROM `users` WHERE `email`='$email'";
-    $fetch_result = mysqli_query($conn, $fetch_email);
-    $num = mysqli_num_rows($fetch_result);
-    if ($num >= 1) {
-        $message=2;
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = 3;
+    } elseif (strlen($password) < 8) {
+        $message = 4;
     } else {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
-        $result_signup = mysqli_query($conn, $signup_sql);
-        if ($result_signup) {
-            $message=1;
-            header('location:signup.php?message='.$message);
+        $fetch_email = "SELECT * FROM `users` WHERE `email`='$email'";
+        $fetch_result = mysqli_query($conn, $fetch_email);
+        $num = mysqli_num_rows($fetch_result);
+        if ($num >= 1) {
+            $message = 2;
+        } else {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
+            $result_signup = mysqli_query($conn, $signup_sql);
+            if ($result_signup) {
+                $message = 1;
+                header('location:signup.php?message=' . $message);
+            }
         }
     }
 }
+
 if (isset($_GET['message'])) {
     $message = $_GET['message'];
 } else {
     $message = 0;
 }
 ?>
+
 <html lang="en">
 
 <head>
@@ -78,6 +87,18 @@ if (isset($_GET['message'])) {
         elseif($message==2){
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Email already exists</strong> You should use another email.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        elseif($message==3){
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please give correct email!!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        elseif($message==4){
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Password must be greater than 8 digits!!</strong> You should use another password.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }

@@ -35,7 +35,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="users.php">Add Courses</a>
+                        <a class="nav-link" href="admin.php">Admin Block</a>
                     </li>
                 </ul>
                 <ul class="d-flex">

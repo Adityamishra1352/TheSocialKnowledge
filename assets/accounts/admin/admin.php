@@ -14,7 +14,6 @@ include '../../_dbconnect.php';
     <title>The Social Knowledge: Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/admin1.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -46,13 +45,17 @@ include '../../_dbconnect.php';
             </div>
         </div>
     </nav>
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+            <button class="btn btn-success me-2" type="button" id="runningCourse_btn">Running Courses</button>
+            <button class="btn btn-outline-success me-2" type="button" id="organisers_btn">View Organisers</button>
+            <button class="btn btn-outline-success me-2" type="button" id="addOrganiser_btn">Add Organisers</button>
+            <button class="btn btn-outline-success me-2" type="button" id="quiz_btn">Quizes</button>
+            <button class="btn btn-outline-success me-2" type="button" id="courseTest_btn">Course Tests</button>
+        </form>
+    </nav>
     <div class="container my-2 p-1">
-        <ul>
-            <li>
-                <h4>Current Running Courses:</h4>
-            </li>
-        </ul>
-        <div class="container mx-2" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+        <div class="container mx-2 runningCourses" style="display:none;grid-template-columns:1fr 1fr 1fr;">
             <?php
             $course_sql = "SELECT * FROM `courses`";
             $course_result = mysqli_query($conn, $course_sql);
@@ -61,23 +64,18 @@ include '../../_dbconnect.php';
                 $description = $rowCourse['description'];
                 $course_id = $rowCourse['course_id'];
                 echo '<div class="card my-2" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">' . $heading . '</h5>
-      <p class="card-text">' . $description . '</p>
-      <a href="course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">Start Course</a>
-      <a href="deleteCourse.php?course_id='.$course_id.'" class="btn btn-danger">Delete</a>
-    </div></div>';
+                 <div class="card-body">
+                 <h5 class="card-title">' . $heading . '</h5>
+                 <p class="card-text">' . $description . '</p>
+                 <a href="course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">Start Course</a>
+                 <a href="deleteCourse.php?course_id=' . $course_id . '" class="btn btn-danger">Delete</a>
+                </div></div>';
             }
             ?>
         </div>
     </div>
     <div class="container my-3">
-        <ul>
-            <li>
-                <h4>Organisers:</h4>
-            </li>
-        </ul>
-        <div class="row my-2">
+        <div class="container my-2 viewOrganisers" style="display:none;grid-template-columns:1fr 1fr 1fr;">
             <?php
             $viewOrganisers = "SELECT * FROM `users` WHERE `organiser`=1";
             $viewOrganiser_result = mysqli_query($conn, $viewOrganisers);
@@ -85,44 +83,41 @@ include '../../_dbconnect.php';
                 $name = $rowOrganiser['fname'] . " " . $rowOrganiser['lname'];
                 $email = $rowOrganiser['email'];
                 $orgainser_id = $rowOrganiser['user_id'];
-                echo '<div class="col">
+                echo '
                 <div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $name . '</h5>
                   <p class="card-text">' . $email . '</p>
                   <a href="deleteOrganiser.php?orgainser_id=' . $orgainser_id . '" class="btn btn-outline-danger">Delete Orgainser</a>
                 </div>
-              </div>
               </div>';
             }
             ?>
         </div>
     </div>
-    <div class="container addOrgainsers my-3">
-        <ul>
-            <li>
-                <h4>Add Another Organiser:</h4>
-            </li>
-        </ul>
-        <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> The new organiser must be
-            the user of the website.</span>
-        <form method="post" action="addOrganiser.php" style="width: 40%;">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address:</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="email">
-            </div>
-            <button type="submit" class="btn btn-outline-success">Submit</button>
-        </form>
+    <div class="container addOrganisers my-3" style="display:none;">
+        <div class="container my-2">
+            <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> The new organiser must
+                be
+                the user of the website.</span>
+            <form method="post" action="addOrganiser.php" style="width: 40%;">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address:</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        name="email">
+                </div>
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+            </form>
+        </div>
     </div>
-    <div class="container my-3">
+    <div class="container quizes_container my-3" style="display: none;">
         <ul>
             <li>
                 <h4>Quizes Visible On The Website!!</h4>
             </li>
         </ul>
         <div class="container">
-            <div class="row">
+            <div class="my-2" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
                 <?php
                 include '../../_dbconnect.php';
                 $nameOrganiser = null;
@@ -139,7 +134,7 @@ include '../../_dbconnect.php';
                     $heading = $rowQuiz['heading'];
                     $timeDate = $rowQuiz['time'];
                     $description = $rowQuiz['description'];
-                    echo '<div class="col"><div class="card" style="width: 18rem;">
+                    echo '<div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $timeDate . '</p>
@@ -148,20 +143,18 @@ include '../../_dbconnect.php';
                   <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
                   <a href="../organiser/deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
-              </div></div>';
+              </div>';
                 }
                 ?>
             </div>
         </div>
-    </div>
-    <div class="container my-3">
         <ul>
             <li>
                 <h4>Quizes Not Visible On The Website!!</h4>
             </li>
         </ul>
         <div class="container">
-            <div class="row">
+            <div class="my-2" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
                 <?php
                 include '../../_dbconnect.php';
                 $nameOrganiser = null;
@@ -178,7 +171,7 @@ include '../../_dbconnect.php';
                     $heading = $rowQuiz['heading'];
                     $timeDate = $rowQuiz['time'];
                     $description = $rowQuiz['description'];
-                    echo '<div class="col"><div class="card" style="width: 18rem;">
+                    echo '<div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $timeDate . '</p>
@@ -186,20 +179,15 @@ include '../../_dbconnect.php';
                   <p class="card-text text-secondary">' . $nameOrganiser . '</p>
                   <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
                 </div>
-              </div></div>';
+              </div>';
                 }
                 ?>
             </div>
         </div>
     </div>
 
-    <div class="container my-3">
-        <ul>
-            <li>
-                <h4>Manage Course Tests:</h4>
-            </li>
-        </ul>
-        <div class="container">
+    <div class="container my-3 courseTest" style="display:none;">
+        <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
             $coursequizfetch_sql = "SELECT * FROM `coursetests`";
             $coursefetch_result = mysqli_query($conn, $coursequizfetch_sql);
@@ -207,7 +195,7 @@ include '../../_dbconnect.php';
                 $test_id = $rowCourseQuiz['coursetest_id'];
                 $heading = $rowCourseQuiz['coursetest_name'];
                 $description = $rowCourseQuiz['coursetest_description'];
-                echo '<div class="col"><div class="card" style="width: 18rem;">
+                echo '<div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">' . $heading . '</h5>
               <p class="card-text">' . $description . '</p>
@@ -215,7 +203,7 @@ include '../../_dbconnect.php';
               <a href="../organiser/addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">Read Questions</a>
               <a href="../organiser/deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
             </div>
-          </div></div>';
+          </div>';
             }
             ?>
         </div>
@@ -223,6 +211,54 @@ include '../../_dbconnect.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <script>
+        const runningCourse_btn = document.querySelector("#runningCourse_btn");
+        const runningCourses = document.querySelector(".runningCourses");
+        const organiser_btn=document.querySelector("#organisers_btn");
+        const viewOrganisers=document.querySelector(".viewOrganisers");
+        const addOrganiser_btn=document.querySelector("#addOrganiser_btn");
+        const addOrganiser=document.querySelector(".addOrganisers");
+        const quiz_container=document.querySelector(".quizes_container");
+        const quiz_btn=document.querySelector("#quiz_btn");
+        const courseTest_btn=document.querySelector("#courseTest_btn");
+        const courseTest_container=document.querySelector(".courseTest");
+        runningCourse_btn.onclick = () => {
+            runningCourses.style.display = "grid";
+            viewOrganisers.style.display="none";
+            addOrganiser.style.display="none";
+            quiz_container.style.display="none";
+            courseTest_container.style.display="none";
+        }
+        organiser_btn.onclick = () => {
+            runningCourses.style.display = "none";
+            viewOrganisers.style.display="grid";
+            addOrganiser.style.display="none";
+            quiz_container.style.display="none";
+            courseTest_container.style.display="none";
+        }
+        addOrganiser_btn.onclick = () => {
+            runningCourses.style.display = "none";
+            viewOrganisers.style.display="none";
+            addOrganiser.style.display="block";
+            quiz_container.style.display="none";
+            courseTest_container.style.display="none";
+        }
+        quiz_btn.onclick = () => {
+            runningCourses.style.display = "none";
+            viewOrganisers.style.display="none";
+            addOrganiser.style.display="none";
+            quiz_container.style.display="block";
+            courseTest_container.style.display="none";
+        }
+        courseTest_btn.onclick = () => {
+            runningCourses.style.display = "none";
+            viewOrganisers.style.display="none";
+            addOrganiser.style.display="none";
+            quiz_container.style.display="none";
+            courseTest_container.style.display="block";
+        }
+        
+    </script>
 </body>
 
 </html>
