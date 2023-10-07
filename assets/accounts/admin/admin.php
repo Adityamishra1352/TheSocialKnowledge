@@ -37,6 +37,9 @@ include '../../_dbconnect.php';
                     <li class="nav-item">
                         <a class="nav-link" href="users.php">View Users</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.php">Dashboard</a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"
@@ -67,7 +70,7 @@ include '../../_dbconnect.php';
                  <div class="card-body">
                  <h5 class="card-title">' . $heading . '</h5>
                  <p class="card-text">' . $description . '</p>
-                 <a href="course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">Start Course</a>
+                 <a href="../../courses/course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">View Course</a>
                  <a href="deleteCourse.php?course_id=' . $course_id . '" class="btn btn-danger">Delete</a>
                 </div></div>';
             }

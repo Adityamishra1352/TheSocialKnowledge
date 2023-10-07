@@ -70,6 +70,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="../../index.php">Home</a>
                     </li>
+                    <?php 
+                    if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="admin/admin.php">Admin Panel</a>
+                    </li>';
+                    }
+                    elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="organiser/organiser.php">Organiser Panel</a>
+                    </li>';
+                    }
+                    ?>
                 </ul>
                 <button class="d-flex btn btn-outline-success mx-1" data-bs-toggle="modal"
                     data-bs-target="#editProfileModal">

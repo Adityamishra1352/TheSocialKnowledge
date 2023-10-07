@@ -4,7 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $course_id = $_GET['course_id'];
     $page_no = $_GET['page_no'];
     include '../_dbconnect.php';
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['admin'] != true && $_SESSION['organiser'] != true) {
         $user_id = $_SESSION['user_id'];
         $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
         $user_result = mysqli_query($conn, $user_sql);
@@ -17,13 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $courses[] = $course_id;
                 $updated_courses = json_encode($courses);
                 $update_sql = "UPDATE `users` SET `courses_array`='$updated_courses' WHERE `user_id`='$user_id'";
-                if (mysqli_query($conn, $update_sql)) {
-                    echo "Course added to your courses!";
-                } else {
-                    echo "Error: " . mysqli_error($conn);
-                }
-            } else {
-                echo "Course is already in your courses!";
+                $result = mysqli_query($conn, $update_sql);
             }
         }
     }
@@ -47,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/c++course.css">
+    <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
 </head>
 
 <body>
@@ -104,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                     $description = $row['description'];
                     echo '<h2>' . $heading . '</h2>';
                     echo '<section>' . $description . '</section>';
-                    echo '<div class="d-flex"><a class="btn btn-outline-success" href="course.php?course_id=' . $course_id . '&page_no=' . ($page_no + 1) . '" style="width:30%">Next</a></div>';
+                    echo '<div class="d-flex"><a class="btn btn-outline-success" href="course.php?course_id=' . $course_id . '&page_no=' . ($page_no + 1) . '" style="width:30%;display:none;" id="nextButton">Next</a></div>';
                 }
                 ?>
             </article>
@@ -116,17 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <script>
         var startTime = new Date().getTime();
         var wordCount = 0;
-        var progressBar = document.querySelector('.progress .progress-bar');
         var totalTime = 0;
-
-        function sendTimeSpent() {
-            var endTime = new Date().getTime();
-            var timeSpentInSeconds = Math.floor((endTime - startTime) / 1000);
-            totalTime += timeSpentInSeconds;
-            console.log("Time spent on this page: " + totalTime + " seconds");
-        }
-
-        window.addEventListener('beforeunload', sendTimeSpent);
+        var timeToRead = 0.008 * wordCount;
 
         function countWords(elementId) {
             var element = document.getElementById(elementId);
@@ -140,14 +126,27 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
         window.addEventListener('load', function () {
             wordCount = countWords('documentation');
+            timeToRead = 0.008 * wordCount + 60;
+            checkTimeToRead();
+            console.log(timeToRead);
         });
-        var timeToRead = 0.008 * wordCount;
-        if (timeToRead == totalTime) {
-            console.log("Progress increased");
+
+        function checkTimeToRead() {
+            var currentTime = new Date().getTime();
+            var timeSpentInSeconds = Math.floor((currentTime - startTime) / 1000);
+            totalTime += timeSpentInSeconds;
+            console.log("Time spent on this page: " + totalTime + " seconds");
+
+            if (totalTime >= timeToRead) {
+                // Enable the "Next" button
+                var nextButton = document.getElementById('nextButton');
+                if (nextButton) {
+                    nextButton.style.display = 'block';
+                }
+            }
         }
-        else {
-            console.log("Cheater huhhh");
-        }
+        setInterval(checkTimeToRead, 1000);
+
     </script>
 </body>
 
