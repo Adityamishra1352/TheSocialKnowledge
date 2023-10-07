@@ -58,9 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
+                    <?php 
+                    if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../accounts/admin/admin.php">Admin Panel</a>
+                    </li>';
+                    }
+                    elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../accounts/organiser/organiser.php">Organiser Panel</a>
+                    </li>';
+                    }
+                    else{
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../accounts/dashboard.php">Dashboard</a>
+                    </li>';
+                    }
+                    ?>
                 </ul>
                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
                     aria-valuemin="0" aria-valuemax="100" style="width:20%">

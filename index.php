@@ -51,7 +51,7 @@
         <p>Finding quality blogs with proper guidelines about coding is really hard. <br> We provide quality courses with solved examples.</p>
         </section>
         <section class="image">
-            <img src="assets/images/walling-XLqiL-rz4V8-unsplash.jpg" alt="">
+            <img src="assets/images/971.jpg" alt="">
         </section>
     </div>
     </div>
