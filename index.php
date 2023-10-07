@@ -29,7 +29,7 @@
             <a href="assets/courses/courses.php">Courses</a>
             <a href="assets/test/test.php">Test</a>
             <a href="assets/sorting_visualizer/index.php">Sorting Visualizer</a>
-            <button onclick="window.location.href=(`contactus.php`)" class="contactus">Contact Us</button>
+            <button onclick="window.location.href=(`contactus.php`)" class="contactus">Our Team</button>
             <?php
             session_start();
             if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {

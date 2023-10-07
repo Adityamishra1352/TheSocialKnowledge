@@ -4,7 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $course_id = $_GET['course_id'];
     $page_no = $_GET['page_no'];
     include '../_dbconnect.php';
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['admin'] != true && $_SESSION['organiser'] != true) {
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && !isset($_SESSION['admin']) && !isset($_SESSION['organiser'])) {
         $user_id = $_SESSION['user_id'];
         $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
         $user_result = mysqli_query($conn, $user_sql);
