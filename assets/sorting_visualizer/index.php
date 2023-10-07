@@ -9,7 +9,7 @@
   </head>
   <body>
     <header>
-        <h2 style="margin-left: 15px;">The Social Knowledge</h2>
+        <h2 >The Social Knowledge</h2>
         <h3 id="speed">Speed
             <input id="speed_input" type="range" min="20" max="300" stepDown=10 value=60>
         </h3>
