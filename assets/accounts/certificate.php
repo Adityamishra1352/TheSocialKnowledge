@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <script src="../test/certificategenerator/certificate-gen.js"></script>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4"></script>
+    <!-- <link rel="stylesheet" href="../css/chatbot.css"> -->
+    <!-- <script src="https://kit.fontawesome.com/8f9eb736b1.js" crossorigin="anonymous"></script> -->
 </head>
 
 <body>
@@ -54,6 +56,29 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <div class="container my-2 p-2 certificate_box" style="height:max-content">
         <center><iframe src="" id="certificatepdf" frameborder="0" style="width:400px;height:400px;overflow:hidden;"></iframe></center>
     </div>
+    <!-- <div class="helpButton">
+        <button class="chat_btn">
+            <i class="fa-solid fa-comment"></i>
+        </button>
+    </div>
+    <section class="help" id="help">
+        <div class="helpHeader container p-4">
+            <h4 class="fw-semibold">The Social Knowledge</h4>
+            <button class="cross_btn">
+            <i class="fa-solid fa-x"></i>
+        </button>
+        </div>
+        <div class="helpBody container">
+            <form action="assets/chatbot.php" method="post">
+                <input type="text" class="name" name="name" placeholder="Name*" required>
+                <input type="email" class="email" name="email" placeholder="Enter Your Email*" required>
+                <textarea name="query" id="query" cols="30" rows="5" placeholder="Enter Your Query*"></textarea required>
+                <div class="buttons">
+                    <button class="helpsubmit_btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </section> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
@@ -64,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         let name=fname+" "+lname;
         generatePdf(name, certificateFormating);
     </script>
+    <!-- <script src="../javascript/help.js"></script> -->
 </body>
 
 </html>

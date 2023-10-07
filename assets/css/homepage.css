@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(#3503ba  , #06054b);
+  background: linear-gradient(#3503ba, #06054b);
 }
 .page {
   margin: 10%;
@@ -11,9 +11,9 @@ body {
   /* background-image: url(../images/971.jpg);
   background-repeat: no-repeat;
   background-size: cover; */
-  -webkit-box-shadow: 19px 19px 29px -19px rgba(52,3,186,1);
--moz-box-shadow: 19px 19px 29px -19px rgba(52,3,186,1);
-box-shadow: 19px 19px 29px -19px rgba(52,3,186,1);
+  -webkit-box-shadow: 19px 19px 29px -19px rgba(52, 3, 186, 1);
+  -moz-box-shadow: 19px 19px 29px -19px rgba(52, 3, 186, 1);
+  box-shadow: 19px 19px 29px -19px rgba(52, 3, 186, 1);
 }
 nav {
   background-color: white;
@@ -47,6 +47,7 @@ h4 {
   background-color: inherit;
   padding: 10px;
   transition: all ease-in 1s;
+
   /* float: right; */
   /* margin-bottom: %; */
 }
@@ -58,7 +59,6 @@ h4 {
   color: white;
 }
 .learn {
-  
   color: white;
   padding: 5%;
   display: grid;
