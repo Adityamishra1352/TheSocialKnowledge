@@ -57,7 +57,9 @@
     /* align-items: start; */
     justify-content: center;
 }
-
+.helpHeader h2{
+  color: white;
+}
 .cross_btn {
     display: none;
     background-color: inherit;
@@ -67,16 +69,19 @@
     top: 3%;
     right: 0;
     margin-left: 10%;
+    cursor: pointer;
 }
 .helpBody{
     margin: 0;
-    padding: 2%;
-    background-color: white;
+    padding: 5%;
+    background-color: #3503ba;
     border: none;
-    border-radius: 10%;
 }
 .helpBody form{
-    margin-left: 5%;
+    /* margin-left: 5%; */
+    padding: 5%;
+    background-color: white;
+    border-radius: 10%;
 }
 .helpBody input{
     padding: 10px;

@@ -33,6 +33,9 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
                     <li class="nav-item">
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.php">Dashboard</a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"

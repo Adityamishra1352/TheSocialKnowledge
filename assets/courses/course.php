@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 <?php
                 include '../_dbconnect.php';
                 $page_no = $_GET['page_no'];
-                $fetch_topic = "SELECT * FROM `course_content` WHERE `page_no`='$page_no'";
+                $fetch_topic = "SELECT * FROM `course_content` WHERE `page_no`='$page_no' AND `course_id`='$course_id'";
                 $result = mysqli_query($conn, $fetch_topic);
                 while ($row = mysqli_fetch_assoc($result)) {
                     $heading = $row['heading'];

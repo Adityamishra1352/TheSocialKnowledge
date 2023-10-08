@@ -54,13 +54,22 @@ include '../../_dbconnect.php';
             <button class="btn btn-outline-success me-2" type="button" id="organisers_btn">View Organisers</button>
             <button class="btn btn-outline-success me-2" type="button" id="addOrganiser_btn">Add Organisers</button>
             <button class="btn btn-outline-success me-2" type="button" id="quiz_btn">Quizes</button>
+            <button class="btn btn-outline-success me-2" type="button" id="addCourse_btn">Add Course</button>
             <button class="btn btn-outline-success me-2" type="button" id="courseTest_btn">Course Tests</button>
         </form>
     </nav>
+    <?php 
+    if(isset($_GET['addCourse']) && $_GET['addCourse']==true){
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>New Course has been added successfully!!</strong> Check it out from view courses.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
+    ?>
     <div class="container my-2 p-1">
         <div class="container mx-2 runningCourses" style="display:none;grid-template-columns:1fr 1fr 1fr;">
             <?php
-            $course_sql = "SELECT * FROM `courses`";
+            $course_sql = "SELECT * FROM `courses` WHERE `displayed`=1";
             $course_result = mysqli_query($conn, $course_sql);
             while ($rowCourse = mysqli_fetch_assoc($course_result)) {
                 $heading = $rowCourse['heading'];
@@ -69,9 +78,9 @@ include '../../_dbconnect.php';
                 echo '<div class="card my-2" style="width: 18rem;">
                  <div class="card-body">
                  <h5 class="card-title">' . $heading . '</h5>
-                 <p class="card-text">' . $description . '</p>
-                 <a href="../../courses/course.php?course_id=' . $course_id . '&page_no=1" class="btn btn-primary">View Course</a>
-                 <a href="deleteCourse.php?course_id=' . $course_id . '" class="btn btn-danger">Delete</a>
+                 <p class="card-text mb-2">' . $description . '</p>
+                 <a href="editCourse.php?course_id='.$course_id.'" class="btn btn-primary">Edit Course</a>
+                 <a href="deleteCourse.php?course_id=' . $course_id . '" class="btn btn-danger m-2">Delete</a>
                 </div></div>';
             }
             ?>
@@ -188,7 +197,19 @@ include '../../_dbconnect.php';
             </div>
         </div>
     </div>
-
+    <div class="container my-2 p-1 addCourse_container" style="width:40%;display:none;">
+        <form action="addCourse.php" method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Course Name:*</label>
+                <input type="text" class="form-control" name="course_name" required>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" style="height: 100px" name="course_description" required></textarea>
+                <label for="floatingTextarea2">Short Description*</label>
+            </div>
+            <button type="submit" class="btn btn-primary my-2">Submit</button>
+        </form>
+    </div>
     <div class="container my-3 courseTest" style="display:none;">
         <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
@@ -217,50 +238,65 @@ include '../../_dbconnect.php';
     <script>
         const runningCourse_btn = document.querySelector("#runningCourse_btn");
         const runningCourses = document.querySelector(".runningCourses");
-        const organiser_btn=document.querySelector("#organisers_btn");
-        const viewOrganisers=document.querySelector(".viewOrganisers");
-        const addOrganiser_btn=document.querySelector("#addOrganiser_btn");
-        const addOrganiser=document.querySelector(".addOrganisers");
-        const quiz_container=document.querySelector(".quizes_container");
-        const quiz_btn=document.querySelector("#quiz_btn");
-        const courseTest_btn=document.querySelector("#courseTest_btn");
-        const courseTest_container=document.querySelector(".courseTest");
+        const organiser_btn = document.querySelector("#organisers_btn");
+        const viewOrganisers = document.querySelector(".viewOrganisers");
+        const addOrganiser_btn = document.querySelector("#addOrganiser_btn");
+        const addOrganiser = document.querySelector(".addOrganisers");
+        const quiz_container = document.querySelector(".quizes_container");
+        const quiz_btn = document.querySelector("#quiz_btn");
+        const courseTest_btn = document.querySelector("#courseTest_btn");
+        const courseTest_container = document.querySelector(".courseTest");
+        const addCourse_btn=document.querySelector("#addCourse_btn");
+        const addCourse_container=document.querySelector(".addCourse_container");
         runningCourse_btn.onclick = () => {
             runningCourses.style.display = "grid";
-            viewOrganisers.style.display="none";
-            addOrganiser.style.display="none";
-            quiz_container.style.display="none";
-            courseTest_container.style.display="none";
+            viewOrganisers.style.display = "none";
+            addOrganiser.style.display = "none";
+            quiz_container.style.display = "none";
+            courseTest_container.style.display = "none";
+            addCourse_container.style.display="none";
         }
         organiser_btn.onclick = () => {
             runningCourses.style.display = "none";
-            viewOrganisers.style.display="grid";
-            addOrganiser.style.display="none";
-            quiz_container.style.display="none";
-            courseTest_container.style.display="none";
+            viewOrganisers.style.display = "grid";
+            addOrganiser.style.display = "none";
+            quiz_container.style.display = "none";
+            courseTest_container.style.display = "none";
+            addCourse_container.style.display="none";
         }
         addOrganiser_btn.onclick = () => {
             runningCourses.style.display = "none";
-            viewOrganisers.style.display="none";
-            addOrganiser.style.display="block";
-            quiz_container.style.display="none";
-            courseTest_container.style.display="none";
+            viewOrganisers.style.display = "none";
+            addOrganiser.style.display = "block";
+            quiz_container.style.display = "none";
+            courseTest_container.style.display = "none";
+            addCourse_container.style.display="none";
         }
         quiz_btn.onclick = () => {
             runningCourses.style.display = "none";
-            viewOrganisers.style.display="none";
-            addOrganiser.style.display="none";
-            quiz_container.style.display="block";
-            courseTest_container.style.display="none";
+            viewOrganisers.style.display = "none";
+            addOrganiser.style.display = "none";
+            quiz_container.style.display = "block";
+            courseTest_container.style.display = "none";
+            addCourse_container.style.display="none";
+        }
+        addCourse_btn.onclick = () => {
+            runningCourses.style.display = "none";
+            viewOrganisers.style.display = "none";
+            addOrganiser.style.display = "none";
+            quiz_container.style.display = "none";
+            courseTest_container.style.display = "none";
+            addCourse_container.style.display="block";
         }
         courseTest_btn.onclick = () => {
             runningCourses.style.display = "none";
-            viewOrganisers.style.display="none";
-            addOrganiser.style.display="none";
-            quiz_container.style.display="none";
-            courseTest_container.style.display="block";
+            viewOrganisers.style.display = "none";
+            addOrganiser.style.display = "none";
+            quiz_container.style.display = "none";
+            courseTest_container.style.display = "block";
+            addCourse_container.style.display="none";
         }
-        
+
     </script>
 </body>
 

@@ -1,11 +1,10 @@
 <?php
 session_start();
 include '../../_dbconnect.php';
-if (!(isset($_SESSION['organiser']) && $_SESSION['organiser'] != true) &&
-    !(isset($_SESSION['admin']) && $_SESSION['admin'] != true)) {
+if (!(isset($_SESSION['admin']) || $_SESSION['admin'] != true)) {
     header('location: ../../403.php');
 }
-$test_id = $_GET['testid'];
+$course_id = $_GET['course_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +12,7 @@ $test_id = $_GET['testid'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Social Knowledge: Organiser</title>
+    <title>The Social Knowledge: Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
@@ -48,56 +47,51 @@ $test_id = $_GET['testid'];
     <div class="container my-2 p-1">
         <ul>
             <li>
-                <h4>Add Questions:</h4>
+                <h4>Edit Content:</h4>
             </li>
         </ul>
         <div class="changethequestions_box p-2">
             <div id="questions-form">
-                <label for="num-questions" id="noofquestionslabel">How many questions do you want to
-                    input?</label><br><br>
+                <label for="num-questions" id="noofquestionslabel">How many pages do you want in this course?</label><br><br>
                 <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
                     style="width: 20%;" class="p-1"><br><br>
                 <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
             </div>
-            <form action="uploadQuestions.php" method="post" id="questionsDynamic">
+            <form action="addContent.php" method="post" id="questionsDynamic">
                 <div class="inputQuestions"></div>
-                <input type="hidden" name="test_id" value="<?php echo $test_id ?>">
-                <button id="addquestion" class="btn btn-outline-success my-2">Add Question</button>
+                <input type="hidden" name="test_id" value="<?php echo $course_id ?>">
+                <button id="addquestion" class="btn btn-outline-success my-2">Add Content</button>
             </form>
         </div>
     </div>
     <div class="container my-2">
         <ul>
             <li>
-                <h4>Present Questions:</h4>
+                <h4>Present Content:</h4>
             </li>
         </ul>
         <table class="table my-2" id="mytable">
             <thead>
                 <tr>
-                    <th scope="col">Question ID</th>
-                    <th scope="col">Question</th>
-                    <th scope="col">Option1</th>
-                    <th scope="col">Option2</th>
-                    <th scope="col">Option3</th>
-                    <th scope="col">Option4</th>
-                    <th scope="col">Answer</th>
+                    <th scope="col">Page ID</th>
+                    <th scope="col">Heading</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Page Number</th>
+                    <th scope="col">Nav Content</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                $sql="SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                $sql="SELECT * FROM `course_content` WHERE `course_id`='$course_id'";
                 $result=mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                    <th scope='row'>".$row['question_id']."</th>
-                    <td>".$row['question']."</td>
-                    <td>".$row['option1']."</td>
-                    <td>".$row['option2']."</td>
-                    <td>".$row['option3']."</td>
-                    <td>".$row['option4']."</td>
-                    <td>".$row['answer']."</td>
-                    <td><button class='delete btn btn-sm btn-outline-danger' id=d".$row['question_id']." onclick='window.location.href=(`deleteQuestions.php?question_id=".$row['question_id']."&test_id=".$test_id."`)'>Delete</button></td>
+                    <th scope='row'>".$row['page_id']."</th>
+                    <td>".$row['heading']."</td>
+                    <td>".$row['description']."</td>
+                    <td>".$row['page_no']."</td>
+                    <td>".$row['nav_content']."</td>
+                    <td><button class='delete btn btn-sm btn-outline-danger' id=d".$row['page_id']." onclick='window.location.href=(`deleteContent.php?page_id=".$row['page_id']."&course_id=".$course_id."`)'>Delete</button></td>
                   </tr>";
                 }
                 ?>

@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $usersqlresult = mysqli_query($conn, $usersql);
     $row = mysqli_fetch_assoc($usersqlresult);
     $currentProfileImage = $row['profileImage'];
-    if (isset($_FILES['profileImage'])) {
+    if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
         $file = $_FILES['profileImage'];
         $fileName = $file['name'];
         $fileTmp = $file['tmp_name'];
@@ -126,23 +126,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
     ?>
     <?php
-    if ($description == null || $location == null) {
-        echo '<div class="toast show position-fixed top-2 end-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <img src="../images/websitelogo.jpg" class="rounded me-2" alt="..." width="10%">
-                <strong class="me-auto">The Social Knowledge</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <span class="text mb-3">Welcome ' . $name . ', Complete Your Profile? </span>
-                <button class="btn btn-outline-success my-2" data-bs-toggle="modal"
-                    data-bs-target="#editProfileModal">
-                    Update
-                </button>
-            </div>
-        </div>';
-    }
-    ?>
+    // if ($description == null || $location == null) {
+    //     echo '<div class="toast show position-fixed top-2 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    //         <div class="toast-header">
+    //             <img src="../images/websitelogo.jpg" class="rounded me-2" alt="..." width="10%">
+    //             <strong class="me-auto">The Social Knowledge</strong>
+    //             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    //         </div>
+    //         <div class="toast-body">
+    //             <span class="text mb-3">Welcome ' . $name . ', Complete Your Profile? </span>
+    //             <button class="btn btn-outline-success my-2" data-bs-toggle="modal"
+    //                 data-bs-target="#editProfileModal">
+    //                 Update
+    //             </button>
+    //         </div>
+    //     </div>';
+    // }
+    // ?>
     <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
