@@ -54,7 +54,7 @@ session_start();
     $description=$rowCourse['description'];
     $course_id=$rowCourse['course_id'];
     echo '<div class="card my-2" style="width: 18rem;">
-    <img src="https://source.unsplash.com/400x400/?'.$heading.',coding" class="card-img-top" alt="'.$heading.'">
+    <img src="https://source.unsplash.com/400x400/?'.$heading.',programming" class="card-img-top" alt="'.$heading.'">
     <div class="card-body">
       <h5 class="card-title">'.$heading.'</h5>
       <p class="card-text">'.$description.'</p>

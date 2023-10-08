@@ -213,7 +213,7 @@ include '../../_dbconnect.php';
     <div class="container my-3 courseTest" style="display:none;">
         <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
-            $coursequizfetch_sql = "SELECT * FROM `coursetests`";
+            $coursequizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=2";
             $coursefetch_result = mysqli_query($conn, $coursequizfetch_sql);
             while ($rowCourseQuiz = mysqli_fetch_assoc($coursefetch_result)) {
                 $test_id = $rowCourseQuiz['coursetest_id'];

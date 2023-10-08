@@ -56,6 +56,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
         $user_result = mysqli_query($conn, $user_sql);
         while ($rowUser = mysqli_fetch_assoc($user_result)) {
             $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
+            $email=$rowUser['email'];
             $description = $rowUser['description'];
             $location = $rowUser['location'];
             $profileImage = $rowUser['profileImage'];
@@ -65,9 +66,10 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
                 $pic ='../../uploads/'. $profileImage;
             }
             echo '<div class="col"><div class="card" style="width: 18rem;">
-            <img src="'.$pic.'" class="card-img-top" alt="...">
+            <img src="'.$pic.'" class="card-img-top" alt="..." style="width:100%;height:100%;">
             <div class="card-body">
               <h5 class="card-title">'.$name.'</h5>
+              <p class="text-secondary">'.$email.'</p>
               <p class="text-secondary">'.$location.'</p>
               <p class="card-text">'.$description.'</p>
             </div>

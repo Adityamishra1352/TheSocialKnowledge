@@ -36,6 +36,9 @@ $course_id = $_GET['course_id'];
                     <li class="nav-item">
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="courseTest.php?course_id=<?php echo $course_id;?>">Test For this Course</a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"
@@ -54,11 +57,11 @@ $course_id = $_GET['course_id'];
             <div id="questions-form">
                 <label for="num-questions" id="noofquestionslabel">How many pages do you want in this course?</label><br><br>
                 <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
-                    style="width: 20%;" class="p-1"><br><br>
+                    style="width: 20%;" class="form-control p-1"><br><br>
                 <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
             </div>
             <form action="addContent.php" method="post" id="questionsDynamic">
-                <div class="inputQuestions"></div>
+                <div class="inputContent p-1" style="width:40%;"></div>
                 <input type="hidden" name="test_id" value="<?php echo $course_id ?>">
                 <button id="addquestion" class="btn btn-outline-success my-2">Add Content</button>
             </form>
@@ -109,71 +112,63 @@ $course_id = $_GET['course_id'];
     <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>
         const add_btn = document.querySelector("#questionsSubmit");
-        const form = document.querySelector(".inputQuestions");
-        add_btn.onclick = (e) => {
-            e.preventDefault();
-            const numQuestions = document.getElementById("num-questions").value;
-            const questionsContainer = document.createElement("div");
-            const lineBreak = document.createElement("br");
-            for (let i = 1; i <= numQuestions; i++) {
-                const questionContainer = document.createElement("div");
-                const questionLabel = document.createElement("label");
-                const questionInput = document.createElement("input");
-                questionInput.type = "text";
-                questionInput.className = "my-2 mr-2 p-1";
-                questionInput.name = `question-${i}`;
-                questionInput.placeholder = `Question ${i}`;
-                questionLabel.appendChild(questionInput);
-                questionContainer.appendChild(questionLabel);
-                const numOptions = document.createElement("input");
-                numOptions.type = "number";
-                numOptions.min = "2";
-                numOptions.max = "6";
-                numOptions.required = true;
-                numOptions.value = "2";
-                numOptions.className = "p-1";
-                numOptions.name = `num-options-${i}`;
-                const optionsLabel = document.createElement("label");
-                optionsLabel.textContent = "Number of Options:";
-                optionsLabel.appendChild(numOptions);
-                questionContainer.appendChild(optionsLabel);
+const form = document.querySelector(".inputContent");
+add_btn.onclick = (e) => {
+    e.preventDefault();
+    const numQuestions = document.getElementById("num-questions").value;
+    const mainContainer = document.createElement("div");
+    const lineBreak = document.createElement("br");
+    
+    for (let i = 1; i <= numQuestions; i++) {
+        const contentContainer = document.createElement("div");
 
-                const optionsContainer = document.createElement("div");
-                optionsContainer.classList.add("options-container");
-                // questionContainer.appendChild(lineBreak);
-                questionContainer.appendChild(optionsContainer);
+        // Heading Input
+        const headingLabel = document.createElement("label");
+        headingLabel.style="width:100%;";
+        const headingInput = document.createElement("input");
+        headingInput.type = "text";
+        headingInput.className = "form-control my-2 mr-2 p-1";
+        headingInput.name = `heading-${i}`;
+        headingInput.placeholder = `Heading, Page Number ${i}`;
+        headingInput.style="width:100%;";
+        headingLabel.appendChild(headingInput);
+        contentContainer.appendChild(headingLabel);
 
-                numOptions.addEventListener("change", () => {
-                    const num = parseInt(numOptions.value);
-                    optionsContainer.innerHTML = "";
-                    for (let j = 1; j <= num; j++) {
-                        const optionInput = document.createElement("input");
-                        optionInput.type = "text";
-                        optionInput.className = "p-1";
-                        optionInput.name = `option-${i}-${j}`;
-                        optionInput.placeholder = `Option ${j}`;
-                        optionsContainer.appendChild(optionInput);
-                    }
-                });
+        // Description Input
+        const descriptionContainer = document.createElement("div");
+        const descriptionInput = document.createElement("textarea");
+        descriptionInput.placeholder = `Enter the content for Page Number: ${i}`;
+        descriptionInput.classList="form-control p-1";
+        descriptionInput.name = `description-${i}`;
+        descriptionInput.style="width:100%";
+        descriptionContainer.appendChild(descriptionInput);
+        contentContainer.appendChild(descriptionContainer);
 
-                const answerContainer = document.createElement("div"); // create answer container
-                const answerLabel = document.createElement("label");
-                const answerInput = document.createElement("input");
-                answerInput.type = "text";
-                answerInput.className = "p-1";
-                answerInput.name = `answer-${i}`;
-                answerInput.placeholder = `Answer ${i}`;
-                answerLabel.appendChild(answerInput);
-                answerContainer.appendChild(answerLabel);
-                questionContainer.appendChild(answerContainer); // append answer container to question container
+        // Page Number Input (hidden)
+        const pageNumber = document.createElement("input");
+        pageNumber.value=i;
+        pageNumber.type = "hidden";
+        pageNumber.name = `pagenumber-${i}`;
+        contentContainer.appendChild(pageNumber);
+        
+        //Nav Input
+        const navContainer=document.createElement("div");
+        const navInput=document.createElement("input");
+        navInput.placeholder=`Enter the Navbar heading for Page:${i}`;
+        navInput.classList="form-control p-1 my-2";
+        navInput.name=`nav-${i}`;
+        navInput.style="width:100%";
+        navContainer.appendChild(navInput);
+        contentContainer.appendChild(navContainer);
+        mainContainer.appendChild(contentContainer);
+    }
 
-                questionsContainer.appendChild(questionContainer);
-            }
+    form.appendChild(mainContainer);
+    document.getElementById("questionsSubmit").disabled = true;
+};
 
-            form.appendChild(questionsContainer);
-            document.getElementById("questionsSubmit").disabled = true;
-        }
-        let table = new DataTable('#myTable');
+let table = new DataTable('#myTable');
+
     </script>
 </body>
 
