@@ -65,6 +65,12 @@ include '../../_dbconnect.php';
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
+    if(isset($_GET['addOrganiser']) && $_GET['addOrganiser']==true){
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>New Organiser has been added successfully!!</strong> Check it out from view organisers.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
     if(isset($_GET['deleteCourse']) && $_GET['deleteCourse']==true){
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Course has been deleted successfully!!</strong> Check it out from view courses.

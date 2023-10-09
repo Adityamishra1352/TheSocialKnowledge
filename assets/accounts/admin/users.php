@@ -48,10 +48,14 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
         <div class="row">
         <?php 
         include '../../_dbconnect.php';
-        $users_sql="SELECT * FROM `users`";
-        $users_result=mysqli_query($conn,$users_sql);
         $pic = null;
-        $user_sql = "SELECT * FROM `users`";
+        $user_sql = "SELECT * FROM `users` 
+        ORDER BY 
+        CASE 
+          WHEN `admin` = 1 THEN 1
+          WHEN `organiser` = 1 THEN 2
+          ELSE 3
+        END";
         $user_result = mysqli_query($conn, $user_sql);
         while ($rowUser = mysqli_fetch_assoc($user_result)) {
             $name = $rowUser['fname'] . ' ' . $rowUser['lname'];

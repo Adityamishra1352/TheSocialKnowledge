@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($num >= 1) {
             $message = 2;
         } else {
-            $token = bin2hex(random_bytes(16));
+            $token = sprintf("%04d", mt_rand(0, 9999));
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
             $result_signup = mysqli_query($conn, $signup_sql);

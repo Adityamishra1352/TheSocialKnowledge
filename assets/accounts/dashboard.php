@@ -3,6 +3,7 @@ session_start();
 include '../_dbconnect.php';
 $user_id = $_SESSION['user_id'];
 $uploadDir = '../uploads/';
+$verified = 0;
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $usersql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
     $usersqlresult = mysqli_query($conn, $usersql);
@@ -70,13 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="../../index.php">Home</a>
                     </li>
-                    <?php 
-                    if(isset($_SESSION['admin']) && $_SESSION['admin']==true){
+                    <?php
+                    if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
                         echo '<li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="admin/admin.php">Admin Panel</a>
                     </li>';
-                    }
-                    elseif(isset($_SESSION['organiser']) && $_SESSION['organiser']==true){
+                    } elseif (isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
                         echo '<li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="organiser/organiser.php">Organiser Panel</a>
                     </li>';
@@ -102,6 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
     $user_result = mysqli_query($conn, $user_sql);
     $rowUser = mysqli_fetch_assoc($user_result);
+    $verified = $rowUser['verified'];
+    $email = $rowUser['email'];
     $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
     $description = $rowUser['description'];
     $location = $rowUser['location'];
@@ -118,31 +120,66 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
     }
-    if(isset($_GET['login']) && $_GET['login']==true){
+    if (isset($_GET['login']) && $_GET['login'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Hey '.$name.'</strong> What are we doing today?.
+        <strong>Hey ' . $name . '</strong> What are we doing today?.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
+    if (isset($_GET['verify']) && $_GET['verify'] == true) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Hey ' . $name . '</strong> Your profile has been verified.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
+    if (isset($_GET['wrongCode']) && $_GET['wrongCode'] == true) {
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Hey ' . $name . '</strong> You have entered the wrong code.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
     ?>
     <?php
-    // if ($description == null || $location == null) {
-    //     echo '<div class="toast show position-fixed top-2 end-0" role="alert" aria-live="assertive" aria-atomic="true">
-    //         <div class="toast-header">
-    //             <img src="../images/websitelogo.jpg" class="rounded me-2" alt="..." width="10%">
-    //             <strong class="me-auto">The Social Knowledge</strong>
-    //             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    //         </div>
-    //         <div class="toast-body">
-    //             <span class="text mb-3">Welcome ' . $name . ', Complete Your Profile? </span>
-    //             <button class="btn btn-outline-success my-2" data-bs-toggle="modal"
-    //                 data-bs-target="#editProfileModal">
-    //                 Update
-    //             </button>
-    //         </div>
-    //     </div>';
-    // }
-    // ?>
+    if ($verified == 0) {
+        echo '<div class="toast show position-fixed top-2 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../images/websitelogo.jpg" class="rounded me-2" alt="..." width="10%">
+                <strong class="me-auto">The Social Knowledge</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <span class="text mb-3">Welcome ' . $name . ', Please verify your profile!! </span>
+                <button class="btn btn-outline-success mx-1" data-bs-toggle="modal"
+                    data-bs-target="#verifyProfile">
+                    Verify
+                </button>
+            </div>
+        </div>';
+    }
+    ?>
+    <div class="modal fade" id="verifyProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Verify Your Profile:</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="verifyProfile.php" method="post">
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Enter Your Verification Code:</label>
+                            <input type="text" class="form-control" id="verifyCode" name="verifyCode" style="width:40%;">
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" name="email" id="email" value="<?php echo $email;?>">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -225,14 +262,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </ul>
             <div class="container gridStructure my-2 p-1">
                 <?php
-                $count=0;
+                $count = 0;
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                     $decodedArray = json_decode($courses_array);
 
                     if (is_array($decodedArray)) {
                         foreach ($decodedArray as $element) {
                             $course_id = $element;
-                            $count=$count+1;
+                            $count = $count + 1;
                             $course_sql = "SELECT * FROM `courses` WHERE `course_id`='$course_id'";
                             $course_result = mysqli_query($conn, $course_sql);
                             $rowCourse = mysqli_fetch_assoc($course_result);
@@ -252,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         }
                     }
                 }
-                if($count==0){
+                if ($count == 0) {
                     echo '<div class="card">
                     <div class="card-body">
                       <blockquote class="blockquote mb-0">
@@ -276,9 +313,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <?php
             $certificateGot = "SELECT * FROM `certificates` WHERE `user_id`='$user_id'";
             $certificate_result = mysqli_query($conn, $certificateGot);
-            $count=0;
+            $count = 0;
             while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
-                $count=$count+1;
+                $count = $count + 1;
                 $test_id = $rowCertificate['test_id'];
                 $certificate_id = $rowCertificate['certificate_id'];
                 $heading = null;
@@ -307,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
               </div>';
             }
-            if($count==0){
+            if ($count == 0) {
                 echo '<div class="card">
                 <div class="card-body">
                   <blockquote class="blockquote mb-0">
