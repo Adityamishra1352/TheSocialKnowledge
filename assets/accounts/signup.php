@@ -1,7 +1,13 @@
-<?php 
+<?php
 session_start();
 include '../_dbconnect.php';
 $message = 0;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fname = $_POST['firstName'];
@@ -19,11 +25,34 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($num >= 1) {
             $message = 2;
         } else {
+            $token = bin2hex(random_bytes(16));
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
             $result_signup = mysqli_query($conn, $signup_sql);
             if ($result_signup) {
-                $message = 1;
+                $tokenSql = "INSERT INTO `verification`(`token`,`email`)VALUES('$token','$email')";
+                $tokenResult = mysqli_query($conn, $tokenSql);
+                if ($tokenResult) {
+                    $message = 1;
+                    $mail = new PHPMailer(true);
+                    try{
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'socialknowledge38@gmail.com';
+                    $mail->Password = 'imcdramgpiuaswii';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port = 465;
+                    $mail->setFrom('socialknowledge38@gmail.com');
+                    $mail->addAddress($_POST['emailAddress']);
+                    $mail->isHTML(true);
+                    $mail->Subject = "The Social Knowledge: Verification Email";
+                    $mail->Body = "Use this verification code to verify your account! " . $token;
+                    $mail->send();
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
+                }
                 header('location:signup.php?message=' . $message);
             }
         }
@@ -77,26 +106,23 @@ if (isset($_GET['message'])) {
                 </div>
             </div>
         </nav>
-        <?php 
-        if($message==1){
+        <?php
+        if ($message == 1) {
             echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Successfully Signed Up</strong> Continue to login.
+            <strong>Successfully Signed Up</strong> Verify Your account.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        }
-        elseif($message==2){
+        } elseif ($message == 2) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Email already exists</strong> You should use another email.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        }
-        elseif($message==3){
+        } elseif ($message == 3) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Please give correct email!!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        }
-        elseif($message==4){
+        } elseif ($message == 4) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Password must be greater than 8 digits!!</strong> You should use another password.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
