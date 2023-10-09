@@ -35,23 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 if ($tokenResult) {
                     $message = 1;
                     $mail = new PHPMailer(true);
-                    try{
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'socialknowledge38@gmail.com';
-                    $mail->Password = 'imcdramgpiuaswii';
-                    $mail->SMTPSecure = 'ssl';
-                    $mail->Port = 465;
-                    $mail->setFrom('socialknowledge38@gmail.com');
-                    $mail->addAddress($_POST['emailAddress']);
-                    $mail->isHTML(true);
-                    $mail->Subject = "The Social Knowledge: Verification Email";
-                    $mail->Body = "Use this verification code to verify your account! " . $token;
-                    $mail->send();
-                } catch (Exception $e) {
-                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                }
+                    try {
+                        $mail->isSMTP();
+                        $mail->Host = 'smtp.gmail.com';
+                        $mail->SMTPAuth = true;
+                        $mail->Username = 'socialknowledge38@gmail.com';
+                        $mail->Password = 'imcdramgpiuaswii';
+                        $mail->SMTPSecure = 'ssl';
+                        $mail->Port = 465;
+                        $mail->setFrom('socialknowledge38@gmail.com');
+                        $mail->addAddress($_POST['emailAddress']);
+                        $emailTemplate = file_get_contents('verification_email.html');
+                        $emailTemplate = str_replace('[NAME]', $fname, $emailTemplate);
+                        $emailTemplate = str_replace('[TOKEN]', $token, $emailTemplate);
+                        $mail->isHTML(true);
+                        $mail->Subject = "Email Verification";
+                        $mail->Body = $emailTemplate;
+                        $mail->send();
+                    } catch (Exception $e) {
+                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                    }
                 }
                 header('location:signup.php?message=' . $message);
             }

@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
+    header('location:../403.php');
+}
 include '../_dbconnect.php';
 $user_id = $_SESSION['user_id'];
 $uploadDir = '../uploads/';
