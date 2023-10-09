@@ -65,6 +65,12 @@ include '../../_dbconnect.php';
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
+    if(isset($_GET['deleteCourse']) && $_GET['deleteCourse']==true){
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Course has been deleted successfully!!</strong> Check it out from view courses.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
     ?>
     <div class="container my-2 p-1">
         <div class="container mx-2 runningCourses" style="display:none;grid-template-columns:1fr 1fr 1fr;">
@@ -213,12 +219,12 @@ include '../../_dbconnect.php';
     <div class="container my-3 courseTest" style="display:none;">
         <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
-            $coursequizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=2";
+            $coursequizfetch_sql = "SELECT * FROM `test` WHERE `displayed`=1 AND `course_id`!=0";
             $coursefetch_result = mysqli_query($conn, $coursequizfetch_sql);
             while ($rowCourseQuiz = mysqli_fetch_assoc($coursefetch_result)) {
-                $test_id = $rowCourseQuiz['coursetest_id'];
-                $heading = $rowCourseQuiz['coursetest_name'];
-                $description = $rowCourseQuiz['coursetest_description'];
+                $test_id = $rowCourseQuiz['test_id'];
+                $heading = $rowCourseQuiz['heading'];
+                $description = $rowCourseQuiz['description'];
                 echo '<div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">' . $heading . '</h5>

@@ -21,7 +21,7 @@ foreach ($content as $questionData) {
     $sql="INSERT INTO `course_content` (`heading`, `description`, `nav_content`, `course_id`, `page_no`) VALUES ('$headingText', '$descriptionText', '$navText', '$test_id', '$pagenumberText')";
     $result=mysqli_query($conn,$sql); 
     if($result){
-        header('location:admin.php?courseEdit=true');
+        header('location:editCourse.php?course_id='.$test_id.'&editCourse=true');
     }   
     else{
         echo mysqli_connect_error();

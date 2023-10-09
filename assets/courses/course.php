@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../../../index.php">The Social Knowledge</a>
+            <a class="navbar-brand" href="/">The Social Knowledge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 <?php
                 include '../_dbconnect.php';
                 $page_no = $_GET['page_no'];
-                $fetch_topic = "SELECT * FROM `course_content` WHERE `page_no`='$page_no' AND `course_id`='$course_id'";
+                $fetch_topic = "SELECT * FROM `course_content` WHERE `page_no`='$page_no' AND `course_id`='$course_id' AND `displayed`=1";
                 $result = mysqli_query($conn, $fetch_topic);
                 while ($row = mysqli_fetch_assoc($result)) {
                     $heading = $row['heading'];

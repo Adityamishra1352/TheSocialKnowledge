@@ -1,8 +1,8 @@
 <?php
 session_start();
 include '../../_dbconnect.php';
-if (!(isset($_SESSION['organiser']) && $_SESSION['organiser'] != true) &&
-    !(isset($_SESSION['admin']) && $_SESSION['admin'] != true)) {
+if (!(isset($_SESSION['organiser']) && $_SESSION['organiser'] === true) &&
+    !(isset($_SESSION['admin']) && $_SESSION['admin'] === true)) {
     header('location: ../../403.php');
 }
 $test_id = $_GET['testid'];

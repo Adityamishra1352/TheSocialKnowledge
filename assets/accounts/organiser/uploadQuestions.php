@@ -38,7 +38,12 @@ foreach ($questions as $questionData) {
     $sql="INSERT INTO `questions` (`question`, `option1`, `option2`, `option3`, `option4`, `answer`,`test_id`) VALUES ('$questionText', '$option1', '$option2', '$option3', '$option4', '$answer', '$test_id')";
     $result=mysqli_query($conn,$sql); 
     if($result){
-        header('location:organiser.php');
+        if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
+            header('location:editCourse.php?course_id='.$_GET['course_id'].'&deleteContent=true');
+        }
+        if (isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
+            header('location:organiser.php');
+        } 
     }   
     else{
         echo mysqli_connect_error();
