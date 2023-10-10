@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .gridStructure {
             display: grid;
@@ -141,6 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
+    if (isset($_GET['passwordmatch']) && $_GET['passwordmatch'] == true) {
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Hey ' . $name . '</strong> Passwords dont match, try again!.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
     ?>
     <?php
     if ($verified == 0) {
@@ -171,10 +178,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <form action="verifyProfile.php" method="post">
                         <div class="mb-3">
                             <label for="location" class="form-label">Enter Your Verification Code:</label>
-                            <input type="text" class="form-control" id="verifyCode" name="verifyCode" style="width:40%;">
+                            <input type="text" class="form-control" id="verifyCode" name="verifyCode"
+                                style="width:40%;">
                         </div>
                         <div class="mb-3">
-                            <input type="hidden" name="email" id="email" value="<?php echo $email;?>">
+                            <input type="hidden" name="email" id="email" value="<?php echo $email; ?>">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -183,6 +191,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            <?php if (isset($_GET['forgotpass']) && $_GET['forgotpass'] == true) { ?>
+                $('#changePassword').modal('show');
+            <?php } ?>
+        });
+    </script>
     <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -194,11 +209,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <form action="changePassword.php" method="post">
                         <div class="mb-3">
                             <label for="npassword" class="form-label">New Password:</label>
-                            <input type="password" class="form-control" id="npassword" name="npassword">
+                            <input type="password" class="form-control" id="npassword" name="npassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="cpassword" class="form-label">Confirm Password:</label>
-                            <input type="password" class="form-control" id="cpassword" name="cpassword">
+                            <input type="password" class="form-control" id="cpassword" required name="cpassword">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

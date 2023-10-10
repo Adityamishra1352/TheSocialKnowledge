@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
             $result_signup = mysqli_query($conn, $signup_sql);
+            // $_SESSION['loggedin']=true;
+            // $_SESSION['user_id']=;
             if ($result_signup) {
                 $tokenSql = "INSERT INTO `verification`(`token`,`email`)VALUES('$token','$email')";
                 $tokenResult = mysqli_query($conn, $tokenSql);

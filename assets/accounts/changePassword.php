@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         }
     }
     else{
-        header('location:dashboard.php?');
+        header('location:dashboard.php?passwordmatch=true');
     }
 }
 ?>
