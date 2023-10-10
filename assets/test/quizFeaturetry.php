@@ -123,48 +123,27 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../../index.php">The Social Knowledge</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../sorting_visualizer/index.php">Sorting
-                            Visualizer</a>
-                    </li>
-                    <!-- when logged in will show dashboard or signup login -->
-                    <!-- <li class="nav-item">
-          <a class="nav-link" href="#"></a>
-        </li> -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </ul>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href="../../index.php">The Social Knowledge</a>
 
-            </div>
-        </div>
-    </nav>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
         <strong>Hey!!</strong> You have already attended the test.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div class="container my-2 content">
+        <div class="warning-box">
+            <div class="warning_info">Please don't exit Full Screen Mode</div>
+            <button class="btn btn-outline-primary my-2" id="warning_btn">Continue</button>
+        </div>
         <div class="info_box">
             <div class="info-title"><span>Some Rules of this Quiz</span></div>
             <div class="info-list">
@@ -173,6 +152,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
                 <div class="info">3. You can't select any option once time goes off.</div>
                 <div class="info">4. You can't exit from the Quiz while you're playing.</div>
                 <div class="info">5. You'll get points on the basis of your correct answers.</div>
+                <div class="info">6. You'll not be able to continue if you exit fullscreen mode.</div>
             </div>
             <div class="buttons">
                 <button class="quit" onclick="window.location.href=(`../../index.php`)">Exit Quiz</button>

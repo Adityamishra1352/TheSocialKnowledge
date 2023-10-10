@@ -2,17 +2,18 @@ function openFullscreen() {
   const elem = document.documentElement; // Get the document element
 
   if (elem.requestFullscreen) {
-      elem.requestFullscreen(); // Standard API
+    elem.requestFullscreen(); // Standard API
   } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen(); // Firefox
+    elem.mozRequestFullScreen(); // Firefox
   } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
+    elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
   } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen(); // IE/Edge
+    elem.msRequestFullscreen(); // IE/Edge
   }
 }
 
-    window.onload = openFullscreen;
+window.onload = openFullscreen;
+
 const info_box = document.querySelector(".info_box");
 const exit_btn = info_box.querySelector(".buttons .quit");
 const continue_btn = info_box.querySelector(".buttons .restart");
@@ -34,13 +35,13 @@ continue_btn.onclick = () => {
 };
 function exitFullscreen() {
   if (document.exitFullscreen) {
-      document.exitFullscreen(); // Standard API
+    document.exitFullscreen(); // Standard API
   } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen(); // Firefox
+    document.mozCancelFullScreen(); // Firefox
   } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen(); // Chrome, Safari, and Opera
+    document.webkitExitFullscreen(); // Chrome, Safari, and Opera
   } else if (document.msExitFullscreen) {
-      document.msExitFullscreen(); // IE/Edge
+    document.msExitFullscreen(); // IE/Edge
   }
 }
 let timeValue = timeforeach;
@@ -78,11 +79,31 @@ view_answers.onclick = () => {
   viewAnswers();
 };
 quit_quiz.onclick = () => {
-  window.location.href = "../../index.php";
+  window.location.href = "test.php";
 };
 
 const next_btn = document.querySelector("footer .next_btn");
 const bottom_ques_counter = document.querySelector("footer .total_que");
+const warningBox = document.querySelector(".warning-box");
+document.addEventListener("fullscreenchange", function () {
+  if (
+    quiz_box.classList.contains("activeQuiz") &&
+    !document.fullscreenElement
+  ) {
+    console.log("hiisfjkasf");
+    warningBox_control();
+  }
+});
+
+function warningBox_control() {
+  quiz_box.classList.remove("activeQuiz");
+  warningBox.classList.add("activeWarning");
+  document.querySelector("#warning_btn").onclick = () => {
+    quiz_box.classList.add("activeQuiz");
+    warningBox.classList.remove("activeWarning");
+    openFullscreen();
+  };
+}
 
 next_btn.onclick = () => {
   if (que_count < questions.length - 1) {
@@ -106,25 +127,15 @@ function showQuetions(index) {
   const que_text = document.querySelector(".que_text");
   let que_tag =
     "<span>" + (index + 1) + ". " + questions[index].question + "</span>";
-    let option_tag='';
-    for(let i=0;i<questions[index].options.length;i++){
-      if(questions[index].options[i]){
-        option_tag+='<div class="option"><span>'+questions[index].options[i]+'</span></div>';
-      }
+  let option_tag = "";
+  for (let i = 0; i < questions[index].options.length; i++) {
+    if (questions[index].options[i]) {
+      option_tag +=
+        '<div class="option"><span>' +
+        questions[index].options[i] +
+        "</span></div>";
     }
-  // let option_tag =
-  //   '<div class="option"><span>' +
-  //   questions[index].options[0] +
-  //   "</span></div>" +
-  //   '<div class="option"><span>' +
-  //   questions[index].options[1] +
-  //   "</span></div>" +
-  //   '<div class="option"><span>' +
-  //   questions[index].options[2] +
-  //   "</span></div>" +
-  //   '<div class="option"><span>' +
-  //   questions[index].options[3] +
-  //   "</span></div>";
+  }
   que_text.innerHTML = que_tag;
   option_list.innerHTML = option_tag;
 
@@ -274,14 +285,18 @@ function viewAnswers() {
     if (
       answers[countQuestions].answer == answers[countQuestions].correctAnswer
     ) {
-      let answered = "<span>You have answered correctly!!";
+      let answered =
+        "<span>You have answered correctly!!<b>" +
+        answers[countQuestions].answer +
+        "</b></span>";
       answerMessage.innerHTML = answered;
     } else {
       let answered =
-        "<span>You got the answer wrong. The correct option is: " +
+        "<span>You got the answer wrong. The correct option is: <b>" +
         answers[countQuestions].correctAnswer +
-        " ,while you chose " +
-        answers[countQuestions].answer;
+        "</b> ,while you chose <b>" +
+        answers[countQuestions].answer +
+        " </b></span>";
       answerMessage.innerHTML = answered;
     }
 

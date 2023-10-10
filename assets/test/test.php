@@ -7,7 +7,6 @@
     <title>The Social Knowledge: Tests</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/admin1.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -68,7 +67,7 @@
                 $formattedDate = date('d F Y', $timestamp);         
                 $description = $rowTest['description'];
                 echo '<div class="col"><div class="card" style="width: 18rem;">
-                <img src="https://source.unsplash.com/400x400/?' . $heading . ',programming" class="card-img-top" alt="' . $heading . '">
+                <img src="https://source.unsplash.com/300x300/?' . $heading . ',programming" class="card-img-top" alt="' . $heading . '">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $formattedDate . '</p>
