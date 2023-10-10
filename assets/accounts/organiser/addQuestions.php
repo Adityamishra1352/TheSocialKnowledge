@@ -47,6 +47,14 @@ $test_id = $_GET['testid'];
             </div>
         </div>
     </nav>
+    <?php 
+    if(isset($_GET['uploadQuestions']) && $_GET['uploadQuestions']==true){
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Questions have been added successfully!!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
+    ?>
     <div class="container my-2 p-1">
         <ul>
             <li>
@@ -57,7 +65,7 @@ $test_id = $_GET['testid'];
             <div id="questions-form">
                 <label for="num-questions" id="noofquestionslabel">How many questions do you want to
                     input?(Please enter 5 questions at once)</label><br><br>
-                <input type="number" id="num-questions" name="num-questions" min="1" max="5" required
+                <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
                     style="width: 20%;" class="p-1"><br><br>
                 <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
             </div>
@@ -80,6 +88,7 @@ $test_id = $_GET['testid'];
                     <th scope="col">Question ID</th>
                     <th scope="col">Question</th>
                     <th scope="col">Answer</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,6 +105,7 @@ $test_id = $_GET['testid'];
                     echo "<tr>
         <th scope='row'>$questionId</th>
         <td>$question</td>
+        <td>".$row['answer']."</td>
         <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
     </tr>";
                 }

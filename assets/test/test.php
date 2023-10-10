@@ -67,7 +67,6 @@
                 $formattedDate = date('d F Y', $timestamp);         
                 $description = $rowTest['description'];
                 echo '<div class="col"><div class="card" style="width: 18rem;">
-                <img src="https://source.unsplash.com/300x300/?' . $heading . ',programming" class="card-img-top" alt="' . $heading . '">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $formattedDate . '</p>

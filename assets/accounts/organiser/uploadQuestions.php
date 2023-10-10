@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../../_dbconnect.php';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $questions = [];
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 header('location:editCourse.php?course_id=' . $_GET['course_id'] . '&deleteContent=true');
             }
             if (isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
-                header('location:organiser.php');
+                header('location:addQuestions.php?test_id='.$test_id.'&uploadQuestions=true');
             }
         } else {
             echo mysqli_connect_error();

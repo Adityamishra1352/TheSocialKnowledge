@@ -50,6 +50,14 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
             <button class="btn btn-sm btn-outline-secondary" type="button" id="addQuiz_btn">Add A Quiz</button>
         </form>
     </nav>
+    <?php 
+    if(isset($_GET['addQuiz']) && $_GET['addQuiz']==true){
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Quiz has been added successfully!!</strong> View From Quizes Posted by you for more options.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
+    ?>
     <div class="container my-2">
         <div class="container postedQuiz_container" style="display: none;grid-template-columns:1fr 1fr 1fr;">
             <?php
@@ -99,16 +107,20 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
                     <input type="text" class="form-control" name="description" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Time:*</label>
-                    <input type="date" class="form-control" name="time" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Time For Each(in seconds):</label>
+                    <label for="exampleInputEmail1" class="form-label">Time For Each Question(in seconds):</label>
                     <input type="text" class="form-control" name="timeforeach">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Number of Questions to show in Quiz:</label>
                     <input type="number" class="form-control" name="questionsforeach">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Held From:*</label>
+                    <input type="datetime-local" class="form-control" name="time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Quiz held till:</label>
+                    <input type="datetime-local" class="form-control" name="heldtill" required>
                 </div>
                 <button type="submit" class="btn btn-outline-success">Submit</button>
             </form>

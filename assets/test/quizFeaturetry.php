@@ -1,5 +1,6 @@
 <?php
 session_start();
+$test_id=0;
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     header('location:../403.php');
 } else {
@@ -10,10 +11,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     $heading = null;
     $timeforeach=null;
     $questionsforeach=null;
+    $startTime=null;
     while ($quizRow = mysqli_fetch_assoc($quiz_result)) {
         $heading = $quizRow['heading'];
         $timeforeach=$quizRow['timeforeach'];
         $questionsforeach=$quizRow['questionsforeach'];
+        $startTime=$quizRow['time'];
     }
     $fname = null;
     $lname = null;
@@ -32,12 +35,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     if (is_array($decodedArray)) {
         if (in_array($test_id, $decodedArray)) {
             $alreadyAppeared = 1;
-        }
-        else {
-            $decodedArray[] = $test_id;
-            $updatedArray = json_encode($decodedArray);
-            $update_sql = "UPDATE `users` SET `test_array`='$updatedArray' WHERE `user_id`='$user_id'";
-            $updateresult = mysqli_query($conn, $update_sql);
         }
     } else {
         $decodedArray = [];
@@ -67,6 +64,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     <script>
     let alreadyAppeared = <?php echo $alreadyAppeared; ?>;
     const questionsforeach = <?php echo $questionsforeach; ?>;
+    const testStart=<?php echo json_encode($startTime);?>;
+    const decodedArray=<?php echo json_encode($decodedArray);?>;
+    const test_id=<?php echo json_encode($test_id);?>;
+
     const questions = [];
 
     function fetchQuestions(testId) {
@@ -138,6 +139,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
         <strong>Hey!!</strong> You have already attended the test.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="time_box">
+        <div class="time_info"></div>
+        <div class="button">
+            <button class="btn btn-outline-success" onclick="window.location.href=('test.php')">Go Back</button>
+        </div>
     </div>
     <div class="container my-2 content">
         <div class="warning-box">

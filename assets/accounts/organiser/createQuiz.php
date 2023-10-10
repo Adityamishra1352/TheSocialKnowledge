@@ -8,10 +8,11 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $time=$_POST['time'];
     $timeforeach=$_POST['timeforeach'];
     $questionsforeach=$_POST['questionsforeach'];
-    $sql="INSERT INTO `test` (`heading`, `description`, `time`, `organiser_id`, `timeforeach`, `questionsforeach`) VALUES ('$heading', '$description', '$time', '$user_id','$timeforeach','$questionsforeach')";
+    $heldtill=$_POST['heldtill'];
+    $sql="INSERT INTO `test` (`heading`, `description`, `time`, `organiser_id`, `timeforeach`, `questionsforeach`,`heldtill`) VALUES ('$heading', '$description', '$time', '$user_id','$timeforeach','$questionsforeach','$heldtill')";
     $sql_result=mysqli_query($conn, $sql);
     if($sql_result){
-        header('location:organiser.php');
+        header('location:organiser.php?addQuiz=true');
     }
 }
 ?>

@@ -1,3 +1,4 @@
+//full screen feature
 function openFullscreen() {
   const elem = document.documentElement; // Get the document element
 
@@ -11,10 +12,95 @@ function openFullscreen() {
     elem.msRequestFullscreen(); // IE/Edge
   }
 }
-
-window.onload = openFullscreen;
-
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen(); // Standard API
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen(); // Firefox
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen(); // Chrome, Safari, and Opera
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen(); // IE/Edge
+  }
+}
 const info_box = document.querySelector(".info_box");
+//time box feature
+// const time_box = document.querySelector(".time_box");
+// const databaseDate = new Date(testStart);
+// const currentDate = new Date();
+// function startingTest(){
+//   if(databaseDate<currentDate){
+//     time_box.classList.remove("activeTime");
+//     info_box.style.display = "block";
+//   }else{
+    
+//   }
+// }
+// const isDateMatching =
+//   databaseDate.getFullYear() === currentDate.getFullYear() &&
+//   databaseDate.getMonth() === currentDate.getMonth() &&
+//   databaseDate.getDate() === currentDate.getDate() &&
+//   databaseDate.getHours() === currentDate.getHours() &&
+//   databaseDate.getMinutes() === currentDate.getMinutes() &&
+//   databaseDate.getSeconds() === currentDate.getSeconds();
+
+// if (!isDateMatching) {
+//   const timeDifference = databaseDate - currentDate;
+//   const remainingHours = Math.floor(timeDifference / (1000 * 60 * 60));
+//   const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+//   const remainingSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+//   time_box.classList.add("activeTime");
+//   info_box.style.display = "none";
+//   let time_text =
+//     'Remaining Time: ' +
+//     remainingHours +
+//     ' hours, ' +
+//     remainingMinutes +
+//     ' minutes, ' +
+//     remainingSeconds +
+//     ' seconds';
+//   document.querySelector(".time_info").innerHTML = time_text;
+// } else {
+//   time_box.classList.remove("activeTime");
+//   info_box.style.display = "block";
+// }
+const time_box = document.querySelector(".time_box");
+const time_info = document.querySelector(".time_info");
+
+function updateTimer() {
+  const databaseDate = new Date(testStart);
+  const currentDate = new Date();
+  
+  const timeDifference = databaseDate - currentDate;
+
+  if (timeDifference > 0) {
+    info_box.style.display="none";
+    time_box.classList.add("activeTime");
+    const remainingHours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const remainingSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    const time_text =
+      'Quiz yet to start. Remaining Time: <br>' +
+      remainingHours +
+      ' hours, ' +
+      remainingMinutes +
+      ' minutes, ' +
+      remainingSeconds +
+      ' seconds';
+
+    time_info.innerHTML = time_text;
+  } else {
+    time_box.classList.remove("activeTime");
+    info_box.style.display="block";
+  }
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+
+
 const exit_btn = info_box.querySelector(".buttons .quit");
 const continue_btn = info_box.querySelector(".buttons .restart");
 const quiz_box = document.querySelector(".quiz_box");
@@ -32,18 +118,23 @@ continue_btn.onclick = () => {
   queCounter(1);
   startTimer(timeforeach);
   startTimerLine(totalTimeForEach);
+  const updatedArray = JSON.stringify([...decodedArray, test_id]);
+  fetch("update_test_array.php", {
+    method: "POST",
+    body: JSON.stringify({ updatedArray, user_id }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Test array updated:", data);
+    })
+    .catch((error) => {
+      console.error("Error updating test array:", error);
+    }); 
 };
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen(); // Standard API
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen(); // Firefox
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen(); // Chrome, Safari, and Opera
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen(); // IE/Edge
-  }
-}
+
 let timeValue = timeforeach;
 let que_count = 0;
 let que_numb = 1;
@@ -55,23 +146,6 @@ let widthValue = 0;
 const view_answers = result_box.querySelector(".buttons .viewAnswers");
 const answers_box = document.querySelector(".answers_box");
 const quit_quiz = result_box.querySelector(".buttons .quit");
-// restart_quiz.onclick = () => {
-//   quiz_box.classList.add("activeQuiz");
-//   result_box.classList.remove("activeResult");
-//   timeValue = 15;
-//   que_count = 0;
-//   que_numb = 1;
-//   userScore = 0;
-//   widthValue = 0;
-//   showQuetions(que_count);
-//   queCounter(que_numb);
-//   clearInterval(counter);
-//   clearInterval(counterLine);
-//   startTimer(timeValue);
-//   startTimerLine(widthValue);
-//   timeText.textContent = "Time Left";
-//   next_btn.classList.remove("show");
-// };
 view_answers.onclick = () => {
   answers_box.classList.add("activeAnswers");
   result_box.classList.remove("activeResult");
@@ -286,15 +360,15 @@ function viewAnswers() {
       answers[countQuestions].answer == answers[countQuestions].correctAnswer
     ) {
       let answered =
-        "<span>You have answered correctly!!<b>" +
+        "<span>You have answered correctly!!<br><b>" +
         answers[countQuestions].answer +
         "</b></span>";
       answerMessage.innerHTML = answered;
     } else {
       let answered =
-        "<span>You got the answer wrong. The correct option is: <b>" +
+        "<span>You got the answer wrong. The correct option is:<br> <b>" +
         answers[countQuestions].correctAnswer +
-        "</b> ,while you chose <b>" +
+        "</b><br> ,while you chose <b>" +
         answers[countQuestions].answer +
         " </b></span>";
       answerMessage.innerHTML = answered;
