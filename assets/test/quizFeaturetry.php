@@ -53,7 +53,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Social Knowledge: Courses</title>
+    <title>The Social Knowledge: Test</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/quizFeature.css">
@@ -61,44 +61,46 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
-        let alreadyAppeared = <?php echo $alreadyAppeared; ?>;
-        const questions = [];
-        function fetchQuestions(testId) {
-            fetch(`getQuestions.php?testid=${testId}`)
-                .then(response => response.json())
-                .then(data => {
-                    for (let i = 0; i < data.length; i++) {
-                        const question = data[i];
-                        const newQuestion = {
-                            numb: i + 1,
-                            question: question.question_text,
-                            answer: question.correct_answer,
-                            options: question.options
-                        };
-                        // console.log(`Question ${i + 1}: ${newQuestion.question}`);
-                        // console.log(`Options: ${newQuestion.options.join(', ')}`);
-                        // console.log(`Correct Answer: ${newQuestion.answer}`);
-                        questions.push(newQuestion);
-                    }
-                    shuffleArray(questions);
-                })
-                .catch(error => {
-                    console.error('Error fetching questions:', error);
+    let alreadyAppeared = <?php echo $alreadyAppeared; ?>;
+    const questions = [];
+
+    function fetchQuestions(testId) {
+        fetch(`getQuestions.php?testid=${testId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach((questionData, index) => {
+                    const options = questionData.options;
+                    shuffleArray(options);
+                    const newQuestion = {
+                        numb: index + 1,
+                        question: questionData.question_text,
+                        answer: questionData.correct_answer,
+                        options: options
+                    };
+                    questions.push(newQuestion);
                 });
+
+                shuffleArray(questions);
+            })
+            .catch(error => {
+                console.error('Error fetching questions:', error);
+            });
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-        const fname = "<?php echo $fname; ?>";
-        const lname = "<?php echo $lname; ?>";
-        const testId = <?php echo $test_id; ?>;
-        const certificate_id = <?php echo $certificate_id; ?>;
-        const user_id = <?php echo $user_id; ?>;
-        fetchQuestions(testId);
-    </script>
+    }
+
+    const fname = "<?php echo $fname; ?>";
+    const lname = "<?php echo $lname; ?>";
+    const testId = <?php echo $test_id; ?>;
+    const certificate_id = <?php echo $certificate_id; ?>;
+    const user_id = <?php echo $user_id; ?>;
+    fetchQuestions(testId);
+</script>
 
 </head>
 
