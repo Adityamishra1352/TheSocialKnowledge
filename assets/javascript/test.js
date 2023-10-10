@@ -1,3 +1,18 @@
+function openFullscreen() {
+  const elem = document.documentElement; // Get the document element
+
+  if (elem.requestFullscreen) {
+      elem.requestFullscreen(); // Standard API
+  } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen(); // Firefox
+  } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
+  } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen(); // IE/Edge
+  }
+}
+
+    window.onload = openFullscreen;
 const info_box = document.querySelector(".info_box");
 const exit_btn = info_box.querySelector(".buttons .quit");
 const continue_btn = info_box.querySelector(".buttons .restart");
@@ -10,13 +25,24 @@ const timeCount = document.querySelector(".timer .timer_sec");
 const totalTimeForEach = timeforeach * questionsforeach;
 continue_btn.onclick = () => {
   info_box.classList.add("deactivateInfo");
+  openFullscreen();
   quiz_box.classList.add("activeQuiz");
   showQuetions(0);
   queCounter(1);
   startTimer(timeforeach);
   startTimerLine(totalTimeForEach);
 };
-
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+      document.exitFullscreen(); // Standard API
+  } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen(); // Firefox
+  } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen(); // Chrome, Safari, and Opera
+  } else if (document.msExitFullscreen) {
+      document.msExitFullscreen(); // IE/Edge
+  }
+}
 let timeValue = timeforeach;
 let que_count = 0;
 let que_numb = 1;
@@ -132,6 +158,7 @@ function optionSelected(answer) {
 const certificate_box = document.querySelector(".certificate_box");
 const certificate_btn = document.querySelector(".getCertificate");
 function showResult() {
+  exitFullscreen();
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");

@@ -1,8 +1,10 @@
 <?php
 session_start();
 include '../../_dbconnect.php';
-if (!(isset($_SESSION['organiser']) && $_SESSION['organiser'] === true) &&
-    !(isset($_SESSION['admin']) && $_SESSION['admin'] === true)) {
+if (
+    !(isset($_SESSION['organiser']) && $_SESSION['organiser'] === true) &&
+    !(isset($_SESSION['admin']) && $_SESSION['admin'] === true)
+) {
     header('location: ../../403.php');
 }
 $test_id = $_GET['testid'];
@@ -54,8 +56,8 @@ $test_id = $_GET['testid'];
         <div class="changethequestions_box p-2">
             <div id="questions-form">
                 <label for="num-questions" id="noofquestionslabel">How many questions do you want to
-                    input?</label><br><br>
-                <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
+                    input?(Please enter 5 questions at once)</label><br><br>
+                <input type="number" id="num-questions" name="num-questions" min="1" max="5" required
                     style="width: 20%;" class="p-1"><br><br>
                 <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
             </div>
@@ -77,30 +79,28 @@ $test_id = $_GET['testid'];
                 <tr>
                     <th scope="col">Question ID</th>
                     <th scope="col">Question</th>
-                    <th scope="col">Option1</th>
-                    <th scope="col">Option2</th>
-                    <th scope="col">Option3</th>
-                    <th scope="col">Option4</th>
                     <th scope="col">Answer</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                $sql="SELECT * FROM `questions` WHERE `test_id`='$test_id'";
-                $result=mysqli_query($conn, $sql);
+                <?php
+                $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                $result = mysqli_query($conn, $sql);
+
                 while ($row = mysqli_fetch_assoc($result)) {
+                    $questionId = $row['question_id'];
+                    $question = $row['question'];
+                    $optionsJSON = $row['options'];
+                    $options = json_decode($optionsJSON, true);
+                    $answer = $row['answer'];
                     echo "<tr>
-                    <th scope='row'>".$row['question_id']."</th>
-                    <td>".$row['question']."</td>
-                    <td>".$row['option1']."</td>
-                    <td>".$row['option2']."</td>
-                    <td>".$row['option3']."</td>
-                    <td>".$row['option4']."</td>
-                    <td>".$row['answer']."</td>
-                    <td><button class='delete btn btn-sm btn-outline-danger' id=d".$row['question_id']." onclick='window.location.href=(`deleteQuestions.php?question_id=".$row['question_id']."&test_id=".$test_id."`)'>Delete</button></td>
-                  </tr>";
+        <th scope='row'>$questionId</th>
+        <td>$question</td>
+        <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
+    </tr>";
                 }
                 ?>
+
             </tbody>
         </table>
     </div>

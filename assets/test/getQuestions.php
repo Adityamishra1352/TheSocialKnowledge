@@ -1,6 +1,6 @@
 <?php 
 include '../_dbconnect.php';
-$test_id=$_GET['testid'];
+$test_id = $_GET['testid'];
 $questions_sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
 $result = mysqli_query($conn, $questions_sql);
 
@@ -12,12 +12,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         'options' => array(),
         'correct_answer' => $row['answer']
     );
-
-
-    for ($i = 1; $i <= 4; $i++) {
-        $optionColumnName = 'option' . $i;
-        $question['options'][] = $row[$optionColumnName];
-    }
+    $optionsJSON = $row['options'];
+    $options = json_decode($optionsJSON);
+    $question['options'] = $options;
 
     $questionsData[] = $question;
 }

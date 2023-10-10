@@ -73,19 +73,29 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
         fetch(`getQuestions.php?testid=${testId}`)
             .then(response => response.json())
             .then(data => {
-                const limitedQuestions = data.slice(0, questionsforeach);
-
-                limitedQuestions.forEach((questionData, index) => {
-                    const options = questionData.options;
-                    shuffleArray(options);
-                    const newQuestion = {
-                        numb: index + 1,
-                        question: questionData.question_text,
-                        answer: questionData.correct_answer,
-                        options: options
-                    };
-                    questions.push(newQuestion);
-                });
+                if (data.length <= questionsforeach) {
+                    questions.push(...data);
+                } else {
+                    const randomIndices = [];
+                    while (randomIndices.length < questionsforeach) {
+                        const randomIndex = Math.floor(Math.random() * data.length);
+                        if (!randomIndices.includes(randomIndex)) {
+                            randomIndices.push(randomIndex);
+                        }
+                    }
+                    randomIndices.forEach(index => {
+                        const questionData = data[index];
+                        const options = questionData.options;
+                        shuffleArray(options);
+                        const newQuestion = {
+                            numb: questions.length + 1,
+                            question: questionData.question_text,
+                            answer: questionData.correct_answer,
+                            options: options
+                        };
+                        questions.push(newQuestion);
+                    });
+                }
 
                 shuffleArray(questions);
             })
@@ -108,6 +118,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     const user_id = <?php echo $user_id; ?>;
     fetchQuestions(testId);
 </script>
+
 
 </head>
 
