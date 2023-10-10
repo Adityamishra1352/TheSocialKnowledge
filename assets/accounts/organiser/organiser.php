@@ -91,16 +91,24 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
         <div class="p-2 container addQuiz_container" style="width: 40%;display:none">
             <form action="createQuiz.php" method="post">
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:</label>
-                    <input type="text" name="heading" class="form-control">
+                    <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:*</label>
+                    <input type="text" name="heading" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Description:</label>
-                    <input type="text" class="form-control" name="description">
+                    <label for="exampleInputEmail1" class="form-label">Description:*</label>
+                    <input type="text" class="form-control" name="description" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Time:</label>
-                    <input type="date" class="form-control" name="time">
+                    <label for="exampleInputEmail1" class="form-label">Time:*</label>
+                    <input type="date" class="form-control" name="time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Time For Each(in seconds):</label>
+                    <input type="text" class="form-control" name="timeforeach">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Number of Questions to show in Quiz:</label>
+                    <input type="number" class="form-control" name="questionsforeach">
                 </div>
                 <button type="submit" class="btn btn-outline-success">Submit</button>
             </form>

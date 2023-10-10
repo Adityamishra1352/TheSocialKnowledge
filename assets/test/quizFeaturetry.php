@@ -8,8 +8,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     $quiz_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
     $quiz_result = mysqli_query($conn, $quiz_sql);
     $heading = null;
+    $timeforeach=null;
+    $questionsforeach=null;
     while ($quizRow = mysqli_fetch_assoc($quiz_result)) {
         $heading = $quizRow['heading'];
+        $timeforeach=$quizRow['timeforeach'];
+        $questionsforeach=$quizRow['questionsforeach'];
     }
     $fname = null;
     $lname = null;
@@ -62,13 +66,16 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
     let alreadyAppeared = <?php echo $alreadyAppeared; ?>;
+    const questionsforeach = <?php echo $questionsforeach; ?>;
     const questions = [];
 
     function fetchQuestions(testId) {
         fetch(`getQuestions.php?testid=${testId}`)
             .then(response => response.json())
             .then(data => {
-                data.forEach((questionData, index) => {
+                const limitedQuestions = data.slice(0, questionsforeach);
+
+                limitedQuestions.forEach((questionData, index) => {
                     const options = questionData.options;
                     shuffleArray(options);
                     const newQuestion = {
@@ -150,7 +157,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
         <div class="info_box">
             <div class="info-title"><span>Some Rules of this Quiz</span></div>
             <div class="info-list">
-                <div class="info">1. You will have only <span>15 seconds</span> per each question.</div>
+                <div class="info">1. You will have only <span><?php echo $timeforeach;?></span> seconds per each question.</div>
                 <div class="info">2. Once you select your answer, it can't be undone.</div>
                 <div class="info">3. You can't select any option once time goes off.</div>
                 <div class="info">4. You can't exit from the Quiz while you're playing.</div>
@@ -169,7 +176,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
                 </div>
                 <div class="timer">
                     <div class="time_left_txt">Time Left</div>
-                    <div class="timer_sec">15</div>
+                    <div class="timer_sec"><?php echo $timeforeach;?></div>
                 </div>
                 <div class="time_line"></div>
             </header>
@@ -230,6 +237,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
             document.querySelector(".info_box .restart").style.background="red";
             document.querySelector(".info_box .restart").style.border="red";
         }
+    </script>
+    <script>
+        const timeforeach=<?php echo json_encode($timeforeach);?>;
     </script>
     <script src="../javascript/test.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
