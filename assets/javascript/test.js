@@ -203,6 +203,7 @@ function optionSelected(answer) {
 const certificate_box = document.querySelector(".certificate_box");
 const certificate_btn = document.querySelector(".getCertificate");
 function showResult() {
+  sendToStorage();
   exitFullscreen();
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
@@ -345,6 +346,33 @@ function viewAnswers() {
       result_box.classList.add("activeResult");
     };
   }
+}
+
+
+function sendToStorage(){
+  console.log(userScore);
+console.log(test_id);
+console.log(user_id);
+  const data = {
+    test_id: test_id,
+    user_id: user_id,
+    userScore: userScore
+  };
+fetch("storeUserData.php", {
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "application/json"
+  }
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Score sent to PHP:", data);
+  })
+  .catch((error) => {
+    console.error("Error sending score to PHP:", error);
+  });
+
 }
 // const answersString=JSON.stringify(answers);
 function sendCertificateIdToPHP(formattedId) {

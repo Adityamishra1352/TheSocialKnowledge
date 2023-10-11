@@ -1,6 +1,7 @@
 <?php
 session_start();
 $test_id=0;
+$user_id=$_SESSION['user_id'];
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     header('location:../403.php');
 } else {
@@ -20,7 +21,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     }
     $fname = null;
     $lname = null;
-    $user_id = $_SESSION['user_id'];
     $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
     $user_result = mysqli_query($conn, $user_sql);
     $test_array = 0;

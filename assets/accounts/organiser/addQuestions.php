@@ -16,7 +16,7 @@ $test_id = $_GET['testid'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-        <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -50,6 +50,7 @@ $test_id = $_GET['testid'];
             <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Time Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
+            <button class="btn btn-outline-success me-2" type="button" id="users_btn">Completed Test Users</button>
         </form>
     </nav>
     <?php
@@ -94,7 +95,7 @@ $test_id = $_GET['testid'];
                     <h4>Present Questions:</h4>
                 </li>
             </ul>
-            <table class="table my-2" id="mytable">
+            <table class="table my-2 table-striped" id="mytable">
                 <thead>
                     <tr>
                         <th scope="col">Question ID</th>
@@ -136,23 +137,96 @@ $test_id = $_GET['testid'];
             <div class="mb-3">
                 <label for="endTime" class="form-label">Time To End:*</label>
                 <input type="datetime-local" class="form-control" id="endTime" required name="endTime">
-                <input type="hidden" name="test_id" value=<?php echo $test_id;?>>
+                <input type="hidden" name="test_id" value=<?php echo $test_id; ?>>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+    <div class="container users_container my-2 p-1" style="display:none;">
+        <nav class="navbar navbar-light bg-light">
+            <form class="container-fluid justify-content-start">
+                <button class="btn btn-outline-success me-2" type="button" id="exportExcel">Export Excel
+                    Sheet:</button>
+            </form>
+        </nav>
+        <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+            <?php
+            include '../../_dbconnect.php';
+            $dataArray = array();
+            $pic = null;
+            $user_sql = "SELECT * FROM users WHERE test_array LIKE '%\"$test_id\"%'";
+            $user_result = mysqli_query($conn, $user_sql);
+            while ($rowUser = mysqli_fetch_assoc($user_result)) {
+                $user_id = $rowUser['user_id'];
+                $score_sql = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
+                $score_result = mysqli_query($conn, $score_sql);
+                $scoreRow = mysqli_fetch_assoc($score_result);
+                $score = $scoreRow['score'];
+                $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
+                $email = $rowUser['email'];
+                $userData = array(
+                    "user_id" => $user_id,
+                    "name" => $name,
+                    "score" => $score,
+                    "email" => $email
+                );
+                $dataArray[] = $userData;
+                echo '<div class="card" style="width: max-content;">
+            <div class="card-body">
+              <h5 class="card-title">Name: ' . $name . '</h5>
+              <p class="text-secondary">Email: ' . $email . '</p>
+              <p class="card-text">Score: ' . $score . '</p>
+            </div>
+          </div>';
+            }
+            ?>
+        </div>
+    </div>
+    <script src="../../xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById("exportExcel").addEventListener("click", function () {
+    const data = [
+        ["User ID", "Name", "Email", "Score"]
+    ];
+    <?php
+    foreach ($dataArray as $userData) {
+        echo "data.push(['" . $userData['user_id'] . "', '" . $userData['name'] . "', '" . $userData['email'] . "', '" . $userData['score'] . "']);\n";
+    }
+    ?>
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "UserData");
+    const arrayBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "user_data.xlsx";
+    a.click();
+    window.URL.revokeObjectURL(url);
+});
+    </script>
     <script>
         const editQuestions_container = document.querySelector(".editQuestions_container");
         const editQuestions_btn = document.querySelector("#editQuestions_btn");
         const setTime_container = document.querySelector(".setTime_container");
-        const setTime_btn = document.querySelector("#setTime_btn")
+        const setTime_btn = document.querySelector("#setTime_btn");
+        const user_btn = document.querySelector("#users_btn");
+        const users_container = document.querySelector(".users_container");
         editQuestions_btn.onclick = () => {
             editQuestions_container.style.display = "block";
-            setTime_container.style.display="none";
+            setTime_container.style.display = "none";
+            users_container.style.display = "none";
         }
         setTime_btn.onclick = () => {
             editQuestions_container.style.display = "none";
-            setTime_container.style.display="block";
+            setTime_container.style.display = "block";
+            users_container.style.display = "none";
+        }
+        users_btn.onclick = () => {
+            editQuestions_container.style.display = "none";
+            setTime_container.style.display = "none";
+            users_container.style.display = "block";
         }
     </script>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
@@ -205,7 +279,7 @@ $test_id = $_GET['testid'];
                     }
                 });
 
-                const answerContainer = document.createElement("div"); // create answer container
+                const answerContainer = document.createElement("div");
                 const answerLabel = document.createElement("label");
                 const answerInput = document.createElement("input");
                 answerInput.type = "text";
@@ -214,7 +288,7 @@ $test_id = $_GET['testid'];
                 answerInput.placeholder = `Answer ${i}`;
                 answerLabel.appendChild(answerInput);
                 answerContainer.appendChild(answerLabel);
-                questionContainer.appendChild(answerContainer); // append answer container to question container
+                questionContainer.appendChild(answerContainer);
 
                 questionsContainer.appendChild(questionContainer);
             }
