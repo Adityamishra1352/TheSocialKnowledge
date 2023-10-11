@@ -25,46 +25,6 @@ function exitFullscreen() {
 }
 const info_box = document.querySelector(".info_box");
 //time box feature
-// const time_box = document.querySelector(".time_box");
-// const databaseDate = new Date(testStart);
-// const currentDate = new Date();
-// function startingTest(){
-//   if(databaseDate<currentDate){
-//     time_box.classList.remove("activeTime");
-//     info_box.style.display = "block";
-//   }else{
-    
-//   }
-// }
-// const isDateMatching =
-//   databaseDate.getFullYear() === currentDate.getFullYear() &&
-//   databaseDate.getMonth() === currentDate.getMonth() &&
-//   databaseDate.getDate() === currentDate.getDate() &&
-//   databaseDate.getHours() === currentDate.getHours() &&
-//   databaseDate.getMinutes() === currentDate.getMinutes() &&
-//   databaseDate.getSeconds() === currentDate.getSeconds();
-
-// if (!isDateMatching) {
-//   const timeDifference = databaseDate - currentDate;
-//   const remainingHours = Math.floor(timeDifference / (1000 * 60 * 60));
-//   const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-//   const remainingSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-//   time_box.classList.add("activeTime");
-//   info_box.style.display = "none";
-//   let time_text =
-//     'Remaining Time: ' +
-//     remainingHours +
-//     ' hours, ' +
-//     remainingMinutes +
-//     ' minutes, ' +
-//     remainingSeconds +
-//     ' seconds';
-//   document.querySelector(".time_info").innerHTML = time_text;
-// } else {
-//   time_box.classList.remove("activeTime");
-//   info_box.style.display = "block";
-// }
 const time_box = document.querySelector(".time_box");
 const time_info = document.querySelector(".time_info");
 

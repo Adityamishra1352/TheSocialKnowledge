@@ -19,7 +19,6 @@
     <meta property="og:url" content="https://thesocialknowledge.in/course%20pages/test.html">
     <link rel="shortcut icon" href="assets/images/websitelogo.jpg" type="image/png">
     <link rel="stylesheet" href="assets/css/chatbot.css">
-    <script src="https://kit.fontawesome.com/8f9eb736b1.js" crossorigin="anonymous"></script>
 </head>
 
 <body>

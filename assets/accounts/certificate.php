@@ -27,13 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Certificate</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <script src="../test/certificategenerator/certificate-gen.js"></script>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4"></script>
-    <!-- <link rel="stylesheet" href="../css/chatbot.css"> -->
-    <!-- <script src="https://kit.fontawesome.com/8f9eb736b1.js" crossorigin="anonymous"></script> -->
+    <script src="../pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="../@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
 </head>
 
 <body>
@@ -79,9 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             </form>
         </div>
     </section> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let fname = "<?php echo $fname; ?>";
         let lname = "<?php echo $lname; ?>";

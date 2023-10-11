@@ -16,10 +16,8 @@ $test_id = $_GET['testid'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 </head>
 
 <body>
@@ -37,7 +35,7 @@ $test_id = $_GET['testid'];
                         <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../../contactus.php">Contact Us</a>
+                        <a class="nav-link" href="../dashboard.php">Dashboard</a>
                     </li>
                 </ul>
                 <ul class="d-flex">
@@ -47,82 +45,117 @@ $test_id = $_GET['testid'];
             </div>
         </div>
     </nav>
-    <?php 
-    if(isset($_GET['uploadQuestions']) && $_GET['uploadQuestions']==true){
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+            <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Time Features</button>
+            <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
+                Questions</button>
+        </form>
+    </nav>
+    <?php
+    if (isset($_GET['uploadQuestions']) && $_GET['uploadQuestions'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Questions have been added successfully!!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
     }
+    if (isset($_GET['timeUpdate']) && $_GET['timeUpdate'] == true) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>The time for the test has been changed successfully!!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
     ?>
-    <div class="container my-2 p-1">
-        <ul>
-            <li>
-                <h4>Add Questions:</h4>
-            </li>
-        </ul>
-        <div class="changethequestions_box p-2">
-            <div id="questions-form">
-                <label for="num-questions" id="noofquestionslabel">How many questions do you want to
-                    input?(Please enter 5 questions at once)</label><br><br>
-                <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
-                    style="width: 20%;" class="p-1"><br><br>
-                <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
+    <div class="editQuestions_container container" style="display:none;">
+        <div class="container my-2 p-1 ">
+            <ul>
+                <li>
+                    <h4>Add Questions:</h4>
+                </li>
+            </ul>
+            <div class="changethequestions_box p-2">
+                <div id="questions-form">
+                    <label for="num-questions" id="noofquestionslabel">How many questions do you want to
+                        input?(Please enter 5 questions at once)</label><br><br>
+                    <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
+                        style="width: 20%;" class="p-1"><br><br>
+                    <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
+                </div>
+                <form action="uploadQuestions.php" method="post" id="questionsDynamic">
+                    <div class="inputQuestions"></div>
+                    <input type="hidden" name="test_id" value="<?php echo $test_id ?>">
+                    <button id="addquestion" class="btn btn-outline-success my-2">Add Question</button>
+                </form>
             </div>
-            <form action="uploadQuestions.php" method="post" id="questionsDynamic">
-                <div class="inputQuestions"></div>
-                <input type="hidden" name="test_id" value="<?php echo $test_id ?>">
-                <button id="addquestion" class="btn btn-outline-success my-2">Add Question</button>
-            </form>
         </div>
-    </div>
-    <div class="container my-2">
-        <ul>
-            <li>
-                <h4>Present Questions:</h4>
-            </li>
-        </ul>
-        <table class="table my-2" id="mytable">
-            <thead>
-                <tr>
-                    <th scope="col">Question ID</th>
-                    <th scope="col">Question</th>
-                    <th scope="col">Answer</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
-                $result = mysqli_query($conn, $sql);
+        <div class="container my-2">
+            <ul>
+                <li>
+                    <h4>Present Questions:</h4>
+                </li>
+            </ul>
+            <table class="table my-2" id="mytable">
+                <thead>
+                    <tr>
+                        <th scope="col">Question ID</th>
+                        <th scope="col">Question</th>
+                        <th scope="col">Answer</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                    $result = mysqli_query($conn, $sql);
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $questionId = $row['question_id'];
-                    $question = $row['question'];
-                    $optionsJSON = $row['options'];
-                    $options = json_decode($optionsJSON, true);
-                    $answer = $row['answer'];
-                    echo "<tr>
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $questionId = $row['question_id'];
+                        $question = $row['question'];
+                        $optionsJSON = $row['options'];
+                        $options = json_decode($optionsJSON, true);
+                        $answer = $row['answer'];
+                        echo "<tr>
         <th scope='row'>$questionId</th>
         <td>$question</td>
-        <td>".$row['answer']."</td>
+        <td>" . $row['answer'] . "</td>
         <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
     </tr>";
-                }
-                ?>
+                    }
+                    ?>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
-        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"
-        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <div class="setTime_container container p-1 my-2" style="display:none;width:30%">
+        <form action="setTime.php" method="post">
+            <div class="mb-3">
+                <label for="startTime" class="form-label">Time To Start:*</label>
+                <input type="datetime-local" class="form-control" id="startTime" required name="startTime">
+            </div>
+            <div class="mb-3">
+                <label for="endTime" class="form-label">Time To End:*</label>
+                <input type="datetime-local" class="form-control" id="endTime" required name="endTime">
+                <input type="hidden" name="test_id" value=<?php echo $test_id;?>>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        const editQuestions_container = document.querySelector(".editQuestions_container");
+        const editQuestions_btn = document.querySelector("#editQuestions_btn");
+        const setTime_container = document.querySelector(".setTime_container");
+        const setTime_btn = document.querySelector("#setTime_btn")
+        editQuestions_btn.onclick = () => {
+            editQuestions_container.style.display = "block";
+            setTime_container.style.display="none";
+        }
+        setTime_btn.onclick = () => {
+            editQuestions_container.style.display = "none";
+            setTime_container.style.display="block";
+        }
+    </script>
+    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>
         const add_btn = document.querySelector("#questionsSubmit");
         const form = document.querySelector(".inputQuestions");
@@ -189,7 +222,6 @@ $test_id = $_GET['testid'];
             form.appendChild(questionsContainer);
             document.getElementById("questionsSubmit").disabled = true;
         }
-        let table = new DataTable('#myTable');
     </script>
 </body>
 
