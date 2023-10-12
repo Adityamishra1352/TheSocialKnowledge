@@ -191,6 +191,7 @@ $test_id = $_GET['test_id'];
               <p class="text-secondary">Email: ' . $email . '</p>
               <p class="text-secondary">Enroll No. : ' . $enrollment . '</p>
               <p class="card-text">Score: ' . $score . '</p>
+              <a class="btn btn-outline-success" href="allowRestart.php?user_id='.$user_id.'&test_id='.$test_id.'">Allow Restart</a>
             </div>
           </div>';
             }
