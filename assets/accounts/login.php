@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
             </form>
         </div>
-        <div class="container">
+        <!-- <div class="container">
             <a href="forgotpassword.php">Forgot Password</a>
-        </div>
+        </div> -->
     </div>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>

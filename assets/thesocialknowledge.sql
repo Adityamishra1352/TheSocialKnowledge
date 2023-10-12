@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2023 at 08:37 PM
+-- Generation Time: Oct 12, 2023 at 11:50 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,27 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `thesocialknowledge`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `answers`
---
-
-CREATE TABLE `answers` (
-  `answer_id` int(11) NOT NULL,
-  `answer` longtext NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `test_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `answers`
---
-
-INSERT INTO `answers` (`answer_id`, `answer`, `user_id`, `test_id`) VALUES
-(1, '', 8, 1),
-(2, '', 8, 1);
 
 -- --------------------------------------------------------
 
@@ -62,11 +41,9 @@ CREATE TABLE `certificates` (
 --
 
 INSERT INTO `certificates` (`certificate_id`, `certificate_formating`, `user_id`, `test_id`, `score`, `time`) VALUES
-(4, 'SK54', 10, 5, 10, '2023-09-29 14:08:59'),
-(12, 'SK512', 8, 5, 10, '2023-09-29 14:08:59'),
-(15, 'SK115', 8, 1, 5, '2023-09-30 21:24:48'),
-(17, 'SK117', 10, 1, 5, '2023-09-30 21:30:34'),
-(23, '', 0, 0, 0, '2023-10-02 21:06:09');
+(1, 'SK11001', 0, 0, 0, '2023-10-12 12:36:14'),
+(30, 'SK11001', 0, 0, 0, '2023-10-12 12:36:35'),
+(33, 'SK1231', 25, 12, 4, '2023-10-12 12:47:17');
 
 -- --------------------------------------------------------
 
@@ -100,26 +77,8 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `heading`, `description`, `timestamp`, `displayed`) VALUES
-(1, 'C++ Programming', 'C++ is a cross-platform language that can be used to create high-performance applications. ', '2023-09-30 14:15:49', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `coursetests`
---
-
-CREATE TABLE `coursetests` (
-  `coursetest_id` int(11) NOT NULL,
-  `coursetest_name` varchar(255) NOT NULL,
-  `coursetest_description` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `coursetests`
---
-
-INSERT INTO `coursetests` (`coursetest_id`, `coursetest_name`, `coursetest_description`) VALUES
-(1, 'C++ Programming', 'Earn a certificate after successful completion of the quiz.');
+(1, 'C++ Programming', 'C++ is a cross-platform language that can be used to create high-performance applications. ', '2023-09-30 14:15:49', 1),
+(2, 'JavaScript', 'JavaScript, often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.', '2023-10-08 14:04:31', 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +123,13 @@ INSERT INTO `course_content` (`page_id`, `heading`, `description`, `course_id`, 
 (20, 'Recursion in C++', '<section class=\"intro\">\r\n                <span style=\"font-size:18px;\">When function is called within the same function, it is known as recursion in C++. The function which calls the same function, is known as recursive function.</span>\r\n                    <br><br>\r\n                <ul>\r\n                  <li>A function that calls itself, and doesn\'t perform any task after function call, is known as tail recursion. In tail recursion, we generally call the same function with return statement</li>\r\n                </ul>\r\n            </section>\r\n            <section class=\"code\">\r\n                recursionfunction(){   <br> \r\n                  recursionfunction(); //calling self function <br>    \r\n                  }    <br>\r\n            </section>', 1, 20, 'C++: Recursion', 1),
 (21, 'Classes and Objects in C++', '<section class=\"intro\">\r\n                <ul>\r\n                  <h2>C++ Class:</h2>\r\n                  <span style=\"font-size:18px;\">A Class is a blueprint of an object.</span> \r\n                    <br><br>\r\n                    <h2>Creating a Class:</h2>\r\n                <li>A class is defined in C++ using keyword class followed by the name of the class.</li>\r\n                <li>The body of the class is defined inside the curly brackets and terminated by a semicolon at the end. </li>\r\n                <section class=\"code\">\r\n                    class className {<br>\r\n                      // some data <br>\r\n                      // some functions<br>\r\n                   };<br>\r\n                </section>\r\n                <li>The variables declared inside the class are known as data members. And, the functions are known as member functions of a class.</li>\r\n                <br><br>\r\n                <h2>C++ Objects:</h2>\r\n                <br>\r\n                <li>To use the data and access functions defined in the class, we create objects.</li>\r\n                <li>Objects are created in such a way:</li>\r\n                <section class=\"code\">\r\n                    className objectVariableName; <br>\r\n                </section>\r\n                <li>We can create objects of a class in any function of the program.</li>\r\n                <li> We can also create objects of a class within the class itself, or in other classes.</li>\r\n                <li>We can create as many objects as we want from a single class.</li>\r\n                <br><br>\r\n                <h2>C++ Access Data Members and Member Functions:</h2>\r\n                  <li>To access the data members and member functions of a class we use a <b>.</b> (dot) operator.</li>\r\n                  <section class=\"code\">\r\n                      object.function(); <br>\r\n                      object.variable=value; <br>\r\n                  </section>\r\n                </ul></section>', 1, 21, 'C++: Classes/Objects', 1),
 (22, 'Class Methods in C++', '<section class=\"intro\">\r\n                <ul>\r\n                        <span style=\"font-size:18px;\">C++ class methods are user-defined functions that are used inside an instance of the class. A dot notation . is used before method names to distinguish them from the regular functions.</span>\r\n                    <br><br>\r\n                    <h2>A class method can be defined in two ways:</h2>\r\n                <li class=\"mains\"><span>Inside the class definition:</span></li>\r\n                       <section class=\"code\">class Person<br>\r\n                            {<br>\r\n                              string name;<br>\r\n                            public:<br>\r\n                              // Defines the method<br>\r\n                              void get_name()<br>\r\n                              {<br>\r\n                                return name;<br>\r\n                              }<br>\r\n                            }<br>\r\n                             int main()<br>\r\n                            {<br>\r\n                              Person robert;<br>\r\n                            // Calls the method<br>\r\n                              robert.get_name();<br>\r\n                            return 0;<br>\r\n                            }</section>\r\n                <li class=\"mains\"><span>Outside the class definition</span></li>\r\n                <section class=\"code\">class Person<br>\r\n                        {<br>\r\n                          string name;<br>\r\n                         public:<br>\r\n                          void get_name();<br>\r\n                        }<br>\r\n                         // Defines the method<br>\r\n                        void Person::get_name()<br>\r\n                        {<br>\r\n                          return name;<br>\r\n                        }<br>\r\n                         int main()<br>\r\n                        {<br>\r\n                          Person robert;<br>\r\n                         // Calls the method<br>\r\n                          robert.get_name();<br>\r\n                        return 0;<br>\r\n                        }<br></section>\r\n                </ul>\r\n            </section>', 1, 22, 'C++: Class Methods', 1),
-(23, 'Constructors in C++', '<section class=\"intro\">\r\n                <ul>\r\n                Constructor is amember function used to create and initialize the objects with legal set of values. \r\n                    <br><br>\r\n                    <h2>Properties:</h2>\r\n                <li>They have the same name as that of the class.</li>\r\n                <li>They are automatically called at the time of object creation.</li>\r\n                <li>They have parameters therefore can be overloaded.</li>\r\n                <li>Generally they are made public.</li>\r\n                <li>These are not inherited bur can be called through child class constructors.</li>\r\n                <br><br>\r\n                <h2>Types of values in constructors:</h2>\r\n                <br>\r\n                <li>Dumy/Garbage value: The values which are automatically assigned by the complier are called dumy/garbage values.</li>\r\n                <li>Legal values:The values which are assigned by the user/programmer are called legal values.</li>\r\n                </ul>\r\n            </section>\r\n            <section>\r\n                <br><br>\r\n                <h2>Types of constructors in C++</h2>\r\n                <p>There are three types of constructors in C++:</p>\r\n                \r\n                <ul>\r\n                    <li>Default constructor:It is an non-parameterized constructor which is automatically provided by the complier.It is used to create and initialize objects with dumy values.</li>\r\n                    <li>Parameterized constructors:A constructo which accepts some value through parameters is called parameterized constructor.</li>\r\n                    <li>Copy constructor:It is a member function which initialize the objects which the help of other objects of the same class.</li>\r\n                </ul>\r\n                <h3>This keyword:</h3>\r\n                <p>It is used to point to the current object of the class.It is used to differentiate between global and local variables when both of them have the same name.</p></section>', 1, 23, 'C++: Class Methods', 1);
+(23, 'Constructors in C++', '<section class=\"intro\">\r\n                <ul>\r\n                Constructor is amember function used to create and initialize the objects with legal set of values. \r\n                    <br><br>\r\n                    <h2>Properties:</h2>\r\n                <li>They have the same name as that of the class.</li>\r\n                <li>They are automatically called at the time of object creation.</li>\r\n                <li>They have parameters therefore can be overloaded.</li>\r\n                <li>Generally they are made public.</li>\r\n                <li>These are not inherited bur can be called through child class constructors.</li>\r\n                <br><br>\r\n                <h2>Types of values in constructors:</h2>\r\n                <br>\r\n                <li>Dumy/Garbage value: The values which are automatically assigned by the complier are called dumy/garbage values.</li>\r\n                <li>Legal values:The values which are assigned by the user/programmer are called legal values.</li>\r\n                </ul>\r\n            </section>\r\n            <section>\r\n                <br><br>\r\n                <h2>Types of constructors in C++</h2>\r\n                <p>There are three types of constructors in C++:</p>\r\n                \r\n                <ul>\r\n                    <li>Default constructor:It is an non-parameterized constructor which is automatically provided by the complier.It is used to create and initialize objects with dumy values.</li>\r\n                    <li>Parameterized constructors:A constructo which accepts some value through parameters is called parameterized constructor.</li>\r\n                    <li>Copy constructor:It is a member function which initialize the objects which the help of other objects of the same class.</li>\r\n                </ul>\r\n                <h3>This keyword:</h3>\r\n                <p>It is used to point to the current object of the class.It is used to differentiate between global and local variables when both of them have the same name.</p></section>', 1, 23, 'C++: Class Methods', 1),
+(24, 'aa', 'aa', 2, 1, 'aa', 0),
+(25, 'bb', 'bb', 2, 2, 'bb', 1),
+(26, 'qq', 'qq', 2, 1, 'qq', 0),
+(27, 'ww', 'ww', 2, 2, 'ww', 0),
+(28, 'rr', 'rr', 2, 1, 'rr', 0),
+(29, 'tt', 'tt', 2, 2, 'tt', 0);
 
 -- --------------------------------------------------------
 
@@ -211,6 +176,18 @@ INSERT INTO `feedback` (`sno`, `likewebsite`, `recommendations`, `timestamp`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `forgotpass`
+--
+
+CREATE TABLE `forgotpass` (
+  `sno` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `questions`
 --
 
@@ -219,32 +196,65 @@ CREATE TABLE `questions` (
   `question` longtext NOT NULL,
   `answer` varchar(255) NOT NULL,
   `test_id` int(11) NOT NULL,
-  `option1` varchar(255) NOT NULL,
-  `option2` varchar(255) NOT NULL,
-  `option3` varchar(255) NOT NULL,
-  `option4` varchar(255) NOT NULL
+  `options` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`question_id`, `question`, `answer`, `test_id`, `option1`, `option2`, `option3`, `option4`) VALUES
-(7, 'What is the primary purpose of the JavaScript parseInt() function?', 'To generate random numbers.', 1, 'To convert a string to an integer.', 'To round a number to the nearest integer.', ' To perform mathematical operations.', 'To generate random numbers.'),
-(8, 'Which of the following is not a valid way to declare a variable in JavaScript?', 'myVar = 40;', 1, 'let myVar = 10;', 'const myVar = 20;', 'var myVar = 30;', 'myVar = 40;'),
-(9, 'What does the typeof operator in JavaScript return for null?', 'null', 1, 'null', 'undefined', 'object ', 'number'),
-(10, 'Which JavaScript array method adds one or more elements to the end of an array and returns the new length of the array?', 'pop()', 1, 'splice()', 'pop()', 'push()', 'concat()'),
-(11, 'What does the acronym \"DOM\" stand for in the context of JavaScript?', 'Document Object Model', 1, 'Document Object Model', 'Data Object Model', 'Document Orientation Model', 'Dynamic Object Model'),
-(12, 'What is the correct way to declare and initialize an empty list in Python?', 'my_list = []', 5, 'my_list = []', 'my_list = {}', 'my_list = list()', 'my_list = ()'),
-(13, 'In Python, which of the following is used to comment a single line of code?', '# Comment', 5, '/* Comment */', '# Comment', '<!-- Comment -->', '* Comment *'),
-(14, 'Which Python data structure is used to store a collection of key-value pairs?', 'Dictionary', 5, 'List', 'Tuple', 'Dictionary', 'Set'),
-(15, 'In Python, which of the following is used to define a function?', 'def', 5, 'method', 'define', 'function', 'def'),
-(18, 'Which type of Programming does Python support?', 'All of the Above', 5, 'Object-Oriented Programming', 'Structured Programming ', 'Functional Programming', 'All of the Above'),
-(19, 'Is Python case sensitive when dealing with identifiers?', 'Yes', 5, 'No', 'Yes', 'Machine Dependent', 'None of the mentioned'),
-(20, 'Which of the following is the correct extension of the Python file?', '.py', 5, '.python', '.pl', '.py', '.p'),
-(21, ' Is Python code compiled or interpreted?', 'Python code is both compiled and interpreted', 5, 'Python code is both compiled and interpreted', 'Python code is neither compiled nor interpreted', 'Python code is only compiled', 'Python code is only interpreted'),
-(22, 'What will be the value of the following Python expression?  4 + 3 % 5', '7', 5, '7', '2', '4', '1'),
-(23, 'Which of the following is used to define a block of code in Python language?', 'Indentation', 5, 'Indentation', 'Key', 'Brackets', 'All of the above');
+INSERT INTO `questions` (`question_id`, `question`, `answer`, `test_id`, `options`) VALUES
+(51, 'What is JavaScript?', 'JavaScript is a scripting language used to make the website interactive', 10, '[\"JavaScript is a scripting language used to make the website interactive\",\"JavaScript is an assembly language used to make the website interactive\",\"JavaScript is a compiled language used to make the website interactive\",\"None of the mentioned\"]'),
+(52, 'Which of the following is correct about JavaScript?', 'JavaScript is an Object-Based language', 10, '[\"JavaScript is an Object-Based language\",\"JavaScript is Assembly-language\",\"JavaScript is a High-level language\",null]'),
+(53, 'Arrays in JavaScript are defined by which of the following statements?', 'It is an ordered list of values', 10, '[\"It is an ordered list of values\",\"It is an ordered list of objects\",\"It is an ordered list of string\",\"It is an ordered list of functions\"]'),
+(54, 'Will the following JavaScript code work? var js = (function(x) {return x*x;}(10));', 'Yes, perfectly', 10, '[\"Exception will be thrown\",\"Yes, perfectly\",null,null]'),
+(55, 'Where is Client-side JavaScript code is embedded within HTML documents?', 'A URL that uses the special javascript:protocol', 10, '[\"A URL that uses the special javascript:code\",\"A URL that uses the special javascript:protocol\",\"A URL that uses the special javascript:encoding\",\"A URL that uses the special javascript:stack\"]'),
+(56, 'Which of the following object is the main entry point to all client-side JavaScript features and APIs?', 'Window', 10, '[\"Position\",\"Window\",\"Standard\",\"Location\"]'),
+(57, 'Which of the following can be used to call a JavaScript Code Snippet?', 'Function or Method', 10, '[\"Function or Method\",\"Preprocessor\",\"Triggering Event\",\"RMI\"]'),
+(58, 'Which of the following explains correctly what happens when a JavaScript program is developed on a Unix Machine?', 'will work perfectly well on a Windows Machine', 10, '[\"must be restricted to a Unix Machine only\",\"will throw errors and exceptions\",\"will be displayed as JavaScript text on the browser\",\"will work perfectly well on a Windows Machine\"]'),
+(59, 'Which of the following scoping type does JavaScript use?', 'Lexical', 10, '[\"Lexical\",\"Literal\",null,null]'),
+(60, 'What is the basic difference between JavaScript and Java?', 'Functions are values, and there is no hard distinction between methods and fields', 10, '[\"Functions are considered as fields\",\"Functions are values, and there is no hard distinction between methods and fields\",\"Variables are specific\",\"There is no difference\"]'),
+(61, 'What will be the output of the following JavaScript code?var quiz=[1,2,3];   var js=[6,7,8];  var result=quiz.concat(js);   document.writeln(result);', '1, 2, 3, 6, 7, 8', 10, '[\"1, 2, 3\",\"1, 2, 3, 6, 7, 8\",\"Error\",null]'),
+(62, 'Why JavaScript Engine is needed?', 'Interpreting the JavaScript', 10, '[\"Both Compiling & Interpreting the JavaScript\",\"Parsing the javascript\",\"Interpreting the JavaScript\",\"Compiling the JavaScript\"]'),
+(63, 'Which of the following methods/operation does javascript use instead of == and !=?', 'JavaScript uses === and !== instead', 10, '[\"JavaScript uses equalto()\",\"JavaScript uses equals() and notequals() instead\",\"JavaScript uses bitwise checking\",\"JavaScript uses === and !== instead\"]'),
+(64, 'What will be the result or type of error if p is not defined in the following JavaScript code snippet? console.log(p)', 'Reference Error', 10, '[\"Value not found Error\",\"Reference Error\",\"Null\",\"Zero\"]'),
+(65, 'Why event handlers is needed in JS?', 'Allows JavaScript code to alter the behaviour of windows', 10, '[\"Allows JavaScript code to alter the behaviour of windows\",\"Adds innerHTML page to the code\",\"Change the server location\",\"Performs handling of exceptions and occurrences\"]'),
+(66, 'Which of the following is not a framework?', 'JavaScript', 10, '[\"jQuery\",\"JavaScript\",\"Cocoa JS\",null]'),
+(67, 'Which of the following is the property that is triggered in response to JS errors?', 'onerror', 10, '[\"onclick\",\"onerror\",\"onmessage\",\"onexception\"]'),
+(68, 'Which of the following is not an error in JavaScript?', 'Division by zero', 10, '[\"Missing of Bracket\",\"Division by zero\",\"Syntax error\",\"Missing of semicolons\"]'),
+(69, 'The behaviour of the instances present of a class inside a method is defined by __________', 'Classes', 10, '[\"Method\",\"Interfaces\",\"Classes\",\"Classes and Interfaces\"]'),
+(70, 'The meaning for Augmenting classes is that ___________', 'objects inherit prototype properties even in a dynamic state', 10, '[\"objects inherit prototype properties even in a dynamic state\",\"objects inherit prototype properties only in a dynamic state\",\"objects inherit prototype properties in the static state\",\"object doesnt inherit prototype properties in the static state\"]'),
+(71, 'What is C++?', ' C++ supports both procedural and object oriented programming language', 11, '[\"C++ is an object oriented programming language\",\"C++ is a procedural programming language\",\" C++ supports both procedural and object oriented programming language\",\"C++ is a functional programming language\"]'),
+(72, 'Which of the following user-defined header file extension used in c++?', 'h', 11, '[\"hg\",\"cpp\",\"h\",\"hf\"]'),
+(73, 'Which of the following approach is used by C++?', 'Bottom-up', 11, '[\"Left-right\",\"Right-left\",\"Bottom-up\",\"Top-down\"]'),
+(74, 'What is virtual inheritance in C++?', 'C++ technique to avoid multiple copies of the base class into children/derived class', 11, '[\"C++ technique to enhance multiple inheritance\",\"C++ technique to ensure that a private member of the base class can be accessed somehow\",\"C++ technique to avoid multiple inheritances of classes\",\"C++ technique to avoid multiple copies of the base class into children/derived class\"]'),
+(75, 'What is the difference between delete and delete[] in C++?', 'delete is used to delete single object whereas delete[] is used to multiple(array/pointer of) objects', 11, '[\"delete is syntactically correct but delete[] is wrong and hence will give an error if used in any case\",\"delete is used to delete normal objects whereas delete[] is used to pointer objects\",\"delete is a keyword whereas delete[] is an identifier\",\"delete is used to delete single object whereas delete[] is used to multiple(array/pointer of) objects\"]'),
+(76, 'Which of the following is correct about this pointer in C++?', 'this pointer is passed as a hidden argument in all non-static functions of a class', 11, '[\"this pointer is passed as a hidden argument in all non-static functions of a class\",\"this pointer is passed as a hidden argument in all static variables of a class\",\"this pointer is passed as a hidden argument in all the functions of a class\",null]'),
+(77, 'Which of the following type is provided by C++ but not C?', 'bool', 11, '[\"double\",\"float\",\"int\",\"bool\"]'),
+(78, 'What will be the output of the following C++ function?<br>int main(){<br>register int i = 1;<br>int *ptr = &i;         <br>cout << *ptr; 	<br>return 0;     <br>}', 'Compiler error may be possible', 11, '[\"1\",\"0\",\"Runtime error may be possible\",\"Compiler error may be possible\"]'),
+(79, 'Which of the following correctly declares an array in C++?', 'int array[10];', 11, '[\"array{10};\",\"int array[10];\",\"array array[10];\",\"int array;\"]'),
+(80, 'What is the size of wchar_t in C++?', 'Based on the number of bits in the system', 11, '[\"Based on the number of bits in the system\",\"2 or 4\",\"4\",null]'),
+(81, 'What is the use of the indentation in c++?', 'distinguishes between comments and code', 11, '[\"r distinguishes between comments and inner data\",\"distinguishes between comments and outer data\",\"distinguishes between comments and code\",\"r distinguishes between comments and outer data\"]'),
+(82, 'Which is more effective while calling the C++ functions?', 'call by reference', 11, '[\"call by object\",\" call by pointer\",\"call by value\",\"call by reference\"]'),
+(83, 'Which of the following is used to terminate the function declaration in C++?', ';', 11, '[\";\",\"]\",\")\",\":\"]'),
+(84, 'Which keyword is used to define the macros in c++?', '#define', 11, '[\"#marco\",\"#define\",\"marco\",\"define\"]'),
+(85, 'The C++ code which causes abnormal termination/behaviour of a program should be written under _________ block.', 'try', 11, '[\"catch\",\"throw\",\"try\",\"finally\"]'),
+(86, 'The four kinds of class members are ________', 'Instance fields, Instance methods, Class fields, Class methods', 10, 'null'),
+(87, 'Different kinds of the object involved in a class definition are ________', 'Constructor object, Prototype object, Instance object', 10, 'null'),
+(88, 'The four kinds of class members are ________', 'Instance fields, Instance methods, Class fields, Class methods', 10, 'null'),
+(89, 'Different kinds of the object involved in a class definition are ________', 'Constructor object, Prototype object, Instance object', 10, 'null'),
+(90, 'The four kinds of class members are ________', 'Instance fields, Instance methods, Class fields, Class methods', 10, 'null'),
+(91, 'Different kinds of the object involved in a class definition are ________', 'Constructor object, Prototype object, Instance object', 10, 'null'),
+(92, 'Amongst the following, who is the developer of Python programming?', 'Guido van Rossum', 12, '[\"Guido van Rossum\",\"Denis Ritchie\",\"Y.C. Khenderakar\",\"None of the mentioned above\"]'),
+(93, 'Amongst which of the following is / are the application areas of Python programming?', 'All of the mentioned above', 12, '[\"Web Development\",\"Game Development\",\"Artificial Intelligence and Machine Learning\",\"All of the mentioned above\"]'),
+(94, 'list, tuple, and range are the ___ of Data Types.', 'Sequence Types', 12, '[\"Sequence Types\",\"Binary Types\",\"Boolean Types\",\"None of the mentioned above\"]'),
+(95, 'Float type of data type is represented by the float class.', 'True', 12, '[\"True\",\"False\",null,null]'),
+(96, 'bytes, bytearray, memoryview are type of the ___ data type.', 'Binary Types', 12, '[\"Mapping Type\",\"Boolean Type\",\"Binary Types\",null]'),
+(97, 'The type() function can be used to get the data type of any object.', 'True', 12, '[\"True\",\"False\",null,null]'),
+(98, 'Amongst which of the following is / are the logical operators in Python?', 'All of the mentioned above', 12, '[\"and\",\"or\",\"All of the mentioned above\",null]'),
+(99, 'What is the name of the operator ** in Python?', 'Exponentiation', 12, '[\"Exponentiation\",\"Modulus\",\"Floor division\",null]'),
+(100, 'The % operator returns the ___.', 'Remainder', 12, '[\"Quotient\",\"Divisor\",\"Remainder\",\"None of the mentioned above\"]'),
+(101, 'Amongst which of the following is / are the method of list?', 'All of the mentioned above', 12, '[\"append()\",\"extend()\",\"insert()\",\"All of the mentioned above\"]');
 
 -- --------------------------------------------------------
 
@@ -258,17 +268,42 @@ CREATE TABLE `test` (
   `description` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   `organiser_id` int(11) NOT NULL,
-  `displayed` int(11) NOT NULL DEFAULT 1
+  `displayed` int(11) NOT NULL DEFAULT 1,
+  `course_id` int(11) NOT NULL DEFAULT 0,
+  `timeforeach` int(11) NOT NULL DEFAULT 15,
+  `questionsforeach` int(11) NOT NULL DEFAULT 3,
+  `heldtill` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `test`
 --
 
-INSERT INTO `test` (`test_id`, `heading`, `description`, `time`, `organiser_id`, `displayed`) VALUES
-(1, 'JavaScript', 'Earn a certificate on successful completion of the test', '2023-09-22 01:14:18', 4, 1),
-(3, 'Java', 'Java test for all of you', '2023-09-07 00:00:00', 4, 0),
-(5, 'Python', 'Earn a certificate after successful completion of the quiz.', '2023-09-30 00:00:00', 4, 1);
+INSERT INTO `test` (`test_id`, `heading`, `description`, `time`, `organiser_id`, `displayed`, `course_id`, `timeforeach`, `questionsforeach`, `heldtill`) VALUES
+(10, 'JavaScript', 'JavaScript, often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.', '2023-10-12 13:28:00', 4, 0, 0, 20, 10, '2023-10-20 12:00:00'),
+(11, 'C++ Programming', 'C++ is an object-oriented programming language which gives a clear structure to programs and allows code to be reused, lowering development costs.', '2023-10-12 13:56:00', 4, 1, 0, 15, 15, '2023-10-30 13:56:00'),
+(12, 'Python', 'Python is a high-level, general-purpose programming language.', '2023-10-12 14:07:00', 4, 1, 0, 10, 10, '2023-10-30 14:07:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `testscores`
+--
+
+CREATE TABLE `testscores` (
+  `sno` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `test_id` int(11) NOT NULL,
+  `enrollment` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `testscores`
+--
+
+INSERT INTO `testscores` (`sno`, `score`, `user_id`, `test_id`, `enrollment`) VALUES
+(12, 2, 25, 10, '201b018');
 
 -- --------------------------------------------------------
 
@@ -288,32 +323,38 @@ CREATE TABLE `users` (
   `profileImage` varchar(255) DEFAULT NULL,
   `location` varchar(255) NOT NULL,
   `courses_array` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '[]' CHECK (json_valid(`courses_array`)),
-  `test_array` longtext DEFAULT '[]'
+  `test_array` longtext DEFAULT '[]',
+  `verified` int(11) NOT NULL DEFAULT 0,
+  `enrollment` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `fname`, `lname`, `email`, `password`, `admin`, `organiser`, `description`, `profileImage`, `location`, `courses_array`, `test_array`) VALUES
-(3, 'Aditya ', 'Mishra', '201b016@juetguna.in', '$2y$10$qoHKVMU/9Fd9JAHF7jDQDuRDZrkMZlDC7/rZmWksB7al047wpgOGq', 1, 0, 'When a man learns to feel love, he must also bear the risk of feeling hate.', '65210fd118ecc3_IMG_20220310_224317_381.jpg', 'Guna, Madhya Pradesh', '0', '[]'),
-(4, 'Aditi', 'Mishra', 'thesocialknowledge@gmail.com', '$2y$10$4/Lm0.2sV4Dch/Dpp8smz.ulihe1vL00XdxtWKZSVEUXexHPPLtRy', 0, 1, '', '', '', '0', '[]'),
-(7, 'Aditya ', 'Mishra', 'mishra.aditya0902@gmail.com', '$2y$10$kUXYB1iK1etxI952T.AHsuZ8FvQxpvyBU/FFEUc06EpaJlZwh4rUG', 0, 1, '', '', '', '0', '[]'),
-(8, 'Aditya ', 'Mishra', 'mishra.aditya1352@gmail.com', '$2y$10$ZJp5.Ah1nShhJLn.dUhmaupyADR6sVaCoRaAdoUWwuO6SXwvo/vrG', 0, 0, 'Hii I am aditya', '65198e68a41d28_IMG_20220303_221451_542.jpg', 'Allahabad, Uttar Pradesh', '[\"1\"]', '[\"1\",\"5\"]'),
-(9, 'Ayush', '', '201b082@juetguna.in', '$2y$10$bqE6sKAIDsHUZ4fg2JOCgu6RvKEcFSoOYYsEMBzZFnL94ffwo1BCO', 0, 0, '', '', '', '0', '[]'),
-(10, 'Tarushi', 'Agarwal', 'tarushi.aga2019@gmail.com', '$2y$10$bankpzEsoJBTpn1NjvrCSO2iVkIpP9b5wHbYXO009gbE2apylgKcy', 0, 0, '', '', '', '[1]', '[\"1\"]'),
-(11, 'Ayush', 'Mishra', '20b0126@juetguna.in', '$2y$10$PAQ3TBdRjL36zwAVkuKpIervwxL2J5ZzvTVS..uUWHMhifZOGNTOu', 0, 0, '', NULL, '', '0', '[]'),
-(12, 'Shashi ', 'Mishra', 'shashi.mishra0902@gmail.com', '$2y$10$HeQ75aX8jLxR7l9AVNLxDer.8P7eaSWq/CSt8MKQuW9a4BIn44Bdy', 0, 0, '', NULL, '', '[]', '[]');
+INSERT INTO `users` (`user_id`, `fname`, `lname`, `email`, `password`, `admin`, `organiser`, `description`, `profileImage`, `location`, `courses_array`, `test_array`, `verified`, `enrollment`) VALUES
+(3, 'Aditya ', 'Mishra', '201b016@juetguna.in', '$2y$10$qoHKVMU/9Fd9JAHF7jDQDuRDZrkMZlDC7/rZmWksB7al047wpgOGq', 1, 0, 'When a man learns to feel love, he must also bear the risk of feeling hate.', '65242af5b6a3a3_IMG_20220525_132135_405.jpg', 'Guna, Madhya Pradesh', '0', '[]', 1, '201b016'),
+(4, 'Aditi', 'Mishra', 'thesocialknowledge@gmail.com', '$2y$10$4/Lm0.2sV4Dch/Dpp8smz.ulihe1vL00XdxtWKZSVEUXexHPPLtRy', 0, 1, 'Genius is one percent inspiration and ninety-nine percent perspiration.', '65226dd815cb14_aditi.jpeg', 'Guna, Madhya Pradesh', '0', '[]', 1, ''),
+(10, 'Tarushi', 'Agarwal', 'tarushi.aga2019@gmail.com', '$2y$10$bankpzEsoJBTpn1NjvrCSO2iVkIpP9b5wHbYXO009gbE2apylgKcy', 0, 0, '', '65227520de1fc10_IMG_20210117_104650_279.jpg', 'Pune, Maharastra', '[1]', '[\"1\"]', 0, ''),
+(15, 'Aditya', 'Rana', 'attendancemanagement1112@gmail.com', '$2y$10$cqaaNRNw8mPp01VNMBZySO8dAmfmrbVKGUxl8VnsVnV0oiXnNokrq', 0, 1, 'It is foolish to fear what we have yet to see and know.', '652424665348a15_adityar.png', '', '[]', '[]', 1, ''),
+(16, 'Aditya', 'Rana', 'memosofaditya@gmail.com', '$2y$10$uzyOJxPe8W3pUoT2tmrfQuhL8VVFIb/3ogBAT6OY7Noj7pnGkqs4K', 0, 1, '', '652427b4ac45716_adityar.png', 'Noida', '[\"1\"]', '[\"5\",\"9\"]', 1, ''),
+(25, 'Aditya ', 'Rana', '201b018@juetguna.in', '$2y$10$j5CX5VFh2l1jHQ5Q.FbyAOljgXftHjBQvj.aETusyx.YdyVLOMLAG', 0, 0, '', NULL, '', '[]', '[]', 0, '201b018');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verification`
+--
+
+CREATE TABLE `verification` (
+  `sno` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `answers`
---
-ALTER TABLE `answers`
-  ADD PRIMARY KEY (`answer_id`);
 
 --
 -- Indexes for table `certificates`
@@ -334,12 +375,6 @@ ALTER TABLE `courses`
   ADD PRIMARY KEY (`course_id`);
 
 --
--- Indexes for table `coursetests`
---
-ALTER TABLE `coursetests`
-  ADD PRIMARY KEY (`coursetest_id`);
-
---
 -- Indexes for table `course_content`
 --
 ALTER TABLE `course_content`
@@ -358,6 +393,12 @@ ALTER TABLE `feedback`
   ADD PRIMARY KEY (`sno`);
 
 --
+-- Indexes for table `forgotpass`
+--
+ALTER TABLE `forgotpass`
+  ADD PRIMARY KEY (`sno`);
+
+--
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
@@ -370,26 +411,32 @@ ALTER TABLE `test`
   ADD PRIMARY KEY (`test_id`);
 
 --
+-- Indexes for table `testscores`
+--
+ALTER TABLE `testscores`
+  ADD PRIMARY KEY (`sno`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indexes for table `verification`
 --
+ALTER TABLE `verification`
+  ADD PRIMARY KEY (`sno`);
 
 --
--- AUTO_INCREMENT for table `answers`
+-- AUTO_INCREMENT for dumped tables
 --
-ALTER TABLE `answers`
-  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `certificates`
 --
 ALTER TABLE `certificates`
-  MODIFY `certificate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `certificate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `chatbot`
@@ -401,19 +448,13 @@ ALTER TABLE `chatbot`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `coursetests`
---
-ALTER TABLE `coursetests`
-  MODIFY `coursetest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `course_content`
 --
 ALTER TABLE `course_content`
-  MODIFY `page_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `page_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `details`
@@ -428,22 +469,40 @@ ALTER TABLE `feedback`
   MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `forgotpass`
+--
+ALTER TABLE `forgotpass`
+  MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `testscores`
+--
+ALTER TABLE `testscores`
+  MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `verification`
+--
+ALTER TABLE `verification`
+  MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
