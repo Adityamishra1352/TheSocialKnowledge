@@ -95,7 +95,7 @@ $test_id = $_GET['test_id'];
                     <h4>Present Questions:</h4>
                 </li>
             </ul>
-            <table class="table my-2 table-striped" id="mytable">
+            <table class="table my-2  table-hover" id="mytable">
                 <thead>
                     <tr>
                         <th scope="col">Question ID</th>

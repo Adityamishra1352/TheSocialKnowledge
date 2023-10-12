@@ -8,7 +8,8 @@ if ($data && isset($data->userScore)) {
     $user_id=$data->user_id;
     $test_id=$data->test_id;
     $enrollment=$data->enrollment;
-    $sql="INSERT INTO `testscores`(`score`,`test_id`,`user_id`,`enrollment`)VALUES('$userScore','$test_id','$user_id','$enrollment')";
+    $errors=$data->errors;
+    $sql="INSERT INTO `testscores`(`score`,`test_id`,`user_id`,`enrollment`,`errors`)VALUES('$userScore','$test_id','$user_id','$enrollment','$errors')";
     $result=mysqli_query($conn,$sql);
     if($result){
         echo json_encode(["message" => "Score stored successfully"]);

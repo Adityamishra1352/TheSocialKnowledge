@@ -6,7 +6,7 @@ if(isset($_GET['question_id'])){
     $sql="DELETE FROM `questions` WHERE `question_id`='$sno'";
     $result=mysqli_query($conn,$sql);
     if($result){
-      header('location:addQuestions.php?testid='.$test_id.'');
+      header('location:addQuestions.php?test_id='.$test_id.'');
     }
   }
 ?>

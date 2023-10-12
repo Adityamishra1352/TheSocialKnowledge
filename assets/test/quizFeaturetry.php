@@ -73,46 +73,30 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     const questions = [];
 
     function fetchQuestions(testId) {
-        fetch(`getQuestions.php?testid=${testId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length < questionsforeach) {
-                    questions.push(...data);
-                } else {
-                    const randomIndices = [];
-                    while (randomIndices.length < questionsforeach) {
-                        const randomIndex = Math.floor(Math.random() * data.length);
-                        if (!randomIndices.includes(randomIndex)) {
-                            randomIndices.push(randomIndex);
-                        }
-                    }
-                    randomIndices.forEach(index => {
-                        const questionData = data[index];
-                        const options = questionData.options;
-                        shuffleArray(options);
-                        const newQuestion = {
-                            numb: questions.length + 1,
-                            question: questionData.question_text,
-                            answer: questionData.correct_answer,
-                            options: options
-                        };
-                        questions.push(newQuestion);
-                    });
-                }
-                shuffleArray(questions);
-            })
-            .catch(error => {
-                console.error('Error fetching questions:', error);
-            });
-    }
+    fetch(`getQuestions.php?testid=${testId}`)
+        .then(response => response.json())
+        .then(data => {
+            shuffleArray(data);
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
+            if (data.length <= questionsforeach) {
+                questions.push(...data);
+            } else {
+                questions.push(...data.slice(0, questionsforeach));
+            }
+            shuffleArray(questions);
+        })
+        .catch(error => {
+            console.error('Error fetching questions:', error);
+        });
+}
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+console.log(questions);
     const fname = "<?php echo $fname; ?>";
     const lname = "<?php echo $lname; ?>";
     const testId = <?php echo $test_id; ?>;

@@ -1,8 +1,8 @@
 //right-click disable
-document.addEventListener("contextmenu", function(e) {
-  e.preventDefault();
-  window.alert("Right-click is not allowed on this page!");
-}, false);
+// document.addEventListener("contextmenu", function(e) {
+//   e.preventDefault();
+//   window.alert("Right-click is not allowed on this page!");
+// }, false);
 //full screen feature
 function openFullscreen() {
   const elem = document.documentElement; // Get the document element
@@ -162,20 +162,30 @@ next_btn.onclick = () => {
     showResult();
   }
 };
+var counterrors=0;
 function showQuetions(index) {
+  console.log(questions[index].question_text);
   const que_text = document.querySelector(".que_text");
   let que_tag =
-    "<span>" + (index + 1) + ". " + questions[index].question + "</span>";
+    "<span>" + (index + 1) + ". " + questions[index].question_text + "</span>";
   let option_tag = "";
-  for (let i = 0; i < questions[index].options.length; i++) {
-    if (questions[index].options[i]) {
-      option_tag +=
-        '<div class="option"><span>' +
-        questions[index].options[i] +
-        "</span></div>";
+
+  que_text.innerHTML = que_tag;
+  if (questions[index].options !== null) {
+    for (let i = 0; i < questions[index].options.length; i++) {
+      if (questions[index].options[i]) {
+        option_tag +=
+          '<div class="option"><span>' +
+          questions[index].options[i] +
+          "</span></div>";
+      }
     }
   }
-  que_text.innerHTML = que_tag;
+  else{
+    option_tag='<div class="option"><span>Error occured! Dont worry this questions wont be counted</span>';
+    counterrors+=1;
+  }
+
   option_list.innerHTML = option_tag;
 
   const option = option_list.querySelectorAll(".option");
@@ -183,21 +193,22 @@ function showQuetions(index) {
     option[i].setAttribute("onclick", "optionSelected(this)");
   }
 }
+
 const answers = [];
 function optionSelected(answer) {
   clearInterval(counter);
   // clearInterval(counterLine);
   let userAns = answer.textContent;
-  let correcAns = questions[que_count].answer;
+  let correcAns = questions[que_count].correct_answer;
   const allOptions = option_list.children.length;
   answer.classList.add("correct");
   if (userAns == correcAns) {
     userScore += 1;
   }
   const questionObject = {
-    question: questions[que_count].question,
+    question: questions[que_count].question_text,
     answer: userAns,
-    correctAnswer: questions[que_count].answer,
+    correctAnswer: questions[que_count].correct_answer,
   };
   answers.push(questionObject);
   for (i = 0; i < allOptions; i++) {
@@ -360,6 +371,7 @@ console.log(test_id);
 console.log(user_id);
 console.log(enrollment);
   const data = {
+    errors:counterrors,
     enrollment:enrollment,
     test_id: test_id,
     user_id: user_id,

@@ -325,9 +325,6 @@ return storeIndex + 1<br><br>
           <label>Email:
             <a href="mailto:201b016@juetguna.in">201b016@juetguna.in</a><br>
           </label>
-          <label>Phone Number:
-            <a href="tel:+919555629601">+919555629601</a>
-          </label><br>
         </div>
       </div>
     </div>
