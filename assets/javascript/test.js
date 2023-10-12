@@ -1,3 +1,8 @@
+//right-click disable
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  window.alert("Right-click is not allowed on this page!");
+}, false);
 //full screen feature
 function openFullscreen() {
   const elem = document.documentElement; // Get the document element
