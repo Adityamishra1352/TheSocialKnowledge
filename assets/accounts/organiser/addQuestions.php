@@ -7,7 +7,7 @@ if (
 ) {
     header('location: ../../403.php');
 }
-$test_id = $_GET['testid'];
+$test_id = $_GET['test_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@ $test_id = $_GET['testid'];
                         <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../dashboard.php">Dashboard</a>
+                        <a class="nav-link" href="organiser.php">Organiser Panel</a>
                     </li>
                 </ul>
                 <ul class="d-flex">
@@ -47,7 +47,7 @@ $test_id = $_GET['testid'];
     </nav>
     <nav class="navbar navbar-light bg-light">
         <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Time Features</button>
+            <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
             <button class="btn btn-outline-success me-2" type="button" id="users_btn">Completed Test Users</button>
@@ -62,7 +62,7 @@ $test_id = $_GET['testid'];
     }
     if (isset($_GET['timeUpdate']) && $_GET['timeUpdate'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>The time for the test has been changed successfully!!</strong>
+        <strong>The constraints for the test has been changed successfully!!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
     }
@@ -135,6 +135,14 @@ $test_id = $_GET['testid'];
                 <input type="datetime-local" class="form-control" id="startTime" required name="startTime">
             </div>
             <div class="mb-3">
+                <label for="numberofQuestions" class="form-label">Number of Questions:*</label>
+                <input type="number" class="form-control" id="numberofQuestions" required name="numberofQuestions">
+            </div>
+            <div class="mb-3">
+                <label for="timeforeach" class="form-label">Time for each question(in seconds):*</label>
+                <input type="number" class="form-control" id="timeforeach" required name="timeforeach">
+            </div>
+            <div class="mb-3">
                 <label for="endTime" class="form-label">Time To End:*</label>
                 <input type="datetime-local" class="form-control" id="endTime" required name="endTime">
                 <input type="hidden" name="test_id" value=<?php echo $test_id; ?>>
@@ -143,10 +151,12 @@ $test_id = $_GET['testid'];
         </form>
     </div>
     <div class="container users_container my-2 p-1" style="display:none;">
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar">
             <form class="container-fluid justify-content-start">
+                <div class="d-flex">
                 <button class="btn btn-outline-success me-2" type="button" id="exportExcel">Export Excel
-                    Sheet:</button>
+                    Sheet</button>
+                </div>
             </form>
         </nav>
         <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
@@ -154,9 +164,11 @@ $test_id = $_GET['testid'];
             include '../../_dbconnect.php';
             $dataArray = array();
             $pic = null;
+            $count=0;
             $user_sql = "SELECT * FROM users WHERE test_array LIKE '%\"$test_id\"%'";
             $user_result = mysqli_query($conn, $user_sql);
             while ($rowUser = mysqli_fetch_assoc($user_result)) {
+                $count=$count+1;
                 $user_id = $rowUser['user_id'];
                 $score_sql = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
                 $score_result = mysqli_query($conn, $score_sql);
@@ -164,20 +176,33 @@ $test_id = $_GET['testid'];
                 $score = $scoreRow['score'];
                 $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
                 $email = $rowUser['email'];
+                $enrollment=$rowUser['enrollment'];
                 $userData = array(
                     "user_id" => $user_id,
                     "name" => $name,
                     "score" => $score,
-                    "email" => $email
+                    "email" => $email,
+                    "enrollment"=>$enrollment
                 );
                 $dataArray[] = $userData;
                 echo '<div class="card" style="width: max-content;">
             <div class="card-body">
               <h5 class="card-title">Name: ' . $name . '</h5>
               <p class="text-secondary">Email: ' . $email . '</p>
+              <p class="text-secondary">Enroll No. : ' . $enrollment . '</p>
               <p class="card-text">Score: ' . $score . '</p>
             </div>
           </div>';
+            }
+            if ($count == 0) {
+                echo '<div class="card">
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>No one has attempted the quiz yet.</p>
+                    <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
+                  </blockquote>
+                </div>
+              </div>';
             }
             ?>
         </div>
@@ -186,11 +211,11 @@ $test_id = $_GET['testid'];
     <script>
         document.getElementById("exportExcel").addEventListener("click", function () {
     const data = [
-        ["User ID", "Name", "Email", "Score"]
+        ["User ID", "Name", "Email", "Score", "Enrollment Number"]
     ];
     <?php
     foreach ($dataArray as $userData) {
-        echo "data.push(['" . $userData['user_id'] . "', '" . $userData['name'] . "', '" . $userData['email'] . "', '" . $userData['score'] . "']);\n";
+        echo "data.push(['" . $userData['user_id'] . "', '" . $userData['name'] . "', '" . $userData['email'] . "', '" . $userData['score'] . "','".$userData['enrollment']."']);\n";
     }
     ?>
     const workbook = XLSX.utils.book_new();

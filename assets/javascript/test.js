@@ -353,7 +353,9 @@ function sendToStorage(){
   console.log(userScore);
 console.log(test_id);
 console.log(user_id);
+console.log(enrollment);
   const data = {
+    enrollment:enrollment,
     test_id: test_id,
     user_id: user_id,
     userScore: userScore

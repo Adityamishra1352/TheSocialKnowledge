@@ -85,7 +85,7 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
                   <h5 class="card-title">' . $heading . '</h5>
                   <p class="card-text text-secondary">' . $formattedDate . '</p>
                   <p class="card-text">' . $description . '</p>
-                  <a href="addQuestions.php?testid=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
+                  <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';

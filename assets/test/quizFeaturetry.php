@@ -21,6 +21,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     }
     $fname = null;
     $lname = null;
+    $enroll= null;
     $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
     $user_result = mysqli_query($conn, $user_sql);
     $test_array = 0;
@@ -28,6 +29,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
         $fname = $rowUser['fname'];
         $lname = $rowUser['lname'];
         $test_array = $rowUser['test_array'];
+        $enroll=$rowUser['enrollment'];
     }
 
     $decodedArray = json_decode($test_array);
@@ -66,14 +68,15 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     const testStart=<?php echo json_encode($startTime);?>;
     const decodedArray=<?php echo json_encode($decodedArray);?>;
     const test_id=<?php echo json_encode($test_id);?>;
-
+    const enrollment=<?php echo json_encode($enroll);?>;
+    console.log(questionsforeach);
     const questions = [];
 
     function fetchQuestions(testId) {
         fetch(`getQuestions.php?testid=${testId}`)
             .then(response => response.json())
             .then(data => {
-                if (data.length <= questionsforeach) {
+                if (data.length < questionsforeach) {
                     questions.push(...data);
                 } else {
                     const randomIndices = [];
@@ -96,7 +99,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
                         questions.push(newQuestion);
                     });
                 }
-
                 shuffleArray(questions);
             })
             .catch(error => {

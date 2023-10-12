@@ -74,6 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="../../index.php">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../test/test.php">Quiz</a>
+                    </li>
                     <?php
                     if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
                         echo '<li class="nav-item">
@@ -148,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       </div>';
     }
     ?>
-    <?php
+    <!-- <?php
     if ($verified == 0) {
         echo '<div class="toast show position-fixed top-2 end-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -165,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
         </div>';
     }
-    ?>
+    ?> -->
     <div class="modal fade" id="verifyProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

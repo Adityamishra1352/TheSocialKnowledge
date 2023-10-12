@@ -1,73 +1,70 @@
 <?php
 session_start();
 include '../_dbconnect.php';
-$message = 0;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
 
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+// require 'phpmailer/src/Exception.php';
+// require 'phpmailer/src/PHPMailer.php';
+// require 'phpmailer/src/SMTP.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fname = $_POST['firstName'];
     $lname = $_POST['lastName'];
     $email = $_POST['emailAddress'];
     $password = $_POST['passWord'];
+    $enroll=$_POST['enrollment'];
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $message = 3;
+        header('location:signup.php?wrongEmail=true');
     } elseif (strlen($password) < 8) {
-        $message = 4;
-    } else {
+        header('location:signup.php?passwordLess=true');
+    }elseif(strlen($enroll)>8){
+        header('location:signup.php?enroll=true');
+    }
+     else {
         $fetch_email = "SELECT * FROM `users` WHERE `email`='$email'";
         $fetch_result = mysqli_query($conn, $fetch_email);
         $num = mysqli_num_rows($fetch_result);
         if ($num >= 1) {
-            $message = 2;
+            header('location:signup.php?emailExists=true');
         } else {
-            $token = sprintf("%04d", mt_rand(0, 9999));
+            // $token = sprintf("%04d", mt_rand(0, 9999));
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`) VALUES ('$fname', '$lname', '$email', '$hash');";
+            $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`,`enrollment`) VALUES ('$fname', '$lname', '$email', '$hash','$enroll');";
             $result_signup = mysqli_query($conn, $signup_sql);
             // $_SESSION['loggedin']=true;
             // $_SESSION['user_id']=;
             if ($result_signup) {
-                $tokenSql = "INSERT INTO `verification`(`token`,`email`)VALUES('$token','$email')";
-                $tokenResult = mysqli_query($conn, $tokenSql);
-                if ($tokenResult) {
-                    $message = 1;
-                    $mail = new PHPMailer(true);
-                    try {
-                        $mail->isSMTP();
-                        $mail->Host = 'smtp.gmail.com';
-                        $mail->SMTPAuth = true;
-                        $mail->Username = 'socialknowledge38@gmail.com';
-                        $mail->Password = 'imcdramgpiuaswii';
-                        $mail->SMTPSecure = 'ssl';
-                        $mail->Port = 465;
-                        $mail->setFrom('socialknowledge38@gmail.com');
-                        $mail->addAddress($_POST['emailAddress']);
-                        $emailTemplate = file_get_contents('verification_email.html');
-                        $emailTemplate = str_replace('[NAME]', $fname, $emailTemplate);
-                        $emailTemplate = str_replace('[TOKEN]', $token, $emailTemplate);
-                        $mail->isHTML(true);
-                        $mail->Subject = "Email Verification";
-                        $mail->Body = $emailTemplate;
-                        $mail->send();
-                    } catch (Exception $e) {
-                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                    }
-                }
-                header('location:signup.php?message=' . $message);
+                // $tokenSql = "INSERT INTO `verification`(`token`,`email`)VALUES('$token','$email')";
+                // $tokenResult = mysqli_query($conn, $tokenSql);
+                // if ($tokenResult) {
+                //     $message = 1;
+                //     $mail = new PHPMailer(true);
+                //     try {
+                //         $mail->isSMTP();
+                //         $mail->Host = 'smtp.gmail.com';
+                //         $mail->SMTPAuth = true;
+                //         $mail->Username = 'socialknowledge38@gmail.com';
+                //         $mail->Password = 'imcdramgpiuaswii';
+                //         $mail->SMTPSecure = 'ssl';
+                //         $mail->Port = 465;
+                //         $mail->setFrom('socialknowledge38@gmail.com');
+                //         $mail->addAddress($_POST['emailAddress']);
+                //         $emailTemplate = file_get_contents('verification_email.html');
+                //         $emailTemplate = str_replace('[NAME]', $fname, $emailTemplate);
+                //         $emailTemplate = str_replace('[TOKEN]', $token, $emailTemplate);
+                //         $mail->isHTML(true);
+                //         $mail->Subject = "Email Verification";
+                //         $mail->Body = $emailTemplate;
+                //         $mail->send();
+                //     } catch (Exception $e) {
+                //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                //     }
+                // }
+                header('location:signup.php?success=true');
             }
         }
     }
-}
-
-if (isset($_GET['message'])) {
-    $message = $_GET['message'];
-} else {
-    $message = 0;
 }
 ?>
 
@@ -77,7 +74,7 @@ if (isset($_GET['message'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Social Knowledge:Signup</title>
+    <title>The Social Knowledge: Signup</title>
     <link rel="stylesheet" href="/TheSocialKnowledge/assets/css/signup.css">
     <!-- <script type="text/javascript">
       document.addEventListener("contextmenu", function(e) {
@@ -111,24 +108,33 @@ if (isset($_GET['message'])) {
             </div>
         </nav>
         <?php
-        if ($message == 1) {
+        if(isset($_GET['success']) && $_GET['success']==true){
             echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Successfully Signed Up</strong> Verify Your account.
+            <strong>Successfully Signed Up!!</strong> Please Login.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        } elseif ($message == 2) {
+        }
+        if(isset($_GET['emailExists']) && $_GET['emailExists']==true){
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Email already exists</strong> You should use another email.
+            <strong>Email already exists!!</strong> Verify Your account.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        } elseif ($message == 3) {
+        }
+        if(isset($_GET['wrongEmail']) && $_GET['wrongEmail']==true){
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Please give correct email!!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        } elseif ($message == 4) {
+        }
+        if (isset($_GET['passwordLess']) && $_GET['passwordLess']==true) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Password must be greater than 8 digits!!</strong> You should use another password.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        } 
+        if (isset($_GET['enroll']) && $_GET['enroll']==true) {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Wrong Enrollment Number!!</strong> Please enter the correct enrollment number.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
@@ -141,10 +147,11 @@ if (isset($_GET['message'])) {
         </div>
         <div class="input-field my-4">
             <form action="signup.php" method="post">
-                <input type="text" class="item1 m-2 p-2" id="firstName" placeholder="First Name" name="firstName">
+                <input type="text" class="item1 m-2 p-2" required id="firstName" placeholder="First Name*" name="firstName">
                 <input type="text" class="item2 m-2 p-2" id="lastName" placeholder="Last Name" name="lastName">
-                <input type="email" class="item3 m-2 p-2" id="email" placeholder="Email" name="emailAddress">
-                <input type="password" class="item4 m-2 p-2" id="passWord" placeholder="Password" name="passWord">
+                <input type="text" class="item2 m-2 p-2" required id="enrollment" placeholder="Enrollment Number*" name="enrollment">
+                <input type="email" class="item3 m-2 p-2" required id="email" placeholder="Email*" name="emailAddress">
+                <input type="password" class="item4 m-2 p-2" required id="passWord" placeholder="Password*" name="passWord">
                 <!-- <div class="passwordmessage">
                 <b>Password must contain:
                 <ul>
