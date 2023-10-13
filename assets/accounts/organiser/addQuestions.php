@@ -75,11 +75,12 @@ $test_id = $_GET['test_id'];
                 </li>
             </ul>
             <div class="changethequestions_box p-2">
+            <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces for a line break.</span>
                 <div id="questions-form">
                     <label for="num-questions" id="noofquestionslabel">How many questions do you want to
                         input?(Please enter 5 questions at once)</label><br><br>
                     <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
-                        style="width: 20%;" class="p-1"><br><br>
+                        style="width: 20%;" class="p-1 form-control"><br><br>
                     <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
                 </div>
                 <form action="uploadQuestions.php" method="post" id="questionsDynamic">
@@ -95,7 +96,7 @@ $test_id = $_GET['test_id'];
                     <h4>Present Questions:</h4>
                 </li>
             </ul>
-            <table class="table my-2  table-hover" id="mytable">
+            <table class="table my-2 table-hover" id="mytable">
                 <thead>
                     <tr>
                         <th scope="col">Question ID</th>
@@ -267,9 +268,8 @@ $test_id = $_GET['test_id'];
             for (let i = 1; i <= numQuestions; i++) {
                 const questionContainer = document.createElement("div");
                 const questionLabel = document.createElement("label");
-                const questionInput = document.createElement("input");
-                questionInput.type = "text";
-                questionInput.className = "my-2 mr-2 p-1";
+                const questionInput = document.createElement("textarea");
+                questionInput.className = "my-2 p-1 form-control";
                 questionInput.name = `question-${i}`;
                 questionInput.placeholder = `Question ${i}`;
                 questionLabel.appendChild(questionInput);
@@ -277,13 +277,15 @@ $test_id = $_GET['test_id'];
                 const numOptions = document.createElement("input");
                 numOptions.type = "number";
                 numOptions.min = "2";
-                numOptions.max = "6";
+                numOptions.max = "4";
                 numOptions.required = true;
+                numOptions.style="width:10%;";
                 numOptions.value = "2";
-                numOptions.className = "p-1";
+                numOptions.className = "p-1 form-control";
                 numOptions.name = `num-options-${i}`;
                 const optionsLabel = document.createElement("label");
                 optionsLabel.textContent = "Number of Options:";
+                optionsLabel.style="display:block;";
                 optionsLabel.appendChild(numOptions);
                 questionContainer.appendChild(optionsLabel);
 
@@ -296,9 +298,9 @@ $test_id = $_GET['test_id'];
                     const num = parseInt(numOptions.value);
                     optionsContainer.innerHTML = "";
                     for (let j = 1; j <= num; j++) {
-                        const optionInput = document.createElement("input");
-                        optionInput.type = "text";
-                        optionInput.className = "p-1";
+                        const optionInput = document.createElement("textarea");
+                        optionInput.className = "p-1 form-control m-1";
+                        optionInput.style="width:50%";
                         optionInput.name = `option-${i}-${j}`;
                         optionInput.placeholder = `Option ${j}`;
                         optionsContainer.appendChild(optionInput);
@@ -307,9 +309,8 @@ $test_id = $_GET['test_id'];
 
                 const answerContainer = document.createElement("div");
                 const answerLabel = document.createElement("label");
-                const answerInput = document.createElement("input");
-                answerInput.type = "text";
-                answerInput.className = "p-1";
+                const answerInput = document.createElement("textarea");
+                answerInput.className = "p-1 form-control";
                 answerInput.name = `answer-${i}`;
                 answerInput.placeholder = `Answer ${i}`;
                 answerLabel.appendChild(answerInput);

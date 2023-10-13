@@ -12,7 +12,7 @@ const generatePdf = async (name, id) => {
   const pages = pdfDoc.getPages();
   const FirstPg = pages[0];
   FirstPg.drawText(name, {
-    x: 270,
+    x: 280,
     y: 280,
     size: 40,
     font: myFont,

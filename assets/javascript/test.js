@@ -171,6 +171,7 @@ function showQuetions(index) {
   let option_tag = "";
 
   que_text.innerHTML = que_tag;
+
   if (questions[index].options !== null) {
     for (let i = 0; i < questions[index].options.length; i++) {
       if (questions[index].options[i]) {

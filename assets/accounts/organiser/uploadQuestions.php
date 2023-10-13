@@ -5,8 +5,6 @@ include '../../_dbconnect.php';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $questions = [];
     $test_id = $_POST['test_id'];
-    
-    // Define a function to generate an array with null values for missing options
     function generateOptionsArray($options) {
         $result = [];
         for ($i = 1; $i <= 4; $i++) {
@@ -17,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     foreach ($_POST as $key => $value) {
         if (strpos($key, "question-") === 0) {
-            // New question found
             $questionText = $value;
+            $questionText = str_replace("   ", "<br>", $questionText);
             $questionObj = [
                 'question' => $questionText,
                 'options' => [],
@@ -29,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             list(, $questionNum, $optionNum) = explode("-", $key);
             $questionIndex = $questionNum - 1;
             if ($optionNum > 4) {
-                continue; // Ignore invalid option numbers
+                continue;
             }
             if (!empty($value)) {
                 $questions[$questionIndex]['options'][$optionNum] = $value;
@@ -39,8 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $questions[$questionIndex]['answer'] = $value;
         }
     }
-    
-    // Insert questions into the database
+
     foreach ($questions as $questionData) {
         $questionText = $questionData['question'];
         $options = generateOptionsArray($questionData['options']);
@@ -52,11 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         if (!$result) {
             echo mysqli_error($conn);
-            exit; // Stop processing if an error occurs
+            exit;
         }
     }
-    
-    // Redirect after all questions are inserted
     if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
         header('location:editCourse.php?course_id=' . $_GET['course_id'] . '&deleteContent=true');
     }

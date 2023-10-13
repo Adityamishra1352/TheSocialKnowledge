@@ -11,7 +11,7 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-        <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -49,8 +49,8 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
             <button class="btn btn-sm btn-outline-secondary" type="button" id="addQuiz_btn">Add A Quiz</button>
         </form>
     </nav>
-    <?php 
-    if(isset($_GET['addQuiz']) && $_GET['addQuiz']==true){
+    <?php
+    if (isset($_GET['addQuiz']) && $_GET['addQuiz'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Quiz has been added successfully!!</strong> View From Quizes Posted by you for more options.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -67,6 +67,9 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
+                $timeEnd = $rowQuiz['heldtill'];
+                $questionsofeach = $rowQuiz['questionsforeach'];
+                $timeforeach = $rowQuiz['timeforeach'];
                 $questions_sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
                 $questions_result = mysqli_query($conn, $questions_sql);
                 if ($questions_result) {
@@ -79,12 +82,14 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
                 $timeDate = $rowQuiz['time'];
                 $timestamp = strtotime($timeDate);
                 $formattedDate = date('d F Y', $timestamp);
+                $formattedTime = date('H:i', $timestamp);
                 $description = $rowQuiz['description'];
                 echo '<div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
-                  <p class="card-text text-secondary">' . $formattedDate . '</p>
-                  <p class="card-text">' . $description . '</p>
+                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', '.$formattedDate.'</p>
+                  <p class="card-text">Question Count: ' . $questionsofeach . '</p>
+                  <p class="card-text">Time for each question: ' . $timeforeach . '</p>
                   <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
