@@ -3,6 +3,7 @@
 //   e.preventDefault();
 //   window.alert("Right-click is not allowed on this page!");
 // }, false);
+
 //full screen feature
 function openFullscreen() {
   const elem = document.documentElement; // Get the document element
@@ -36,35 +37,35 @@ const time_info = document.querySelector(".time_info");
 function updateTimer() {
   const databaseDate = new Date(testStart);
   const currentDate = new Date();
-  
+
   const timeDifference = databaseDate - currentDate;
 
   if (timeDifference > 0) {
-    info_box.style.display="none";
+    info_box.style.display = "none";
     time_box.classList.add("activeTime");
     const remainingHours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const remainingMinutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
     const remainingSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
     const time_text =
-      'Quiz yet to start. Remaining Time: <br>' +
+      "<b>Quiz yet to start.</b><br>Remaining Time: " +
       remainingHours +
-      ' hours, ' +
+      " hours, " +
       remainingMinutes +
-      ' minutes, ' +
+      " minutes, " +
       remainingSeconds +
-      ' seconds';
+      " seconds";
 
     time_info.innerHTML = time_text;
   } else {
     time_box.classList.remove("activeTime");
-    info_box.style.display="block";
+    info_box.style.display = "block";
   }
 }
 setInterval(updateTimer, 1000);
 updateTimer();
-
-
 
 const exit_btn = info_box.querySelector(".buttons .quit");
 const continue_btn = info_box.querySelector(".buttons .restart");
@@ -74,7 +75,31 @@ const option_list = document.querySelector(".option_list");
 const time_line = document.querySelector("header .time_line");
 const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
+const end_box=document.querySelector(".end_box");
 const totalTimeForEach = timeforeach * questionsforeach;
+// string box implementation
+const string_box=document.querySelector(".string_box");
+if(showTest==0){
+  info_box.classList.add("deactivateInfo");
+}
+else{
+  info_box.classList.remove("deactivateInfo");
+  string_box.classList.add("deactivateString");
+}
+
+function checkTimeAndShowResult() {
+  const endDateTime = new Date(endTime);
+  const currentTime = new Date();
+  if (currentTime > endDateTime && quiz_box.classList.contains("activeQuiz")) {
+      showResult();
+  }
+  else if(currentTime> endDateTime && !info_box.classList.contains("deactivateInfo")){
+    end_box.classList.add("activeEndBox");
+    info_box.classList.add("deactivateInfo");
+  }
+}
+checkTimeAndShowResult();
+const checkInterval = setInterval(checkTimeAndShowResult, 1000);
 continue_btn.onclick = () => {
   info_box.classList.add("deactivateInfo");
   openFullscreen();
@@ -97,7 +122,7 @@ continue_btn.onclick = () => {
     })
     .catch((error) => {
       console.error("Error updating test array:", error);
-    }); 
+    });
 };
 
 let timeValue = timeforeach;
@@ -108,15 +133,7 @@ let counter;
 let counterLine;
 let widthValue = 0;
 
-const view_answers = result_box.querySelector(".buttons .viewAnswers");
-const answers_box = document.querySelector(".answers_box");
 const quit_quiz = result_box.querySelector(".buttons .quit");
-view_answers.onclick = () => {
-  answers_box.classList.add("activeAnswers");
-  result_box.classList.remove("activeResult");
-  countQuestions = 0;
-  viewAnswers();
-};
 quit_quiz.onclick = () => {
   window.location.href = "test.php";
 };
@@ -162,7 +179,7 @@ next_btn.onclick = () => {
     showResult();
   }
 };
-var counterrors=0;
+var counterrors = 0;
 function showQuetions(index) {
   console.log(questions[index].question_text);
   const que_text = document.querySelector(".que_text");
@@ -181,10 +198,10 @@ function showQuetions(index) {
           "</span></div>";
       }
     }
-  }
-  else{
-    option_tag='<div class="option"><span>Error occured! Dont worry this questions wont be counted</span>';
-    counterrors+=1;
+  } else {
+    option_tag =
+      '<div class="option"><span>Error occured! Dont worry this questions wont be counted</span>';
+    counterrors += 1;
   }
 
   option_list.innerHTML = option_tag;
@@ -217,69 +234,13 @@ function optionSelected(answer) {
   }
   next_btn.classList.add("show");
 }
-const certificate_box = document.querySelector(".certificate_box");
-const certificate_btn = document.querySelector(".getCertificate");
 function showResult() {
   sendToStorage();
   exitFullscreen();
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
-  let passValue = Math.floor(questions.length * 0.7);
-  let moderateValue = Math.floor(questions.length * 0.3);
-  const scoreText = result_box.querySelector(".score_text");
-  if (userScore > passValue) {
-    certificate_btn.textContent = "Get Certificate";
-    certificate_btn.onclick = () => {
-      certificate_box.classList.add("activeCertificate");
-      result_box.classList.remove("activeResult");
-      getCertificate();
-    };
-    let scoreTag =
-      "<span>and congrats! , You got <p>" +
-      userScore +
-      "</p> out of <p>" +
-      questions.length +
-      "</p></span>";
-    scoreText.innerHTML = scoreTag;
-  } else if (userScore > moderateValue) {
-    certificate_btn.style.display = "none";
-    let scoreTag =
-      "<span>and nice , You got <p>" +
-      userScore +
-      "</p> out of <p>" +
-      questions.length +
-      "</p></span>";
-    scoreText.innerHTML = scoreTag;
-  } else {
-    certificate_btn.style.display = "none";
-    let scoreTag =
-      "<span>and sorry , You got only <p>" +
-      userScore +
-      "</p> out of <p>" +
-      questions.length +
-      "</p></span>";
-    scoreText.innerHTML = scoreTag;
-  }
-}
-const certi = document.querySelector("#certificatepdf");
-const getCertificate_btn = document.querySelector(".certification");
-const goBackResult_btn = document.querySelector("#gobacktoresult");
-function getCertificate() {
-  //have to add formattedId to each specific certificate
-  let formattedId = "SK" + testId + (certificate_id + 1);
-  console.log(formattedId);
-  getCertificate_btn.onclick = () => {
-    certi.style.display = "block";
-    let val = fname + " " + lname;
-    generatePdf(val, formattedId);
-    sendCertificateIdToPHP(formattedId);
-    getCertificate_btn.disabled = true;
-  };
-  goBackResult_btn.onclick = () => {
-    certificate_box.classList.remove("activeCertificate");
-    result_box.classList.add("activeResult");
-  };
+      // userScore +
 }
 function startTimer(time) {
   counter = setInterval(timer, 1000);
@@ -325,84 +286,19 @@ function queCounter(index) {
     "</p> Questions</span>";
   bottom_ques_counter.innerHTML = totalQueCounTag;
 }
-function viewAnswers() {
-  const currentQuestion = document.querySelector(".currentQuestion");
-  const answerMessage = document.querySelector(".answerMessage");
-  const nextAnswer = document.querySelector(".nextAnswer");
-
-  if (answers[countQuestions]) {
-    let ques_text = "<h3>" + answers[countQuestions].question + "</h3>";
-    currentQuestion.innerHTML = ques_text;
-
-    if (
-      answers[countQuestions].answer == answers[countQuestions].correctAnswer
-    ) {
-      let answered =
-        "<span>You have answered correctly!!<br><b>" +
-        answers[countQuestions].answer +
-        "</b></span>";
-      answerMessage.innerHTML = answered;
-    } else {
-      let answered =
-        "<span>You got the answer wrong. The correct option is:<br> <b>" +
-        answers[countQuestions].correctAnswer +
-        "</b><br> ,while you chose <b>" +
-        answers[countQuestions].answer +
-        " </b></span>";
-      answerMessage.innerHTML = answered;
-    }
-
-    nextAnswer.onclick = () => {
-      countQuestions++;
-      viewAnswers();
-    };
-  } else {
-    nextAnswer.value = "Results Page";
-    nextAnswer.onclick = () => {
-      answers_box.classList.remove("activeAnswers");
-      result_box.classList.add("activeResult");
-    };
-  }
-}
-
-
-function sendToStorage(){
+function sendToStorage() {
   console.log(userScore);
-console.log(test_id);
-console.log(user_id);
-console.log(enrollment);
+  console.log(test_id);
+  console.log(user_id);
+  console.log(enrollment);
   const data = {
-    errors:counterrors,
-    enrollment:enrollment,
+    errors: counterrors,
+    enrollment: enrollment,
     test_id: test_id,
     user_id: user_id,
-    userScore: userScore
-  };
-fetch("storeUserData.php", {
-  method: "POST",
-  body: JSON.stringify(data),
-  headers: {
-    "Content-Type": "application/json"
-  }
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Score sent to PHP:", data);
-  })
-  .catch((error) => {
-    console.error("Error sending score to PHP:", error);
-  });
-
-}
-// const answersString=JSON.stringify(answers);
-function sendCertificateIdToPHP(formattedId) {
-  const data = {
-    certificate_formatted: formattedId,
-    user_id: user_id,
-    test_id: testId,
     userScore: userScore,
   };
-  fetch("storeCertificateId.php", {
+  fetch("storeUserData.php", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -411,10 +307,10 @@ function sendCertificateIdToPHP(formattedId) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Certificate ID sent to PHP:", data);
+      console.log("Score sent to PHP:", data);
     })
     .catch((error) => {
-      console.error("Error sending data to PHP:", error);
+      console.error("Error sending score to PHP:", error);
     });
 }
-function updateProfile() {}
+// const answersString=JSON.stringify(answers);

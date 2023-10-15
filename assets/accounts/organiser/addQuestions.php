@@ -47,6 +47,7 @@ $test_id = $_GET['test_id'];
     </nav>
     <nav class="navbar navbar-light bg-light">
         <form class="container-fluid justify-content-start">
+            <button class="btn btn-outline-success me-2" type="button" id="setString">Start String</button>
             <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
@@ -66,7 +67,47 @@ $test_id = $_GET['test_id'];
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
     }
+    if (isset($_GET['startString']) && $_GET['startString'] == true) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>The start string for the test has been added successfully!!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
+    if (isset($_GET['scoreRelease']) && $_GET['scoreRelease'] == true) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>The score is now being displayed</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
     ?>
+    <?php
+    $recent_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
+    $recent_result = mysqli_query($conn, $recent_sql);
+    $recentRow = mysqli_fetch_assoc($recent_result);
+    $startTime = $recentRow['time'];
+    $questionsEach = $recentRow['questionsforeach'];
+    $timeforeach = $recentRow['timeforeach'];
+    $timeEnd = $recentRow['heldtill'];
+    $startString = $recentRow['startString'];
+    ?>
+    <div class="container startString_container my-2" style="display: none;width:30%;">
+        <h4>Set Start String:</h4>
+        <?php
+        if ($startString != null) {
+            echo '<ul><li><h6 class="text-secondary">Current: <b>' . $startString . '</b></h6></li></ul>';
+        }
+        ?>
+
+        <div class="container p-1">
+            <form action="startString.php" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="startString" placeholder="Enter the Start String">
+                    <input type="hidden" name="test_id" value="<?php echo $test_id; ?>">
+                </div>
+                <button type="submit" class="btn btn-outline-success my-2">Submit</button>
+            </form>
+        </div>
+    </div>
     <div class="editQuestions_container container" style="display:none;">
         <div class="container my-2 p-1 ">
             <ul>
@@ -75,19 +116,36 @@ $test_id = $_GET['test_id'];
                 </li>
             </ul>
             <div class="changethequestions_box p-2">
-            <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces for a line break.</span>
-                <div id="questions-form">
-                    <label for="num-questions" id="noofquestionslabel">How many questions do you want to
-                        input?(Please enter 5 questions at once)</label><br><br>
-                    <input type="number" id="num-questions" name="num-questions" min="1" max="25" required
-                        style="width: 20%;" class="p-1 form-control"><br><br>
-                    <button type="submit" id="questionsSubmit" class="btn btn-primary mb-2">Submit</button><br>
+                <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces
+                    for a line break.</span>
+                <ul>
+                    <li>
+                        <h6>Add Questions Individually:</h6>
+                    </li>
+                </ul>
+                <div class="container my-2">
+                    <form id="question-form" action="uploadQuestions.php" method="post">
+                        <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
+                        <div id="questions">
+                        </div>
+                        <button type="button" class="btn btn-primary m-2" id="add-question">Add Question</button>
+                        <button type="submit" class="btn btn-success m-2">Submit</button>
+                    </form>
                 </div>
-                <form action="uploadQuestions.php" method="post" id="questionsDynamic">
-                    <div class="inputQuestions"></div>
-                    <input type="hidden" name="test_id" value="<?php echo $test_id ?>">
-                    <button id="addquestion" class="btn btn-outline-success my-2">Add Question</button>
-                </form>
+                <ul>
+                    <li>
+                        <h6>Add questions via CSV file:</h6>
+                    </li>
+                </ul>
+                <div class="container my-2">
+                    <form id="question-form" action="uploadQuestions3.php" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
+                        <div id="questions">
+                        </div>
+                        <input type="file" name="csv_file" accept=".csv" required>
+                        <button type="submit" class="btn btn-success m-2">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="container my-2">
@@ -133,19 +191,23 @@ $test_id = $_GET['test_id'];
         <form action="setTime.php" method="post">
             <div class="mb-3">
                 <label for="startTime" class="form-label">Time To Start:*</label>
-                <input type="datetime-local" class="form-control" id="startTime" required name="startTime">
+                <input type="datetime-local" class="form-control" id="startTime" required name="startTime"
+                    placeholder="<?php echo $startTime; ?>">
             </div>
             <div class="mb-3">
                 <label for="numberofQuestions" class="form-label">Number of Questions:*</label>
-                <input type="number" class="form-control" id="numberofQuestions" required name="numberofQuestions">
+                <input type="number" placeholder="<?php echo $questionsEach; ?>" class="form-control"
+                    id="numberofQuestions" required name="numberofQuestions">
             </div>
             <div class="mb-3">
                 <label for="timeforeach" class="form-label">Time for each question(in seconds):*</label>
-                <input type="number" class="form-control" id="timeforeach" required name="timeforeach">
+                <input type="number" class="form-control" placeholder="<?php echo $timeforeach; ?>" id="timeforeach"
+                    required name="timeforeach">
             </div>
             <div class="mb-3">
                 <label for="endTime" class="form-label">Time To End:*</label>
-                <input type="datetime-local" class="form-control" id="endTime" required name="endTime">
+                <input type="datetime-local" class="form-control" id="endTime" placeholder="<?php echo $timeEnd; ?>"
+                    required name="endTime">
                 <input type="hidden" name="test_id" value=<?php echo $test_id; ?>>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -155,21 +217,58 @@ $test_id = $_GET['test_id'];
         <nav class="navbar">
             <form class="container-fluid justify-content-start">
                 <div class="d-flex">
-                <button class="btn btn-outline-success me-2" type="button" id="exportExcel">Export Excel
-                    Sheet</button>
+                    <button class="btn btn-outline-success me-2" type="button" id="exportExcel">Export Excel
+                        Sheet</button>
+                    <button class="btn btn-outline-success me-2" type="button" id="scoreRelease" data-bs-toggle="modal" data-bs-target="#exampleModal">Release Score</button>
                 </div>
             </form>
         </nav>
+        <!-- Score Release Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Release Score for this quiz:</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <ul><li><h4>Choose when to release the score:</h4></li></ul>
+                        <div class="container m-1">
+                            <ul><li><h6>Set when to release:</h6></li></ul>
+                            <form method="post" action="scoreReleaseDate.php">
+                                <div class="mb-3">
+                                    <input type="datetime-local" class="form-control" name="dateRealease">
+                                    <input type="hidden" name="test_id" value="<?php echo $test_id;?>">
+                                </div>
+                            </form>
+                        </div> -->
+                        <div class="container m-1">
+                            <ul><li><h6>Release Now:</h6></li></ul>
+                            <form action="scoreReleaseNow.php" method="post">
+                                <div class="mb-3">
+                                    <input type="hidden" name="test_id" value="<?php echo $test_id;?>">
+                                    <button class="btn btn-outline-success">Release Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
             include '../../_dbconnect.php';
             $dataArray = array();
             $pic = null;
-            $count=0;
+            $count = 0;
             $user_sql = "SELECT * FROM users WHERE test_array LIKE '%\"$test_id\"%'";
             $user_result = mysqli_query($conn, $user_sql);
             while ($rowUser = mysqli_fetch_assoc($user_result)) {
-                $count=$count+1;
+                $count = $count + 1;
                 $user_id = $rowUser['user_id'];
                 $score_sql = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
                 $score_result = mysqli_query($conn, $score_sql);
@@ -177,13 +276,13 @@ $test_id = $_GET['test_id'];
                 $score = $scoreRow['score'];
                 $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
                 $email = $rowUser['email'];
-                $enrollment=$rowUser['enrollment'];
+                $enrollment = $rowUser['enrollment'];
                 $userData = array(
                     "user_id" => $user_id,
                     "name" => $name,
                     "score" => $score,
                     "email" => $email,
-                    "enrollment"=>$enrollment
+                    "enrollment" => $enrollment
                 );
                 $dataArray[] = $userData;
                 echo '<div class="card" style="width: max-content;">
@@ -192,7 +291,7 @@ $test_id = $_GET['test_id'];
               <p class="text-secondary">Email: ' . $email . '</p>
               <p class="text-secondary">Enroll No. : ' . $enrollment . '</p>
               <p class="card-text">Score: ' . $score . '</p>
-              <a class="btn btn-outline-success" href="allowRestart.php?user_id='.$user_id.'&test_id='.$test_id.'">Allow Restart</a>
+              <a class="btn btn-outline-success" href="allowRestart.php?user_id=' . $user_id . '&test_id=' . $test_id . '">Allow Restart</a>
             </div>
           </div>';
             }
@@ -212,26 +311,26 @@ $test_id = $_GET['test_id'];
     <script src="../../xlsx/dist/xlsx.full.min.js"></script>
     <script>
         document.getElementById("exportExcel").addEventListener("click", function () {
-    const data = [
-        ["User ID", "Name", "Email", "Score", "Enrollment Number"]
-    ];
-    <?php
-    foreach ($dataArray as $userData) {
-        echo "data.push(['" . $userData['user_id'] . "', '" . $userData['name'] . "', '" . $userData['email'] . "', '" . $userData['score'] . "','".$userData['enrollment']."']);\n";
-    }
-    ?>
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "UserData");
-    const arrayBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "user_data.xlsx";
-    a.click();
-    window.URL.revokeObjectURL(url);
-});
+            const data = [
+                ["User ID", "Name", "Email", "Score", "Enrollment Number"]
+            ];
+            <?php
+            foreach ($dataArray as $userData) {
+                echo "data.push(['" . $userData['user_id'] . "', '" . $userData['name'] . "', '" . $userData['email'] . "', '" . $userData['score'] . "','" . $userData['enrollment'] . "']);\n";
+            }
+            ?>
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "UserData");
+            const arrayBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+            const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "user_data.xlsx";
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
     </script>
     <script>
         const editQuestions_container = document.querySelector(".editQuestions_container");
@@ -240,89 +339,101 @@ $test_id = $_GET['test_id'];
         const setTime_btn = document.querySelector("#setTime_btn");
         const user_btn = document.querySelector("#users_btn");
         const users_container = document.querySelector(".users_container");
+        const startString_btn = document.querySelector("#setString");
+        const startString_container = document.querySelector(".startString_container");
         editQuestions_btn.onclick = () => {
             editQuestions_container.style.display = "block";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
+            startString_container.style.display = "none";
         }
         setTime_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "block";
             users_container.style.display = "none";
+            startString_container.style.display = "none";
         }
         users_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "block";
+            startString_container.style.display = "none";
+        }
+        startString_btn.onclick = () => {
+            editQuestions_container.style.display = "none";
+            setTime_container.style.display = "none";
+            users_container.style.display = "none";
+            startString_container.style.display = "block";
         }
     </script>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>
-        const add_btn = document.querySelector("#questionsSubmit");
-        const form = document.querySelector(".inputQuestions");
-        add_btn.onclick = (e) => {
-            e.preventDefault();
-            const numQuestions = document.getElementById("num-questions").value;
-            const questionsContainer = document.createElement("div");
-            const lineBreak = document.createElement("br");
-            for (let i = 1; i <= numQuestions; i++) {
-                const questionContainer = document.createElement("div");
-                const questionLabel = document.createElement("label");
-                const questionInput = document.createElement("textarea");
-                questionInput.className = "my-2 p-1 form-control";
-                questionInput.name = `question-${i}`;
-                questionInput.placeholder = `Question ${i}`;
-                questionLabel.appendChild(questionInput);
-                questionContainer.appendChild(questionLabel);
-                const numOptions = document.createElement("input");
-                numOptions.type = "number";
-                numOptions.min = "2";
-                numOptions.max = "4";
-                numOptions.required = true;
-                numOptions.style="width:10%;";
-                numOptions.value = "2";
-                numOptions.className = "p-1 form-control";
-                numOptions.name = `num-options-${i}`;
-                const optionsLabel = document.createElement("label");
-                optionsLabel.textContent = "Number of Options:";
-                optionsLabel.style="display:block;";
-                optionsLabel.appendChild(numOptions);
-                questionContainer.appendChild(optionsLabel);
+        document.addEventListener("DOMContentLoaded", function () {
+            const addQuestionButton = document.getElementById("add-question");
+            const questionsContainer = document.getElementById("questions");
+            let questionCount = -1;
 
-                const optionsContainer = document.createElement("div");
-                optionsContainer.classList.add("options-container");
-                // questionContainer.appendChild(lineBreak);
-                questionContainer.appendChild(optionsContainer);
+            addQuestionButton.addEventListener("click", function () {
+                questionCount++;
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `
+            <div class="row row-cols-2">
+                <div class="col">
+                    <label for="question-${questionCount}"><b>Question ${questionCount + 1}:</b></label>
+                    <textarea id="question-${questionCount}" name="questions[]" class="form-control"></textarea>
+                </div>
+                <div class="col">
+                    <label for="answer-${questionCount}"><b>Answer ${questionCount + 1}:</b></label>
+                    <textarea class="form-control" id="answer-${questionCount}" name="answers[]"></textarea>
+                </div>
+            </div>
+            <button type="button" class="btn m-2 btn-outline-danger remove-question">Remove</button>
+            <div class="options row row-cols-2"></div>
+            <button type="button" class="btn btn-outline-success add-option m-2">Add Option</button>`;
+                questionsContainer.appendChild(questionDiv);
 
-                numOptions.addEventListener("change", () => {
-                    const num = parseInt(numOptions.value);
-                    optionsContainer.innerHTML = "";
-                    for (let j = 1; j <= num; j++) {
-                        const optionInput = document.createElement("textarea");
-                        optionInput.className = "p-1 form-control m-1";
-                        optionInput.style="width:50%";
-                        optionInput.name = `option-${i}-${j}`;
-                        optionInput.placeholder = `Option ${j}`;
-                        optionsContainer.appendChild(optionInput);
-                    }
+                const removeQuestionButton = questionDiv.querySelector(".remove-question");
+                removeQuestionButton.addEventListener("click", function () {
+                    questionsContainer.removeChild(questionDiv);
                 });
 
-                const answerContainer = document.createElement("div");
-                const answerLabel = document.createElement("label");
-                const answerInput = document.createElement("textarea");
-                answerInput.className = "p-1 form-control";
-                answerInput.name = `answer-${i}`;
-                answerInput.placeholder = `Answer ${i}`;
-                answerLabel.appendChild(answerInput);
-                answerContainer.appendChild(answerLabel);
-                questionContainer.appendChild(answerContainer);
+                const optionsContainer = questionDiv.querySelector(".options");
+                let optionCount = 0;
 
-                questionsContainer.appendChild(questionContainer);
-            }
+                questionDiv.querySelector(".add-option").addEventListener("click", function () {
+                    const optionInput = document.createElement("textarea");
+                    optionInput.setAttribute("class", "form-control m-2 col");
+                    optionInput.setAttribute("style", "width:45%;");
+                    optionInput.setAttribute("name", `options_${questionCount}[${optionCount}]`);
+                    optionInput.setAttribute("placeholder", `Option ${optionCount + 1}`);
+                    optionsContainer.appendChild(optionInput);
+                    optionCount++;
+                });
+            });
 
-            form.appendChild(questionsContainer);
-            document.getElementById("questionsSubmit").disabled = true;
-        }
+            // Handle the CSV file upload
+            const csvFileInput = document.querySelector("input[type='file']");
+            csvFileInput.addEventListener("change", function () {
+                // Clear the form and hide the "Add Question" button
+                questionsContainer.innerHTML = "";
+                addQuestionButton.style.display = "none";
+            });
+        });
+
+        // Inside the event listener for CSV file upload
+        addQuestionButton.style.display = "none"; // Hide "Add Question" button
+        questionsContainer.innerHTML = ""; // Remove existing question/answer fields
+
+        // Add a button to clear the form and add more questions
+        const clearFormButton = document.createElement("button");
+        clearFormButton.innerText = "Clear Form and Add More Questions";
+        clearFormButton.className = "btn btn-primary m-2";
+        clearFormButton.addEventListener("click", function () {
+            questionsContainer.innerHTML = ""; // Clear the form
+            addQuestionButton.style.display = "block"; // Show "Add Question" button
+        });
+        questionsContainer.appendChild(clearFormButton);
     </script>
 </body>
 

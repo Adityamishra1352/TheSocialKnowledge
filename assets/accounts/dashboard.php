@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Dashboard</title>
-        <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script src="../jquery/dist/jquery.min.js"></script>
     <style>
@@ -301,9 +301,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <h5 class="card-title">' . $course_heading . '</h5>
                     </div>
                   </div>
-                  <div class="col-md-5">
-                    <img src="https://source.unsplash.com/500x500/?' . $course_heading . ',programming" class="img-fluid rounded-end" style="height:100%">
-                  </div>
                 </div>
               </div>';
                         }
@@ -326,57 +323,74 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <div class="container my-2">
         <ul>
             <li>
-                <h4>Certificates you have achieved:</h4>
+                <h4>Quizes you have attended:</h4>
             </li>
         </ul>
-        <d class="container p-1 gridStructure">
+        <div class="container p-1 gridStructure">
             <?php
-            $certificateGot = "SELECT * FROM `certificates` WHERE `user_id`='$user_id'";
-            $certificate_result = mysqli_query($conn, $certificateGot);
-            $count = 0;
-            while ($rowCertificate = mysqli_fetch_assoc($certificate_result)) {
-                $count = $count + 1;
-                $test_id = $rowCertificate['test_id'];
-                $certificate_id = $rowCertificate['certificate_id'];
-                $heading = null;
-                $test_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
-                $test_result = mysqli_query($conn, $test_sql);
-                while ($rowTest = mysqli_fetch_assoc($test_result)) {
-                    $heading = $rowTest['heading'];
-                }
-                $score = $rowCertificate['score'];
-                $time = $rowCertificate['time'];
-                $timestamp = strtotime($time);
-                $formattedDate = date('d F Y', $timestamp);
-                echo '<div class="card mb-3" style="max-width: 400px;">
-                <div class="row g-0">
-                  <div class="col-md-7">
+            $user_id = $_SESSION['user_id'];
+            $user_sql = "SELECT test_array FROM users WHERE user_id = $user_id";
+            $user_result = mysqli_query($conn, $user_sql);
+            if ($user_result) {
+                $user_data = mysqli_fetch_assoc($user_result);
+                $test_array = json_decode($user_data['test_array'], true);
+                if (!empty($test_array)) {
+                    foreach ($test_array as $test_id) {
+                        $score_sql = "SELECT * FROM `testscores` WHERE `test_id`='$test_id' AND `user_id`='$user_id'";
+                        $score_result = mysqli_query($conn, $score_sql);
+                        $quiz_sql = "SELECT * FROM test WHERE test_id = $test_id";
+                        $quiz_result = mysqli_query($conn, $quiz_sql);
+                        if ($score_result) {
+                            $quiz_data = mysqli_fetch_assoc($quiz_result);
+                            $score_data = mysqli_fetch_assoc($score_result);
+                            $quiz_heading = $quiz_data['heading'];
+                            $scoreRelease = $quiz_data['scoreRelease'];
+                            $score=$score_data['score'];
+                            $date = $score_data['date'];
+                            $timestamp = strtotime($date);
+                            $formattedDate = date('d F Y', $timestamp);
+                            if ($scoreRelease == 1) {
+                                echo '<div class="card mb-3" style="max-width: 400px;">
+                                <div class="row g-0">
+                                <div class="col-md-7">
+                                <div class="card-body">
+                                <h5 class="card-title">' . $quiz_heading . '</h5>
+                                <p class="text-secondary">' . $formattedDate . '</p>
+                                <p class="card-text">You have scored ' . $score . ' marks.</p>
+                                </div>
+                                </div>
+                                </div>
+                                </div>';
+                            } else {
+                                echo '<div class="card mb-3" style="max-width: 400px;">
+                                <div class="row g-0">
+                                <div class="col-md-7">
+                                <div class="card-body">
+                                <h5 class="card-title">' . $quiz_heading . '</h5>
+                                <p class="text-secondary">' . $formattedDate . '</p>
+                                </div>
+                                </div>
+                                </div>
+                                </div>';
+                            }
+                        }
+
+                    }
+                } else {
+                    echo '<div class="card">
                     <div class="card-body">
-                    <h5 class="card-title">' . $heading . '</h5>
-                    <p class="text-secondary">' . $formattedDate . '</p>
-                    <p class="card-text">You scored ' . $score . ' in this quiz.</p>
-                    <a href="certificate.php?certificate_id=' . $certificate_id . '" class="btn btn-primary m-0">Certificate</a>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <img src="https://source.unsplash.com/500x500/?' . $heading . ',programming" class="img-fluid rounded-end" style="height:100%">
-                  </div>
-                </div>
-              </div>';
-            }
-            if ($count == 0) {
-                echo '<div class="card">
-                <div class="card-body">
-                  <blockquote class="blockquote mb-0">
-                    <p>You currently dont have any.</p>
+                    <blockquote class="blockquote mb-0">
+                    <p>You currently have not attended any tests.</p>
                     <footer class="blockquote-footer"><cite title="Source Title">Admin</cite></footer>
-                  </blockquote>
-                </div>
-              </div>';
+                    </blockquote>
+                    </div>
+                    </div>';
+                }
+            } else {
+                echo 'Unable to retrieve user data.';
             }
             ?>
-    </div>
-    </div>
+        </div>
     </div>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>

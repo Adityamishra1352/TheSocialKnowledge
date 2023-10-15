@@ -96,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <h4>Login Into Your Account</h4>
             <form id="login_form" method="post" class="my-2" action="login.php">
                 <div class="input-field">
-                    <input type="email" class="item3 m-2 p-2" id="email" placeholder="Email" name="email">
-                    <input type="password" class="item4 m-2 p-2" id="password" placeholder="Password" name="password">
+                    <input type="email" class="item3 m-2 p-2" id="email" placeholder="Email" name="email" required>
+                    <input type="password" class="item4 m-2 p-2" id="password" placeholder="Password" name="password" required>
                 </div>
                 <div class="buttons">
                     <button class="btn btn-outline-success my-2">Login</button>

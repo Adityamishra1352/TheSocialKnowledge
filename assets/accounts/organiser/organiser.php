@@ -4,6 +4,12 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
     header('location:../../403.php');
 }
 ?>
+<?php
+include '../../_dbconnect.php';
+$currentDateTime = date('Y-m-d H:i:s');
+$updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDateTime'";
+$updateresult=mysqli_query($conn,$updateSQL);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,13 +63,54 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
     </div>';
     }
     ?>
-    <div class="container my-2">
-        <div class="container postedQuiz_container" style="display: none;grid-template-columns:1fr 1fr 1fr;">
+    <div class="container my-2 postedQuiz_container" style="display:none;">
+    <ul><li><h4 class="text">Ongoing Quizes:</h4></li></ul>
+        <div class="container " style="display: grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
             include '../../_dbconnect.php';
             $questionsExist = "Add Questions";
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=1";
+            $fetch_result = mysqli_query($conn, $quizfetch_sql);
+            while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
+                $test_id = $rowQuiz['test_id'];
+                $timeEnd = $rowQuiz['heldtill'];
+                $questionsofeach = $rowQuiz['questionsforeach'];
+                $timeforeach = $rowQuiz['timeforeach'];
+                $questions_sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                $questions_result = mysqli_query($conn, $questions_sql);
+                if ($questions_result) {
+                    $numRows = mysqli_num_rows($questions_result);
+                    if ($numRows > 1) {
+                        $questionsExist = "View Questions";
+                    }
+                }
+                $heading = $rowQuiz['heading'];
+                $timeDate = $rowQuiz['time'];
+                $timestamp = strtotime($timeDate);
+                $formattedDate = date('d F Y', $timestamp);
+                $formattedTime = date('H:i', $timestamp);
+                $description = $rowQuiz['description'];
+                echo '<div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">' . $heading . '</h5>
+                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', '.$formattedDate.'</p>
+                  <p class="card-text">Question Count: ' . $questionsofeach . '</p>
+                  <p class="card-text">Time for each question: ' . $timeforeach . '</p>
+                  <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
+                  <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
+                </div>
+              </div>';
+            }
+            ?>
+        </div>
+        <ul class="my-2"><li><h4>Quizes not visible:</h4></li></ul>
+        <div class="container my-2" style="display: grid;grid-template-columns:1fr 1fr 1fr;">
+        <?php
+            include '../../_dbconnect.php';
+            $questionsExist = "Add Questions";
+            $organiser_id = $_SESSION['user_id'];
+            $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=0";
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
@@ -137,7 +184,7 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
         const addQuiz_btn = document.querySelector("#addQuiz_btn");
         const addQuiz_container = document.querySelector(".addQuiz_container");
         postedQuiz.onclick = () => {
-            postedQuiz_container.style.display = "grid";
+            postedQuiz_container.style.display = "block";
             addQuiz_container.style.display = "none";
         }
         addQuiz_btn.onclick = () => {

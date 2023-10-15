@@ -1,3 +1,14 @@
+<?php
+session_start();
+include '../_dbconnect.php';
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
+    header('location:../403.php');
+}
+$currentTimestamp = strtotime('now');
+$currentDateTime = date('Y-m-d H:i:s', $currentTimestamp);
+$updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDateTime'";
+$updateresult=mysqli_query($conn,$updateSQL);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,12 +35,11 @@
                         <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../../contactus.php">Contact Us</a>
+                        <a class="nav-link" href="../../contactus.php">Contact Us</a>
                     </li>
                 </ul>
-                <ul class="d-flex">
+                <div class="d-flex">
                     <?php
-                    session_start();
                     // echo $_SESSION['user_id'];
                     if (!isset($_SESSION['loggedin']) || $_SESSION['user_id'] == NULL) {
                         echo '<button class="btn btn-outline-danger me-2"
@@ -48,7 +58,7 @@
                     }
                     ?>
 
-                </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -63,15 +73,25 @@
                 $heading = $rowTest['heading'];
                 $timeDate = $rowTest['time'];
                 $timestamp = strtotime($timeDate);
-                $formattedDate = date('d F Y', $timestamp);         
+                $formattedDate = date('d F Y', $timestamp);
+                $formattedTime = date('H:i', $timestamp);
                 $description = $rowTest['description'];
-                echo '<div class="col"><div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">' . $heading . '</h5>
-                  <p class="card-text text-secondary">' . $formattedDate . '</p>
-                  <p class="card-text">' . $description . '</p>
-                  <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+                $words = explode(' ', $description);
+                $limitedDescription = implode(' ', array_slice($words, 0, 15));
+                if (count($words) > 15) {
+                    $limitedDescription .= '...';
+                }
+                echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
+                <div class="card-header">
+                <h5 class="card-title">' . $heading . '</h5>
+                <p class="card-text text-secondary">' . $formattedDate . ' '.$formattedTime.'</p>
                 </div>
+                <div class="card-body">
+                  <p class="card-text">' . $limitedDescription . '</p>
+                  </div>
+                  <div class="card-footer">
+            <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+        </div>
               </div></div>';
             }
             ?>

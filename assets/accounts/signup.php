@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
         if(isset($_GET['emailExists']) && $_GET['emailExists']==true){
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Email already exists!!</strong> Verify Your account.
+            <strong>Email already exists!!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }

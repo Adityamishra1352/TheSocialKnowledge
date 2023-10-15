@@ -16,7 +16,6 @@
     <meta property="og:description"
         content="Learn C++ from quality blogs with proper guidelines and solved examples at Social Knowledge.">
     <meta property="og:image" content="walling-XLqiL-rz4V8-unsplash.jpg">
-    <meta property="og:url" content="https://thesocialknowledge.in/course%20pages/test.html">
     <link rel="stylesheet" href="assets/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="shortcut icon" href="assets/images/websitelogo.jpg" type="image/png">
     <link rel="stylesheet" href="assets/css/chatbot.css">

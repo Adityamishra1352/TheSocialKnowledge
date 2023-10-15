@@ -1,6 +1,8 @@
 .content{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+.string_box,
+.end_box,
 .time_box,
 .warning-box,
 .info_box,
@@ -15,6 +17,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 
                 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.end_box.activeEndBox,
 .time_box.activeTime,
 .warning-box.activeWarning,
 .quiz_box.activeQuiz,
@@ -26,7 +29,8 @@
     pointer-events: auto;
     transform: translate(-55%, -47%) scale(1);
 }
-.info_box.deactivateInfo{
+.info_box.deactivateInfo,
+.string_box.deactivateString{
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s ease;
@@ -37,7 +41,17 @@
     border-radius: 5px;
     transform: translate(-55%, -47%) scale(1);
 }
-
+.string_box{
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    padding: 25px 30px;
+    width: 450px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transform: translate(-50%, -50%) scale(0.9);
+}
 .info_box .info-title{
     height: 60px;
     width: 100%;
@@ -56,7 +70,8 @@
 
 .info_box .info-list .info,
 .warning-box .warning_info,
-.time_box .time_info{
+.time_box .time_info,
+.end_box .end_info{
     margin: 5px 0;
     font-size: 17px;
 }
@@ -315,7 +330,8 @@ footer button.show{
     pointer-events: none;
     transition: all 0.3s ease;
 }
-.time_box{
+.time_box,
+.end_box{
     background: #fff;
     border-radius: 5px;
     display: flex;
