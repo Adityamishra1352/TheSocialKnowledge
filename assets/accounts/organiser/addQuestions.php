@@ -51,6 +51,7 @@ $test_id = $_GET['test_id'];
             <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
+            <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Set Users</button>
             <button class="btn btn-outline-success me-2" type="button" id="users_btn">Completed Test Users</button>
         </form>
     </nav>
@@ -157,7 +158,7 @@ $test_id = $_GET['test_id'];
             <table class="table my-2 table-hover" id="mytable">
                 <thead>
                     <tr>
-                        <th scope="col">Question ID</th>
+                        <th scope="col">Sno</th>
                         <th scope="col">Question</th>
                         <th scope="col">Answer</th>
                         <th scope="col">Actions</th>
@@ -165,9 +166,9 @@ $test_id = $_GET['test_id'];
                 </thead>
                 <tbody>
                     <?php
+                    $count=1;
                     $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
                     $result = mysqli_query($conn, $sql);
-
                     while ($row = mysqli_fetch_assoc($result)) {
                         $questionId = $row['question_id'];
                         $question = $row['question'];
@@ -175,11 +176,12 @@ $test_id = $_GET['test_id'];
                         $options = json_decode($optionsJSON, true);
                         $answer = $row['answer'];
                         echo "<tr>
-        <th scope='row'>$questionId</th>
-        <td>$question</td>
-        <td>" . $row['answer'] . "</td>
-        <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
-    </tr>";
+                        <th scope='row'>$count</th>
+                        <td>$question</td>
+                        <td>" . $row['answer'] . "</td>
+                        <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
+                        </tr>";
+                        $count+=1;
                     }
                     ?>
 
@@ -219,7 +221,8 @@ $test_id = $_GET['test_id'];
                 <div class="d-flex">
                     <button class="btn btn-outline-success me-2" type="button" id="exportExcel">Export Excel
                         Sheet</button>
-                    <button class="btn btn-outline-success me-2" type="button" id="scoreRelease" data-bs-toggle="modal" data-bs-target="#exampleModal">Release Score</button>
+                    <button class="btn btn-outline-success me-2" type="button" id="scoreRelease" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Release Score</button>
                 </div>
             </form>
         </nav>
@@ -238,15 +241,19 @@ $test_id = $_GET['test_id'];
                             <form method="post" action="scoreReleaseDate.php">
                                 <div class="mb-3">
                                     <input type="datetime-local" class="form-control" name="dateRealease">
-                                    <input type="hidden" name="test_id" value="<?php echo $test_id;?>">
+                                    <input type="hidden" name="test_id" value="<?php echo $test_id; ?>">
                                 </div>
                             </form>
                         </div> -->
                         <div class="container m-1">
-                            <ul><li><h6>Release Now:</h6></li></ul>
+                            <ul>
+                                <li>
+                                    <h6>Release Now:</h6>
+                                </li>
+                            </ul>
                             <form action="scoreReleaseNow.php" method="post">
                                 <div class="mb-3">
-                                    <input type="hidden" name="test_id" value="<?php echo $test_id;?>">
+                                    <input type="hidden" name="test_id" value="<?php echo $test_id; ?>">
                                     <button class="btn btn-outline-success">Release Now</button>
                                 </div>
                             </form>
@@ -308,6 +315,38 @@ $test_id = $_GET['test_id'];
             ?>
         </div>
     </div>
+    <div class="container setUsers_container my-2 p-1" style="display:none;">
+    <table class="table my-2 table-hover" id="mytable">
+                <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Enrollment</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Allow</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT * FROM `users` WHERE `admin`=0 AND `organiser`=0";
+                    $result = mysqli_query($conn, $sql);
+                    $count=1;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $userId = $row['user_id'];
+                        $name = $row['fname'].' '. $row['lname'];
+                        $email = $row['email'];
+                        $enrollno = $row['enrollment'];
+                        echo "<tr>
+        <th scope='row'>$count</th>
+        <td>".$name."</td>
+        <td>".$enrollno."</td>
+        <td>".$email."</td>
+        <td><input class='form-check-input' type='checkbox' id='flexCheckDefault'></td>
+    </tr>";
+    $count=$count+1;
+                    }
+                    ?>
+    </div>
     <script src="../../xlsx/dist/xlsx.full.min.js"></script>
     <script>
         document.getElementById("exportExcel").addEventListener("click", function () {
@@ -341,30 +380,44 @@ $test_id = $_GET['test_id'];
         const users_container = document.querySelector(".users_container");
         const startString_btn = document.querySelector("#setString");
         const startString_container = document.querySelector(".startString_container");
+        const setUsers_container=document.querySelector(".setUsers_container");
+        const setUsers_btn=document.querySelector("#setUsers_btn");
         editQuestions_btn.onclick = () => {
             editQuestions_container.style.display = "block";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
             startString_container.style.display = "none";
+            setUsers_container.style.display="none";
         }
         setTime_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "block";
             users_container.style.display = "none";
             startString_container.style.display = "none";
+            setUsers_container.style.display="none";
         }
         users_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "block";
             startString_container.style.display = "none";
+            setUsers_container.style.display="none";
         }
         startString_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
             startString_container.style.display = "block";
+            setUsers_container.style.display="none";
         }
+        setUsers_btn.onclick = () => {
+            editQuestions_container.style.display = "none";
+            setTime_container.style.display = "none";
+            users_container.style.display = "none";
+            startString_container.style.display = "none";
+            setUsers_container.style.display="block";
+        }
+        
     </script>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>

@@ -1,32 +1,31 @@
 //right-click disable
-// document.addEventListener("contextmenu", function(e) {
-//   e.preventDefault();
-//   window.alert("Right-click is not allowed on this page!");
-// }, false);
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  window.alert("Right-click is not allowed on this page!");
+}, false);
 
 //full screen feature
 function openFullscreen() {
-  const elem = document.documentElement; // Get the document element
-
+  const elem = document.documentElement;
   if (elem.requestFullscreen) {
-    elem.requestFullscreen(); // Standard API
+    elem.requestFullscreen();
   } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen(); // Firefox
+    elem.mozRequestFullScreen();
   } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
+    elem.webkitRequestFullscreen();
   } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen(); // IE/Edge
+    elem.msRequestFullscreen();
   }
 }
 function exitFullscreen() {
   if (document.exitFullscreen) {
-    document.exitFullscreen(); // Standard API
+    document.exitFullscreen();
   } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen(); // Firefox
+    document.mozCancelFullScreen();
   } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen(); // Chrome, Safari, and Opera
+    document.webkitExitFullscreen();
   } else if (document.msExitFullscreen) {
-    document.msExitFullscreen(); // IE/Edge
+    document.msExitFullscreen();
   }
 }
 const info_box = document.querySelector(".info_box");
