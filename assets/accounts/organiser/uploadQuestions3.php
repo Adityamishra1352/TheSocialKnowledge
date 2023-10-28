@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['test_id'])) {
                 $question = $data[0];
                 $answer = $data[1];
                 $options = array_slice($data, 2);
+                $question = str_replace('   ', '<br>', $question);
                 $sql = "INSERT INTO questions (question, options, answer, test_id) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $optionsJSON = json_encode($options);
@@ -33,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['test_id'])) {
             fclose($handle);
         }
     } else {
-        echo "File upload error.";
+        header('location:addQuestions.php?test_id=' . $test_id);
     }
 }
 ?>

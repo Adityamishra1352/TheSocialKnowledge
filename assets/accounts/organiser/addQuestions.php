@@ -18,6 +18,7 @@ $test_id = $_GET['test_id'];
     <title>The Social Knowledge: Organiser</title>
     <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
+    <script src="../../chart.js/dist/chart.umd.js"></script>
 </head>
 
 <body>
@@ -47,12 +48,12 @@ $test_id = $_GET['test_id'];
     </nav>
     <nav class="navbar navbar-light bg-light">
         <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success me-2" type="button" id="setString">Start String</button>
+            <button class="btn btn-outline-success me-2" type="button" id="setString">Authentication Code</button>
             <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
             <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Set Users</button>
-            <button class="btn btn-outline-success me-2" type="button" id="users_btn">Completed Test Users</button>
+            <button class="btn btn-outline-success me-2" type="button" id="users_btn">Responses</button>
         </form>
     </nav>
     <?php
@@ -92,7 +93,7 @@ $test_id = $_GET['test_id'];
     $startString = $recentRow['startString'];
     ?>
     <div class="container startString_container my-2" style="display: none;width:30%;">
-        <h4>Set Start String:</h4>
+        <h4>Set Authentication String:</h4>
         <?php
         if ($startString != null) {
             echo '<ul><li><h6 class="text-secondary">Current: <b>' . $startString . '</b></h6></li></ul>';
@@ -117,13 +118,13 @@ $test_id = $_GET['test_id'];
                 </li>
             </ul>
             <div class="changethequestions_box p-2">
-                <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces
-                    for a line break.</span>
                 <ul>
                     <li>
                         <h6>Add Questions Individually:</h6>
                     </li>
                 </ul>
+                <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces
+                    for a line break.</span>
                 <div class="container my-2">
                     <form id="question-form" action="uploadQuestions.php" method="post">
                         <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
@@ -138,6 +139,8 @@ $test_id = $_GET['test_id'];
                         <h6>Add questions via CSV file:</h6>
                     </li>
                 </ul>
+                <span class="fw-bold fst-italic">Note: </span><span class="fst-italic text-secondary">If the question or
+                    answer has " , " please enclose the question/answer in "".</span>
                 <div class="container my-2">
                     <form id="question-form" action="uploadQuestions3.php" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
@@ -150,43 +153,64 @@ $test_id = $_GET['test_id'];
             </div>
         </div>
         <div class="container my-2">
-            <ul>
-                <li>
-                    <h4>Present Questions:</h4>
-                </li>
-            </ul>
-            <table class="table my-2 table-hover" id="mytable">
-                <thead>
-                    <tr>
-                        <th scope="col">Sno</th>
-                        <th scope="col">Question</th>
-                        <th scope="col">Answer</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $count=1;
-                    $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
-                    $result = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $questionId = $row['question_id'];
-                        $question = $row['question'];
-                        $optionsJSON = $row['options'];
-                        $options = json_decode($optionsJSON, true);
-                        $answer = $row['answer'];
-                        echo "<tr>
+            <form action="deleteQuestions.php?test_id=<?php echo $test_id; ?>" method="post">
+                <ul>
+                    <li>
+                        <h4>Present Questions:</h4>
+                    </li>
+                </ul>
+                <table class="table my-2 table-hover" id="mytable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sno</th>
+                            <th scope="col">Question</th>
+                            <th scope="col">Options</th>
+                            <th scope="col">Answer</th>
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="selectAll">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Delete
+                                    </label>
+                                </div>
+                                <!-- <input type="checkbox" id="selectAll"><span>Delete</span> -->
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $count = 1;
+                        $sql = "SELECT * FROM `questions` WHERE `test_id`='$test_id'";
+                        $result = mysqli_query($conn, $sql);
+
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $questionId = $row['question_id'];
+                            $question = $row['question'];
+                            $optionsJSON = $row['options'];
+                            $options = json_decode($optionsJSON, true);
+                            $answer = $row['answer'];
+                            echo "<tr>
                         <th scope='row'>$count</th>
                         <td>$question</td>
-                        <td>" . $row['answer'] . "</td>
-                        <td><button class='delete btn btn-sm btn-outline-danger' id='d$questionId' onclick='window.location.href=`deleteQuestions.php?question_id=$questionId&test_id=$test_id`'>Delete</button></td>
-                        </tr>";
-                        $count+=1;
-                    }
-                    ?>
+                        <td>";
+                            $countOption = 1;
+                            foreach ($options as $option) {
+                                echo "$countOption. $option<br>";
+                                $countOption += 1;
+                            }
 
-                </tbody>
-            </table>
+                            echo "</td>
+                        <td>$answer</td>
+                        <td><input type='checkbox' name='delete[]' value='$questionId' class='form-check-input'></td>
+                        </tr>";
+                            $count += 1;
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-outline-danger my-2 me-2" name="deleteSelected">Delete
+                    Selected</button>
+            </form>
         </div>
     </div>
     <div class="setTime_container container p-1 my-2" style="display:none;width:30%">
@@ -266,44 +290,93 @@ $test_id = $_GET['test_id'];
                 </div>
             </div>
         </div>
-        <div class="container" style="display:grid;grid-template-columns:1fr 1fr 1fr;">
-            <?php
-            include '../../_dbconnect.php';
-            $dataArray = array();
-            $pic = null;
-            $count = 0;
-            $user_sql = "SELECT * FROM users WHERE test_array LIKE '%\"$test_id\"%'";
-            $user_result = mysqli_query($conn, $user_sql);
-            while ($rowUser = mysqli_fetch_assoc($user_result)) {
-                $count = $count + 1;
-                $user_id = $rowUser['user_id'];
-                $score_sql = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
-                $score_result = mysqli_query($conn, $score_sql);
-                $scoreRow = mysqli_fetch_assoc($score_result);
-                $score = $scoreRow['score'];
-                $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
-                $email = $rowUser['email'];
-                $enrollment = $rowUser['enrollment'];
-                $userData = array(
-                    "user_id" => $user_id,
-                    "name" => $name,
-                    "score" => $score,
-                    "email" => $email,
-                    "enrollment" => $enrollment
-                );
-                $dataArray[] = $userData;
-                echo '<div class="card" style="width: max-content;">
-            <div class="card-body">
-              <h5 class="card-title">Name: ' . $name . '</h5>
-              <p class="text-secondary">Email: ' . $email . '</p>
-              <p class="text-secondary">Enroll No. : ' . $enrollment . '</p>
-              <p class="card-text">Score: ' . $score . '</p>
-              <a class="btn btn-outline-success" href="allowRestart.php?user_id=' . $user_id . '&test_id=' . $test_id . '">Allow Restart</a>
-            </div>
-          </div>';
-            }
-            if ($count == 0) {
-                echo '<div class="card">
+        <div class="container my-2" style="width:50%;height:50%;">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="container">
+            <form action="allowRestart.php?test_id=<?php echo $test_id ?>" method="post">
+                <table class="table my-2 table-hover" id="attendedUserTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.no</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Enrollment</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="attemptedAll" type="checkbox" value="">
+                                    <label for="attemptedAll" class="form-check-label">Restart</label>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include '../../_dbconnect.php';
+                        $dataArray = array();
+                        $pic = null;
+                        $countUser = 1;
+                        $count = 0;
+                        $user_sql = "SELECT * FROM users WHERE test_array LIKE '%\"$test_id\"%'";
+                        $user_result = mysqli_query($conn, $user_sql);
+                        while ($rowUser = mysqli_fetch_assoc($user_result)) {
+                            $count = $count + 1;
+                            $user_id = $rowUser['user_id'];
+                            $score_sql = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
+                            $score_result = mysqli_query($conn, $score_sql);
+                            $scoreRow = mysqli_fetch_assoc($score_result);
+                            $score = $scoreRow['score'];
+                            $name = $rowUser['fname'] . ' ' . $rowUser['lname'];
+                            $email = $rowUser['email'];
+                            $enrollment = $rowUser['enrollment'];
+                            $userData = array(
+                                "user_id" => $user_id,
+                                "name" => $name,
+                                "score" => $score,
+                                "email" => $email,
+                                "enrollment" => $enrollment
+                            );
+                            $dataArray[] = $userData;
+                            $highestScore = 0;
+                            $lowestScore = PHP_INT_MAX;
+                            $totalScore = 0;
+                            $scoreCount = count($dataArray);
+                            $highestScoringUsers = [];
+                            $lowestScoringUsers = [];
+                            $averageScoringUsers = [];
+                            foreach ($dataArray as $userData) {
+                                $score = $userData['score'];
+                                $totalScore += $score;
+                                $averageScore = $scoreCount > 0 ? $totalScore / $scoreCount : 0;
+                                $averageScore=ceil($averageScore);
+                                if ($score > $highestScore) {
+                                    $highestScore = $score;
+                                }
+
+                                if ($score < $lowestScore) {
+                                    $lowestScore = $score;
+                                }
+                                if ($score === $highestScore) {
+                                    $highestScoringUsers[] = $userData['name'];
+                                } elseif ($score === $lowestScore) {
+                                    $lowestScoringUsers[] = $userData['name'];
+                                } elseif ($score === $averageScore) {
+                                    $averageScoringUsers[] = $userData['name'];
+                                }
+                            }
+                            echo '<tr>
+                <th scope="row">' . $countUser . '</th>
+                <td>' . $name . '</td>
+                <td>' . $email . '</td>
+                <td>' . $enrollment . '</td>
+                <td>' . $score . '</td>
+                <td><input type="checkbox" name="allowRestart[]" value="' . $user_id . '" class="form-check-input"></td>
+                </tr>';
+                            $countUser = $countUser + 1;
+                        }
+                        if ($count == 0) {
+                            echo '<div class="card">
                 <div class="card-body">
                   <blockquote class="blockquote mb-0">
                     <p>No one has attempted the quiz yet.</p>
@@ -311,42 +384,149 @@ $test_id = $_GET['test_id'];
                   </blockquote>
                 </div>
               </div>';
-            }
-            ?>
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <button type="submit" name="allowRestart_btn" class="btn btn-outline-success my-2">
+                    Allow Restart
+                </button>
+            </form>
         </div>
     </div>
     <div class="container setUsers_container my-2 p-1" style="display:none;">
-    <table class="table my-2 table-hover" id="mytable">
+        <form id="filter-form">
+            <div class="row">
+                <div class="form-group col" style="width:40%;">
+                    <label for="year" class="form-label"><b>Year:</b></label>
+                    <select class="form-control" id="year" name="year">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                <div class="form-group col" style="width:40%;">
+                    <label for="batch" class="form-label"><b>Batch:</b></label>
+                    <select class="form-control" id="batch" name="batch">
+                        <option value="b1">b1</option>
+                        <option value="b2">b2</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success my-2" style="width: 10%;">Filter</button>
+        </form>
+        <form action="userForTest.php?test_id=<?php echo $test_id; ?>" method="post">
+            <table class="table my-2 table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Enrollment</th>
+                        <th scope="col">Sno</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Allow</th>
+                        <th scope="col">Enrollment</th>
+                        <th scope="col">
+                            <div class="form-check">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Select
+                                </label>
+                                <input class="form-check-input" type="checkbox" value="" id="allowAll">
+                            </div>
+                        </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    $sql = "SELECT * FROM `users` WHERE `admin`=0 AND `organiser`=0";
-                    $result = mysqli_query($conn, $sql);
-                    $count=1;
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $userId = $row['user_id'];
-                        $name = $row['fname'].' '. $row['lname'];
-                        $email = $row['email'];
-                        $enrollno = $row['enrollment'];
-                        echo "<tr>
-        <th scope='row'>$count</th>
-        <td>".$name."</td>
-        <td>".$enrollno."</td>
-        <td>".$email."</td>
-        <td><input class='form-check-input' type='checkbox' id='flexCheckDefault'></td>
-    </tr>";
-    $count=$count+1;
-                    }
-                    ?>
+                <tbody id="user-list">
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-outline-success my-2 me-2" name="allowSelected">Allow Selected</button>
     </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#filter-form').submit(function (e) {
+                e.preventDefault();
+                var year = $('#year').val();
+                var batch = $('#batch').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'filter-users.php',
+                    data: { year: year, batch: batch },
+                    success: function (response) {
+                        $('#user-list').html(response);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        const ctx = document.querySelector("#myChart");
+        const highestScore = <?php echo $highestScore; ?>;
+        const lowestScore = <?php echo $lowestScore; ?>;
+        const averageScore = <?php echo $averageScore; ?>;
+        const highestScoringUsers = <?php echo json_encode($highestScoringUsers); ?>;
+        const lowestScoringUsers = <?php echo json_encode($lowestScoringUsers); ?>;
+        const averageScoringUsers = <?php echo json_encode($averageScoringUsers); ?>;
+        console.log(highestScoringUsers);
+        console.log(averageScoringUsers);
+        console.log(lowestScoringUsers);
+
+        function getTooltipText(context) {
+            const datasetIndex = context.datasetIndex;
+            switch (datasetIndex) {
+                case 0:
+                    return "Score:"+highestScore+" Users with Highest Marks: " + highestScoringUsers.join(', ');
+                case 1:
+                    return "Score:"+averageScore+" Users with Average Marks: " + averageScoringUsers.join(', ');
+                case 2:
+                    return "Score:"+lowestScore+" Users with Lowest Marks: " + lowestScoringUsers.join(', ');
+                default:
+                    return '';
+            }
+        }
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Score'],
+                datasets: [
+                    {
+                        label: 'Highest',
+                        data: [highestScore],
+                        borderWidth: 1,
+                        backgroundColor: '#7FFF00'
+                    },
+                    {
+                        label: 'Average',
+                        data: [averageScore],
+                        borderWidth: 1,
+                        backgroundColor: '#F0E68C'
+                    },
+                    {
+                        label: 'Lowest',
+                        data: [lowestScore],
+                        borderWidth: 1,
+                        backgroundColor: '#FF0000'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return getTooltipText(context);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+    </script>
+
     <script src="../../xlsx/dist/xlsx.full.min.js"></script>
     <script>
         document.getElementById("exportExcel").addEventListener("click", function () {
@@ -380,44 +560,61 @@ $test_id = $_GET['test_id'];
         const users_container = document.querySelector(".users_container");
         const startString_btn = document.querySelector("#setString");
         const startString_container = document.querySelector(".startString_container");
-        const setUsers_container=document.querySelector(".setUsers_container");
-        const setUsers_btn=document.querySelector("#setUsers_btn");
+        const setUsers_container = document.querySelector(".setUsers_container");
+        const setUsers_btn = document.querySelector("#setUsers_btn");
         editQuestions_btn.onclick = () => {
             editQuestions_container.style.display = "block";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
             startString_container.style.display = "none";
-            setUsers_container.style.display="none";
+            setUsers_container.style.display = "none";
         }
         setTime_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "block";
             users_container.style.display = "none";
             startString_container.style.display = "none";
-            setUsers_container.style.display="none";
+            setUsers_container.style.display = "none";
         }
         users_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "block";
             startString_container.style.display = "none";
-            setUsers_container.style.display="none";
+            setUsers_container.style.display = "none";
         }
         startString_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
             startString_container.style.display = "block";
-            setUsers_container.style.display="none";
+            setUsers_container.style.display = "none";
         }
         setUsers_btn.onclick = () => {
             editQuestions_container.style.display = "none";
             setTime_container.style.display = "none";
             users_container.style.display = "none";
             startString_container.style.display = "none";
-            setUsers_container.style.display="block";
+            setUsers_container.style.display = "block";
         }
-        
+        document.getElementById("selectAll").addEventListener("change", function () {
+            const checkboxes = document.querySelectorAll("input[name='delete[]']");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = this.checked;
+            });
+        });
+        document.getElementById("allowAll").addEventListener("change", function () {
+            const checkboxes = document.querySelectorAll("input[name='selectedUser[]']");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = this.checked;
+            });
+        });
+        document.getElementById("attemptedAll").addEventListener("change", function () {
+            const checkboxes = document.querySelectorAll("input[name='allowRestart[]']");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = this.checked;
+            });
+        });
     </script>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>

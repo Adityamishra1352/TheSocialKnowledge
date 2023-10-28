@@ -137,13 +137,13 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div class="string_box">
-        <div class="end_info"><b>Enter the code for the test:</b></div>
+        <div class="end_info">Enter the code for the test:</div>
         <form action="stringStart.php" method="post">
-            <div class="mb-3">
+            <div class="my-2">
                 <input type="text" class="form-control" name="startString" required>
                 <input type="hidden" name="test_id" value="<?php echo $test_id;?>">
             </div>
-            <button class="btn btn-outline-success my-2">Submit</button>
+            <button class="btn btn-outline-success my-2 mx-0">Submit</button>
         </form>
     </div>
     <div class="end_box">
@@ -203,8 +203,16 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
             <footer>
                 <div class="total_que">
                 </div>
-                <button class="next_btn bd-outline-success">Next Que</button>
+                <div class="d-flex">
+                    <button class="btn btn-outline-danger skip_btn" id="skipQuestion">Skip Question</button>
+                    <button class="next_btn">Next Que</button>
+
+                </div>
             </footer>
+            <div class="skip-box container">
+                <div class="skip-question">Do you really wanna skip this question?</div>
+                <button class="btn btn-danger my-2" id="confirmSkip">Skip Question</button>
+            </div>
         </div>
         <div class="result_box">
             <div class="icon">

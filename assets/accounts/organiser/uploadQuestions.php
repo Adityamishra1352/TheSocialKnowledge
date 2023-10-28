@@ -7,7 +7,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $test_id = $_POST['test_id'];
         $questions = $_POST['questions'];
         $answers = $_POST['answers'];
+        function addLineBreaks($text) {
+            return preg_replace('/ {3}/', '<br>', $text);
+        }
+
         for ($i = 0; $i < count($questions); $i++) {
+            $questions[$i] = addLineBreaks($questions[$i]);
+
             $sql = "INSERT INTO questions (question, options, answer, test_id) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $options = json_encode($_POST['options_' . $i]);
@@ -25,9 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $stmt->close();
-    } else {
-        // Handle form data not set error
     }
 }
 ?>
-

@@ -76,6 +76,25 @@ const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
 const end_box=document.querySelector(".end_box");
 const totalTimeForEach = timeforeach * questionsforeach;
+//skip question implementation
+function skipCurrentQuestion() {
+  if (que_count < questions.length - 1) {
+      que_count++;
+      que_numb++;
+      showQuetions(que_count);
+      queCounter(que_numb);
+      clearInterval(counter);
+      // clearInterval(counterLine);
+      startTimer(timeValue);
+      // startTimerLine(widthValue);
+      timeText.textContent = "Time Left";
+      next_btn.classList.remove("show");
+  } else {
+      clearInterval(counter);
+      // clearInterval(counterLine);
+      showResult();
+  }
+}
 // string box implementation
 const string_box=document.querySelector(".string_box");
 if(showTest==0){
@@ -123,7 +142,6 @@ continue_btn.onclick = () => {
       console.error("Error updating test array:", error);
     });
 };
-
 let timeValue = timeforeach;
 let que_count = 0;
 let que_numb = 1;
@@ -149,7 +167,21 @@ document.addEventListener("fullscreenchange", function () {
     warningBox_control();
   }
 });
-
+const skipQuestion_btn=document.querySelector("#skipQuestion");
+const skip_box=document.querySelector(".skip-box");
+skipQuestion_btn.onclick=()=>{
+  skip_box.classList.add("activateSkip");
+  const allOptions = option_list.children.length;
+  for (i = 0; i < allOptions; i++) {
+    option_list.children[i].classList.add("disabled");
+  }
+  next_btn.classList.add("show");
+}
+const skipQuestionConfirm=document.querySelector("#confirmSkip");
+skipQuestionConfirm.onclick=()=>{
+  skip_box.classList.remove("activateSkip");
+  skipCurrentQuestion();
+}
 function warningBox_control() {
   quiz_box.classList.remove("activeQuiz");
   warningBox.classList.add("activeWarning");

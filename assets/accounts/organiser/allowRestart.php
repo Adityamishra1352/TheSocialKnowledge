@@ -1,16 +1,18 @@
 <?php 
 include '../../_dbconnect.php';
-if($_SERVER['REQUEST_METHOD']=="GET"){
-    $user_id=$_GET['user_id'];
+if($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['allowRestart_btn'])){
     $test_id=$_GET['test_id'];
-    $sql = "SELECT test_array FROM users WHERE user_id = $user_id";
-$result = mysqli_query($conn, $sql);
+    $usersForRestart=$_POST['allowRestart'];
+    foreach ($usersForRestart as $user_id) {
 
-if ($result) {
-    $row = mysqli_fetch_assoc($result);
-    $test_array = json_decode($row['test_array'], true);
-
-    if (is_array($test_array)) {
+        $sql = "SELECT test_array FROM users WHERE user_id = $user_id";
+        $result = mysqli_query($conn, $sql);
+        
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $test_array = json_decode($row['test_array'], true);
+            
+            if (is_array($test_array)) {
         $key = array_search($test_id, $test_array);
         if ($key !== false) {
             unset($test_array[$key]);
@@ -34,5 +36,6 @@ if ($result) {
     echo "Error fetching test_array: " . mysqli_error($conn);
 }
 mysqli_close($conn);
+}
 }
 ?>
