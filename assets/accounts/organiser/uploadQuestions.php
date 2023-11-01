@@ -7,40 +7,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['test_id']) && isset($_POST['questions'])) {
         $test_id = $_POST['test_id'];
         $questions = $_POST['questions'];
-        // $answers = $_POST['answers'];
-        $questionImages = $_FILES['question-images'];
-
-        function addLineBreaks($text)
-        {
-            return preg_replace('/ {3}/', '<br>', $text);
-        }
-
+        $answers = $_POST['answers'];
         for ($i = 0; $i < count($questions); $i++) {
-            $questionText = addLineBreaks($questions[$i]);
-            $questionImage = $questionImages['tmp_name'][$i];
-            // $answer = $answers[$i];
-
-            if (!empty($questionImage)) {
-                $imageFileName = $_FILES['question-images']['name'][$i];
-                move_uploaded_file($questionImage, $imageDirectory . $imageFileName);
-            } else {
-                $imageFileName = null;
-            }
-            if (!empty($questionText)) {
-                $questionScript = $questionText;
-            } else {
-                $questionScript = null;
-            }
-            $selectedAnswer = $_POST['correct-answer-' . $i];
-            if (preg_match('/options_(\d+)\[(\d+)\]/', $selectedAnswer, $matches)) {
-                $questionIndex = $matches[1];
-                $optionIndex = $matches[2];
-                $selectedAnswerValue = $_POST['options_' . $questionIndex][$optionIndex];
-            }
-            $options = json_encode($_POST['options_' . $i]);
-            echo $selectedAnswerValue;
-            echo var_dump($options);
-            $sql = "INSERT INTO questions (question, image, options, answer, test_id) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO questions (question, options, answer, test_id) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $options = json_encode($_POST['options_' . $i]);
             $stmt->bind_param("ssssi", $questionScript, $imageFileName, $options, $selectedAnswerValue, $test_id);
@@ -56,7 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // $stmt->close();
+        $stmt->close();
+    } else {
+        // Handle form data not set error
     }
 }
 ?>
+
