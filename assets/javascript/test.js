@@ -1,8 +1,8 @@
 //right-click disable
-document.addEventListener("contextmenu", function(e) {
-  e.preventDefault();
-  window.alert("Right-click is not allowed on this page!");
-}, false);
+// document.addEventListener("contextmenu", function(e) {
+//   e.preventDefault();
+//   window.alert("Right-click is not allowed on this page!");
+// }, false);
 
 //full screen feature
 function openFullscreen() {
@@ -76,6 +76,25 @@ const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
 const end_box=document.querySelector(".end_box");
 const totalTimeForEach = timeforeach * questionsforeach;
+//skip question implementation
+function skipCurrentQuestion() {
+  if (que_count < questions.length - 1) {
+      que_count++;
+      que_numb++;
+      showQuetions(que_count);
+      queCounter(que_numb);
+      clearInterval(counter);
+      // clearInterval(counterLine);
+      startTimer(timeValue);
+      // startTimerLine(widthValue);
+      timeText.textContent = "Time Left";
+      next_btn.classList.remove("show");
+  } else {
+      clearInterval(counter);
+      // clearInterval(counterLine);
+      showResult();
+  }
+}
 // string box implementation
 const string_box=document.querySelector(".string_box");
 if(showTest==0){
@@ -123,7 +142,6 @@ continue_btn.onclick = () => {
       console.error("Error updating test array:", error);
     });
 };
-
 let timeValue = timeforeach;
 let que_count = 0;
 let que_numb = 1;
@@ -149,7 +167,21 @@ document.addEventListener("fullscreenchange", function () {
     warningBox_control();
   }
 });
-
+const skipQuestion_btn=document.querySelector("#skipQuestion");
+const skip_box=document.querySelector(".skip-box");
+skipQuestion_btn.onclick=()=>{
+  skip_box.classList.add("activateSkip");
+  const allOptions = option_list.children.length;
+  for (i = 0; i < allOptions; i++) {
+    option_list.children[i].classList.add("disabled");
+  }
+  next_btn.classList.add("show");
+}
+const skipQuestionConfirm=document.querySelector("#confirmSkip");
+skipQuestionConfirm.onclick=()=>{
+  skip_box.classList.remove("activateSkip");
+  skipCurrentQuestion();
+}
 function warningBox_control() {
   quiz_box.classList.remove("activeQuiz");
   warningBox.classList.add("activeWarning");
@@ -180,14 +212,18 @@ next_btn.onclick = () => {
 };
 var counterrors = 0;
 function showQuetions(index) {
-  console.log(questions[index].question_text);
   const que_text = document.querySelector(".que_text");
-  let que_tag =
-    "<span>" + (index + 1) + ". " + questions[index].question_text + "</span>";
+  const que_image = document.querySelector(".que_image");
+
+  if (questions[index].question_text !== null) {
+    que_text.innerHTML = `<span>${index + 1}. ${questions[index].question_text}</span>`;
+    que_image.style.display = "none";
+  } else if (questions[index].image !== null) {
+    que_text.innerHTML = "";
+    que_image.innerHTML = `<span>${index+1}.</span><img src="../images/questions/${questions[index].image}" alt="Question Image">`;
+    que_image.style.display = "block";
+  }
   let option_tag = "";
-
-  que_text.innerHTML = que_tag;
-
   if (questions[index].options !== null) {
     for (let i = 0; i < questions[index].options.length; i++) {
       if (questions[index].options[i]) {
@@ -223,7 +259,9 @@ function optionSelected(answer) {
     userScore += 1;
   }
   const questionObject = {
+    question_id:questions[que_count].question_id,
     question: questions[que_count].question_text,
+    image:questions[que_count].image,
     answer: userAns,
     correctAnswer: questions[que_count].correct_answer,
   };
@@ -236,6 +274,7 @@ function optionSelected(answer) {
 function showResult() {
   sendToStorage();
   exitFullscreen();
+  console.log(answers);
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
@@ -296,6 +335,7 @@ function sendToStorage() {
     test_id: test_id,
     user_id: user_id,
     userScore: userScore,
+    answers:answers
   };
   fetch("storeUserData.php", {
     method: "POST",

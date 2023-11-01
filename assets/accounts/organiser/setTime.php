@@ -6,10 +6,23 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     $test_id=$_POST['test_id'];
     $numberofQuestions=$_POST['numberofQuestions'];
     $timeforeach=$_POST['timeforeach'];
-    $sql="UPDATE `test` SET `time`='$startTime',`heldtill`='$endTime',`questionsforeach`='$numberofQuestions',`timeforeach`='$timeforeach' WHERE `test_id`='$test_id'";
-    $result=mysqli_query($conn,$sql);
-    if($result){
-        header('location:addQuestions.php?test_id='.$test_id.'&timeUpdate=true');
+    if($startTime!=null){
+        $startTimeSql="UPDATE `test` SET `time`='$startTime' WHERE `test_id`='$test_id'";
+        $startTimeResult=mysqli_query($conn,$startTimeSql);
     }
+    if($endTime!=null){
+        $endTimeSql="UPDATE `test` SET `heldtill`='$endTime' WHERE `test_id`='$test_id'";
+        $endTimeResult=mysqli_query($conn,$endTimeSql);
+    }
+    if($numberofQuestions!=null){
+        $questionsSql="UPDATE `test` SET `questionsforeach`='$numberofQuestions' WHERE `test_id`='$test_id'";
+        $questionsResult=mysqli_query($conn,$questionsSql);
+    }
+    if($timeforeach!=null){
+        $timeEachSql="UPDATE `test` SET `timeforeach`='$timeforeach' WHERE `test_id`='$test_id'";
+        $timeEachResult=mysqli_query($conn,$timeEachSql);
+    }
+    header('location:addQuestions.php?test_id='.$test_id.'&timeUpdate=true');
+    exit;
 }
 ?>

@@ -8,7 +8,7 @@ if (!isset($_SESSION['organiser']) || $_SESSION['organiser'] != true) {
 include '../../_dbconnect.php';
 $currentDateTime = date('Y-m-d H:i:s');
 $updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDateTime'";
-$updateresult=mysqli_query($conn,$updateSQL);
+$updateresult = mysqli_query($conn, $updateSQL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,8 +63,72 @@ $updateresult=mysqli_query($conn,$updateSQL);
     </div>';
     }
     ?>
+    <div class="container container-fluid first_container">
+        <div class="row">
+            <div class="col-md-9">
+                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../../images/A.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../../images/B.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../../images/C.jpg" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-3 d-flex">
+                    <div class="card-header p-3 bg-transparent">
+                        <h5>Upcoming Tests:</h5>
+                    </div>
+                    <div class="card-body p-1" data-bs-smooth-scroll="true">
+                        <?php
+                        $upcomingTestSql = "SELECT * FROM `test` WHERE `time` > NOW()";
+                        $upcomingTest = mysqli_query($conn, $upcomingTestSql);
+                        $count = 0;
+                        while ($upcomingTestRow = mysqli_fetch_assoc($upcomingTest)) {
+                            $timeDate=$upcomingTestRow['time'];
+                            $timestamp = strtotime($timeDate);
+                            $formattedDate = date('d F Y', $timestamp);
+                            echo '<div class="container m-0 p-2 bg-transparent">
+                                <div class="card-title"><h5>' . $upcomingTestRow['heading'] . '</h5></div>
+                                <div class="card-text">' . $formattedDate . '</div>
+                              </div>';
+                            $count++;
+                        }
+                        if ($count == 0) {
+                            echo '<div class="container m-0 p-2 bg-transparent border border-rounded border-rounded-secondary">
+                        <div class="card-title">There are no upcoming tests.</div>
+                      </div>';
+                        }
+                        ?>
+                    </div>
+                    <div class="card-footer p-3 bg-transparent"><cite>~The Social Knowledge</cite></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container my-2 postedQuiz_container" style="display:none;">
-    <ul><li><h4 class="text">Ongoing Quizes:</h4></li></ul>
+        <ul>
+            <li>
+                <h4 class="text">Ongoing Quizes:</h4>
+            </li>
+        </ul>
         <div class="container " style="display: grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
             include '../../_dbconnect.php';
@@ -94,7 +158,7 @@ $updateresult=mysqli_query($conn,$updateSQL);
                 echo '<div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
-                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', '.$formattedDate.'</p>
+                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', ' . $formattedDate . '</p>
                   <p class="card-text">Question Count: ' . $questionsofeach . '</p>
                   <p class="card-text">Time for each question: ' . $timeforeach . '</p>
                   <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
@@ -104,9 +168,13 @@ $updateresult=mysqli_query($conn,$updateSQL);
             }
             ?>
         </div>
-        <ul class="my-2"><li><h4>Quizes not visible:</h4></li></ul>
+        <ul class="my-2">
+            <li>
+                <h4>Quizes not visible:</h4>
+            </li>
+        </ul>
         <div class="container my-2" style="display: grid;grid-template-columns:1fr 1fr 1fr;">
-        <?php
+            <?php
             include '../../_dbconnect.php';
             $questionsExist = "Add Questions";
             $organiser_id = $_SESSION['user_id'];
@@ -134,7 +202,7 @@ $updateresult=mysqli_query($conn,$updateSQL);
                 echo '<div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">' . $heading . '</h5>
-                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', '.$formattedDate.'</p>
+                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', ' . $formattedDate . '</p>
                   <p class="card-text">Question Count: ' . $questionsofeach . '</p>
                   <p class="card-text">Time for each question: ' . $timeforeach . '</p>
                   <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
@@ -159,11 +227,11 @@ $updateresult=mysqli_query($conn,$updateSQL);
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Time For Each Question(in seconds):</label>
-                    <input type="text" class="form-control" name="timeforeach">
+                    <input type="text" class="form-control" name="timeforeach" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Number of Questions to show in Quiz:</label>
-                    <input type="number" class="form-control" name="questionsforeach">
+                    <input type="number" class="form-control" name="questionsforeach" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Held From:*</label>
@@ -183,11 +251,14 @@ $updateresult=mysqli_query($conn,$updateSQL);
         const postedQuiz_container = document.querySelector(".postedQuiz_container");
         const addQuiz_btn = document.querySelector("#addQuiz_btn");
         const addQuiz_container = document.querySelector(".addQuiz_container");
+        const first_container = document.querySelector(".first_container");
         postedQuiz.onclick = () => {
             postedQuiz_container.style.display = "block";
             addQuiz_container.style.display = "none";
+            first_container.style.display = "none";
         }
         addQuiz_btn.onclick = () => {
+            first_container.style.display = "none";
             postedQuiz_container.style.display = "none";
             addQuiz_container.style.display = "block";
         }

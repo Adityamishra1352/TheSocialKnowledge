@@ -1,67 +1,38 @@
 <?php
 session_start();
 include '../_dbconnect.php';
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
-
-// require 'phpmailer/src/Exception.php';
-// require 'phpmailer/src/PHPMailer.php';
-// require 'phpmailer/src/SMTP.php';
-
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $fname = $_POST['firstName'];
     $lname = $_POST['lastName'];
     $email = $_POST['emailAddress'];
     $password = $_POST['passWord'];
-    $enroll=$_POST['enrollment'];
+    $enroll = $_POST['enrollment'];
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header('location:signup.php?wrongEmail=true');
     } elseif (strlen($password) < 8) {
         header('location:signup.php?passwordLess=true');
-    }elseif(strlen($enroll)>8){
+    } elseif (strlen($enroll) > 8) {
         header('location:signup.php?enroll=true');
-    }
-     else {
+    } else {
         $fetch_email = "SELECT * FROM `users` WHERE `email`='$email'";
         $fetch_result = mysqli_query($conn, $fetch_email);
         $num = mysqli_num_rows($fetch_result);
         if ($num >= 1) {
             header('location:signup.php?emailExists=true');
         } else {
-            // $token = sprintf("%04d", mt_rand(0, 9999));
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`,`enrollment`) VALUES ('$fname', '$lname', '$email', '$hash','$enroll');";
-            $result_signup = mysqli_query($conn, $signup_sql);
-            // $_SESSION['loggedin']=true;
-            // $_SESSION['user_id']=;
-            if ($result_signup) {
-                // $tokenSql = "INSERT INTO `verification`(`token`,`email`)VALUES('$token','$email')";
-                // $tokenResult = mysqli_query($conn, $tokenSql);
-                // if ($tokenResult) {
-                //     $message = 1;
-                //     $mail = new PHPMailer(true);
-                //     try {
-                //         $mail->isSMTP();
-                //         $mail->Host = 'smtp.gmail.com';
-                //         $mail->SMTPAuth = true;
-                //         $mail->Username = 'socialknowledge38@gmail.com';
-                //         $mail->Password = 'imcdramgpiuaswii';
-                //         $mail->SMTPSecure = 'ssl';
-                //         $mail->Port = 465;
-                //         $mail->setFrom('socialknowledge38@gmail.com');
-                //         $mail->addAddress($_POST['emailAddress']);
-                //         $emailTemplate = file_get_contents('verification_email.html');
-                //         $emailTemplate = str_replace('[NAME]', $fname, $emailTemplate);
-                //         $emailTemplate = str_replace('[TOKEN]', $token, $emailTemplate);
-                //         $mail->isHTML(true);
-                //         $mail->Subject = "Email Verification";
-                //         $mail->Body = $emailTemplate;
-                //         $mail->send();
-                //     } catch (Exception $e) {
-                //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                //     }
-                // }
-                header('location:signup.php?success=true');
+            $adminAllowed = "SELECT email FROM adminusers WHERE `email`='$email'";
+            $adminAllowed_result = mysqli_query($conn, $adminAllowed);
+            $adminNum = mysqli_num_rows($adminAllowed_result);
+            if ($adminNum<1) {
+                header('location:signup.php?notAllowed=true');
+            } else {
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $signup_sql = "INSERT INTO `users` ( `fname`, `lname`, `email`, `password`,`enrollment`) VALUES ('$fname', '$lname', '$email', '$hash','$enroll');";
+                $result_signup = mysqli_query($conn, $signup_sql);
+                if ($result_signup) {
+                    $_SESSION['loggedin']=true;
+                    header('location:dashboard.php?signup=true&email='.$email);
+                }
             }
         }
     }
@@ -108,33 +79,39 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
         </nav>
         <?php
-        if(isset($_GET['success']) && $_GET['success']==true){
+        if (isset($_GET['success']) && $_GET['success'] == true) {
             echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Successfully Signed Up!!</strong> Please Login.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
-        if(isset($_GET['emailExists']) && $_GET['emailExists']==true){
+        if (isset($_GET['emailExists']) && $_GET['emailExists'] == true) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Email already exists!!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
-        if(isset($_GET['wrongEmail']) && $_GET['wrongEmail']==true){
+        if (isset($_GET['wrongEmail']) && $_GET['wrongEmail'] == true) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Please give correct email!!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
-        if (isset($_GET['passwordLess']) && $_GET['passwordLess']==true) {
+        if (isset($_GET['passwordLess']) && $_GET['passwordLess'] == true) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Password must be greater than 8 digits!!</strong> You should use another password.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
-        } 
-        if (isset($_GET['enroll']) && $_GET['enroll']==true) {
+        }
+        if (isset($_GET['enroll']) && $_GET['enroll'] == true) {
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Wrong Enrollment Number!!</strong> Please enter the correct enrollment number.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        if (isset($_GET['notAllowed']) && $_GET['notAllowed'] == true) {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>You are not allowed by the admin.</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
@@ -147,11 +124,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
         <div class="input-field my-4">
             <form action="signup.php" method="post">
-                <input type="text" class="item1 m-2 p-2" required id="firstName" placeholder="First Name*" name="firstName">
+                <input type="text" class="item1 m-2 p-2" required id="firstName" placeholder="First Name*"
+                    name="firstName">
                 <input type="text" class="item2 m-2 p-2" id="lastName" placeholder="Last Name" name="lastName">
-                <input type="text" class="item2 m-2 p-2" required id="enrollment" placeholder="Enrollment Number*" name="enrollment">
+                <input type="text" class="item2 m-2 p-2" required id="enrollment" placeholder="Enrollment Number*"
+                    name="enrollment">
                 <input type="email" class="item3 m-2 p-2" required id="email" placeholder="Email*" name="emailAddress">
-                <input type="password" class="item4 m-2 p-2" required id="passWord" placeholder="Password*" name="passWord">
+                <input type="password" class="item4 m-2 p-2" required id="passWord" placeholder="Password*"
+                    name="passWord">
                 <!-- <div class="passwordmessage">
                 <b>Password must contain:
                 <ul>

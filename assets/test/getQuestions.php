@@ -8,14 +8,15 @@ $questionsData = array();
 
 while ($row = mysqli_fetch_assoc($result)) {
     $question = array(
+        'question_id'=> $row['question_id'],
         'question_text' => $row['question'],
         'options' => array(),
-        'correct_answer' => $row['answer']
+        'correct_answer' => $row['answer'],
+        'image'=> $row['image']
     );
     $optionsJSON = $row['options'];
     $options = json_decode($optionsJSON);
     
-    // Check if options is an array and escape HTML entities
     if (is_array($options)) {
         $escapedOptions = array_map('htmlspecialchars', $options);
     } else {

@@ -1,0 +1,5 @@
+What is JavaScript?,JavaScript is a scripting language used to make the website interactive,"JavaScript is a scripting language used to make the website interactive"," JavaScript is an assembly language used to make the website interactive","JavaScript is a compiled language used to make the website interactive"
+Among the given statements, which statement defines closures in JavaScript?, JavaScript is a function that is enclosed with references to its lexical environment,"JavaScript is a function that is enclosed with references to its inner function scope"," JavaScript is a function that is enclosed with references to its lexical environment","None of the meantioned"
+Arrays in JavaScript are defined by which of the following statements?,It is an ordered list of values,"It is an ordered list of string","It is an ordered list of values","It is an ordered list of strings"
+Will the following JavaScript code work?   var js = (function(x) {return x*x;}(10));,Yes, "Exception will be thrown", "Error","Memory Leak","Yes"
+Which of the following is not javascript data types?,All of the mentioned,"Null Type","Undefined Type","All of the mentioned","Number Type"

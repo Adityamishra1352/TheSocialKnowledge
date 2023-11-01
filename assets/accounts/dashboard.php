@@ -1,9 +1,17 @@
 <?php
 session_start();
+include '../_dbconnect.php';
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     header('location:../403.php');
 }
-include '../_dbconnect.php';
+if(isset($_GET['signup'])&& $_GET['signup']==true){
+    $signupEmail=$_GET['email'];
+    $signupUser="SELECT * FROM `users` WHERE `email`='$signupEmail'";
+    $signupUserResult=mysqli_query($conn,$signupUser);
+    $signupUserRow=mysqli_fetch_assoc($signupUserResult);
+    $signupUser_id=$signupUserRow['user_id'];
+    $_SESSION['user_id']=$signupUser_id;
+}
 $user_id = $_SESSION['user_id'];
 $uploadDir = '../uploads/';
 $verified = 0;
@@ -274,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
 
 
-        <div class="container p-2">
+        <!-- <div class="container p-2">
             <ul>
                 <li>
                     <h4>Courses that you have enrolled in:</h4>
@@ -319,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 ?>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="container my-2">
         <ul>
             <li>
@@ -392,6 +400,35 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             ?>
         </div>
     </div>
+    <!-- <div class="container my-2">
+    <?php
+$user_id = $_SESSION['user_id'];
+$directory = "../test/answers/";
+$userCodes = [];
+foreach (scandir($directory) as $file) {
+    $filePath = $directory . $file;
+    if (is_file($filePath) && strpos($file, $user_id) === 0) {
+        $code = file_get_contents($filePath);
+        $language = pathinfo($file, PATHINFO_EXTENSION);
+        $userCodes[] = [
+            'language' => $language,
+            'code' => $code
+        ];
+    }
+}
+?>
+    <h1>Your Stored Codes</h1>
+    <?php
+    foreach ($userCodes as $codeInfo) {
+        $language = $codeInfo['language'];
+        $code = $codeInfo['code'];
+
+        echo "<h3>Code (Language: $language)</h3>";
+        echo "<pre>$code</pre>";
+    }
+    ?>
+
+    </div> -->
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -7,7 +7,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
 $currentTimestamp = strtotime('now');
 $currentDateTime = date('Y-m-d H:i:s', $currentTimestamp);
 $updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDateTime'";
-$updateresult=mysqli_query($conn,$updateSQL);
+$updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `time` <= '$currentDateTime'";
+$updateresult = mysqli_query($conn, $updateSQL);
+$updateStartresult = mysqli_query($conn, $updateStartSQL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +34,7 @@ $updateresult=mysqli_query($conn,$updateSQL);
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
+                        <a class="nav-link active" aria-current="page" href="../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../../contactus.php">Contact Us</a>
@@ -65,36 +67,66 @@ $updateresult=mysqli_query($conn,$updateSQL);
     <div class="container my-2">
         <div class="row">
             <?php
-            include '../_dbconnect.php';
-            $test_sql = "SELECT * FROM `test` WHERE `displayed`=1";
-            $test_result = mysqli_query($conn, $test_sql);
-            while ($rowTest = mysqli_fetch_assoc($test_result)) {
-                $test_id = $rowTest['test_id'];
-                $heading = $rowTest['heading'];
-                $timeDate = $rowTest['time'];
-                $timestamp = strtotime($timeDate);
-                $formattedDate = date('d F Y', $timestamp);
-                $formattedTime = date('H:i', $timestamp);
-                $description = $rowTest['description'];
-                $words = explode(' ', $description);
-                $limitedDescription = implode(' ', array_slice($words, 0, 15));
-                if (count($words) > 15) {
-                    $limitedDescription .= '...';
+            $user_id = $_SESSION['user_id'];
+            $user_id = mysqli_real_escape_string($conn, $user_id);
+            $userSql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
+            $userSql_result = mysqli_query($conn, $userSql);
+            $rowUser = mysqli_fetch_assoc($userSql_result);
+            $email = $rowUser['email'];
+            $adminUser = "SELECT * FROM `adminusers` WHERE `email`='$email'";
+            $adminUser_result = mysqli_query($conn, $adminUser);
+            $adminUserRow = mysqli_fetch_assoc($adminUser_result);
+            $adminUser_id = $adminUserRow['sno'];
+            $sql = "SELECT * FROM test";
+            $result = mysqli_query($conn, $sql);
+            if (!$result) {
+                die("Query failed: " . mysqli_error($conn));
+            }
+            $countQuizes=0;
+            while ($rowTest = mysqli_fetch_assoc($result)) {
+                $userfortest = json_decode($rowTest['userfortest'], true);
+                if (is_array($userfortest) && in_array($adminUser_id, $userfortest)) {
+                    $countQuizes++;
+                    $test_id = $rowTest['test_id'];
+                    $heading = $rowTest['heading'];
+                    $timeDate = $rowTest['time'];
+                    $timestamp = strtotime($timeDate);
+                    $formattedDate = date('d F Y', $timestamp);
+                    $formattedTime = date('H:i', $timestamp);
+                    $description = $rowTest['description'];
+                    $words = explode(' ', $description);
+                    $limitedDescription = implode(' ', array_slice($words, 0, 15));
+                    
+                    if (count($words) > 15) {
+                        $limitedDescription .= '...';
+                    }
+                    
+                    echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
+                        <div class="card-header">
+                            <h5 class="card-title">' . $heading . '</h5>
+                            <p class="card-text text-secondary">' . $formattedDate . ' ' . $formattedTime . '</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">' . $limitedDescription . '</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+                        </div>
+                    </div></div>';
                 }
-                echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
-                <div class="card-header">
-                <h5 class="card-title">' . $heading . '</h5>
-                <p class="card-text text-secondary">' . $formattedDate . ' '.$formattedTime.'</p>
-                </div>
-                <div class="card-body">
-                  <p class="card-text">' . $limitedDescription . '</p>
-                  </div>
-                  <div class="card-footer">
-            <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
-        </div>
-              </div></div>';
+            }
+            if($countQuizes==0){
+                echo '<div class="card" style="max-width:500px;">
+                    <div class="card-body">
+                      <blockquote class="blockquote mb-0">
+                        <p>You dont have any quizes.</p>
+                        <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
+                      </blockquote>
+                    </div>
+                  </div>';
             }
             ?>
+
         </div>
     </div>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>

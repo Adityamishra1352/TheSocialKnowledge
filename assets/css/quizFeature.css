@@ -29,6 +29,12 @@
     pointer-events: auto;
     transform: translate(-55%, -47%) scale(1);
 }
+.skip-box.activateSkip{
+    opacity: 1;
+    z-index: 5;
+    pointer-events: auto;
+    display: block;
+}
 .info_box.deactivateInfo,
 .string_box.deactivateString{
     opacity: 0;
@@ -52,6 +58,21 @@
     justify-content: center;
     transform: translate(-50%, -50%) scale(0.9);
 }
+.skip-box{
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    padding: 25px 30px;
+    width: 450px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    /* transform: translate(-50%, -50%) scale(0.9); */
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
 .info_box .info-title{
     height: 60px;
     width: 100%;
@@ -71,7 +92,7 @@
 .info_box .info-list .info,
 .warning-box .warning_info,
 .time_box .time_info,
-.end_box .end_info{
+.end_info{
     margin: 5px 0;
     font-size: 17px;
 }
@@ -253,7 +274,7 @@ footer{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 1px solid lightgrey;
+    border: 1px solid lightgrey;
 }
 
 footer .total_que span{
@@ -270,7 +291,7 @@ footer .total_que span p:first-child{
     padding-left: 0px;
 }
 
-footer button{
+footer .next_btn{
     height: 40px;
     padding: 0 13px;
     font-size: 18px;
@@ -288,15 +309,26 @@ footer button{
     transform: scale(0.95);
     transition: all 0.3s ease;
 }
+footer .skip_btn{
+    height: 40px;
+    padding: 0 13px;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 5px;
+    line-height: 10px;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
 
-footer button:hover{
+footer .next_btn:hover{
     border: 1px solid inherit;
     background: #d14348;
     outline: none;
     color: white;
 }
 
-footer button.show{
+footer .next_btn.show{
     opacity: 1;
     pointer-events: auto;
     transform: scale(1);
