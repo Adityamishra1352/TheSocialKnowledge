@@ -45,6 +45,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </div>
         </div>
     </nav>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Feature under maintainence.</strong> Dont use inputs.
+    </div>
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container" style="width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex" id="languages" aria-label="Language" style="width:20%;"
@@ -79,14 +82,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 </div>
                 <div class="container inputContainer border" id="inputContainer"
                     style="width:100%; height:auto;font-size:15px;">
-                    <div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:">
-                            <use xlink:href="#exclamation-triangle-fill" />
-                        </svg>
-                        <div>
-                            Feature under maintainence.
-                        </div>
-                    </div>
                     <h6 class="text m-1">Input:</h6>
                     <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
                         class="form-control border"></textarea>

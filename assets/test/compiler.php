@@ -10,7 +10,7 @@ fwrite($programFile, $code);
 fclose($programFile);
 
 if ($language == "php") {
-    if($_POST['input']){
+    if(isset($_POST['input'])){
         $input = $_POST['input'];
         $expected_output = implode("\n", $testCase["expected_output"]);
 
