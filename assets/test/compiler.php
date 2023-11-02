@@ -8,29 +8,27 @@ $filePath = "answers/" . $user_id . $language . $random . "." . $language;
 $programFile = fopen($filePath, "w");
 fwrite($programFile, $code);
 fclose($programFile);
-
+$output=null;
 if ($language == "php") {
     if(isset($_POST['input'])){
         $input = $_POST['input'];
-        $expected_output = implode("\n", $testCase["expected_output"]);
-
-        $inputFilePath = "input_" . $random . ".txt";
-        $outputFilePath = "output_" . $random . ".txt";
+        $inputFilePath ="temporary/"."input_" . $random . ".txt";
+        $outputFilePath ="temporary/". "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
         $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
-        $actual_output = file_get_contents($outputFilePath);
-        echo $actual_output;
+        $output = file_get_contents($outputFilePath);
+        echo $output;
         unlink($inputFilePath);
         unlink($outputFilePath);
     }
     else{
         $output = shell_exec("C:\php\php.exe $filePath 2>&1");
+        echo $output;
     }
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath);
     }
-    echo $output;
 } else if ($language == "c" || $language == "cpp") {
     $output = shell_exec("");
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {

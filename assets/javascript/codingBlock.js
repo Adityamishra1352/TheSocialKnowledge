@@ -49,21 +49,50 @@ function compileHTMLCode() {
     output.innerHTML = doc.documentElement.outerHTML;
     document.body.removeChild(iframe);
 }
+var radioValue;
+const radio1 = document.getElementById('inlineRadio1');
+const radio2 = document.getElementById('inlineRadio2');
+const inputArea=document.getElementById("inputArea");
+radio1.addEventListener('change', function() {
+    if (radio1.checked) {
+        radioValue="yes";
+    }
+});
 
-
+radio2.addEventListener('change', function() {
+    if (radio2.checked) {
+        radioValue="no";
+    }
+});
 
 function executeCode(){
-    $.ajax({
-        url:"../test/compiler.php",
-        method: "POST",
-        data:{
-            language:$("#languages").val(),
-            code:editor.getSession().getValue()
-        },
-        success:function(response){
-            $(".output").text(response)
-        }
-    })
+    if(radioValue=="no"){
+        $.ajax({
+            url:"../test/compiler.php",
+            method: "POST",
+            data:{
+                language:$("#languages").val(),
+                code:editor.getSession().getValue(),
+            },
+            success:function(response){
+                $(".output").text(response)
+            }
+        })
+    }
+    else if(radioValue=="yes"){
+        $.ajax({
+            url:"../test/compiler.php",
+            method: "POST",
+            data:{
+                language:$("#languages").val(),
+                code:editor.getSession().getValue(),
+                input:inputArea.value,
+            },
+            success:function(response){
+                $(".output").text(response)
+            }
+        })
+    }
 }
 function changeEditorFontSize() {
     const editor = ace.edit('editor');
