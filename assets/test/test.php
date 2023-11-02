@@ -10,6 +10,9 @@ $updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDat
 $updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `time` <= '$currentDateTime'";
 $updateresult = mysqli_query($conn, $updateSQL);
 $updateStartresult = mysqli_query($conn, $updateStartSQL);
+$updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `time` <= '$currentDateTime'";
+$updateresult = mysqli_query($conn, $updateSQL);
+$updateStartresult = mysqli_query($conn, $updateStartSQL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
