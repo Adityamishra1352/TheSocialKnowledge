@@ -217,11 +217,15 @@ function showQuetions(index) {
 
   if (questions[index].question_text !== null) {
     que_text.innerHTML = `<span>${index + 1}. ${questions[index].question_text}</span>`;
-    que_image.style.display = "none";
-  } else if (questions[index].image !== null) {
+  } else {
     que_text.innerHTML = "";
-    que_image.innerHTML = `<span>${index+1}.</span><img src="../images/questions/${questions[index].image}" alt="Question Image">`;
+  }
+
+  if (questions[index].image !== null) {
+    que_image.innerHTML = `<span>${index + 1}.</span><img src="../images/questions/${questions[index].image}" alt="Question Image">`;
     que_image.style.display = "block";
+  } else {
+    que_image.style.display = "none";
   }
   let option_tag = "";
   if (questions[index].options !== null) {

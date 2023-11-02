@@ -236,13 +236,11 @@ $test_id = $_GET['test_id'];
                             echo "<tr>
                         <th scope='row'>$count</th>
                         <td>";
-                            if ($question == NULL) {
-                                echo '<img src="../../images/questions/' . $questionImage . '">';
-                            } else {
-                                echo $question;
+                            if ($questionImage != NULL) {
+                                echo '<img src="../../images/questions/' . $questionImage . '" width="50%">';
                             }
-                            echo "</td>
-                        <td>";
+                            echo "$question</td>";
+                            echo "<td>";
                             $countOption = 1;
                             foreach ($options as $option) {
                                 echo "$countOption. $option<br>";
