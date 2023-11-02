@@ -136,6 +136,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=1";
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
+            $count=0;
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
                 $timeEnd = $rowQuiz['heldtill'];
@@ -165,6 +166,17 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
+              $count++;
+            }
+            if($count==0){
+                echo '<div class="card">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>You have not posted any quizes. Post one now.</p>
+                    <footer class="blockquote-footer"><cite title="Source Title">Admin</cite></footer>
+                    </blockquote>
+                    </div>
+                    </div>';
             }
             ?>
         </div>
@@ -180,6 +192,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=0";
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
+            $count=0;
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
                 $timeEnd = $rowQuiz['heldtill'];
@@ -209,6 +222,17 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
+              $count++;
+            }
+            if($count==0){
+                echo '<div class="card">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>You have not posted any quizes.</p>
+                    <footer class="blockquote-footer"><cite title="Source Title">Admin</cite></footer>
+                    </blockquote>
+                    </div>
+                    </div>';
             }
             ?>
         </div>

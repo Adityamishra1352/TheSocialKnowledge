@@ -9,14 +9,19 @@
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="shortcut icon" href="/websitelogo.jpg" type="image/png">
     <link rel="stylesheet" href="assets/fontawesome-free-5.15.4-web/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600@display=swap" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600@display=swap" rel="stylesheet" /> -->
 </head>
 
 <body>
+<header>
+        <h2 >The Social Knowledge</h2>
+        <button onclick="window.location.href=(`index.php`)">Home</button>
+        <button onclick="window.location.href=(`assets/test/codingBlock.php`)">Practise Coding</button>
+    </header>
     <section>
-        <div class="row">
+        <!-- <div class="row">
             <h1>OUR MENTOR</h1>
-        </div>
+        </div> -->
         <div class="row">
             <div class="column"></div>
         <div class="column center">
@@ -37,9 +42,9 @@
             </div>
         </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <h1>OUR TEAM</h1>
-        </div>
+        </div> -->
         <div class="row">
             <div class="column">
                 <div class="card">

@@ -1,6 +1,6 @@
-<?php 
+<?php
 session_start();
-if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]!=true){
+if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     header('location:../403.php');
 }
 ?>
@@ -63,6 +63,33 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]!=true){
                 <div class="button-container container my-1">
                     <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Compile</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="inlineRadio3">Need Inputs?</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                            value="yes" onchange="radiofunction()">
+                        <label class="form-check-label" for="inlineRadio1">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                            value="no" onchange="radiofunction()">
+                        <label class="form-check-label" for="inlineRadio2">No</label>
+                    </div>
+                </div>
+                <div class="container inputContainer border" id="inputContainer"
+                    style="width:100%; height:auto;font-size:15px;">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div>
+                            Feature under maintainence.
+                        </div>
+                    </div>
+                    <h6 class="text m-1">Input:</h6>
+                    <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
+                        class="form-control border"></textarea>
                 </div>
             </div>
             <div class="col-md-4 m-0 p-0">
@@ -74,7 +101,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]!=true){
             <div class="inputArea row p-1">
                 <div class="col-md-4 p-0 form-floating" style="overflow-y:auto;overflow-x:hidden;">
                     <textarea id="htmlInput" class="form-control" style="width:100%;height:200px;"
-                    oninput="compileHTMLCode()"></textarea>
+                        oninput="compileHTMLCode()"></textarea>
                     <label for="htmlInput">HTML</label>
                 </div>
                 <div class="col-md-4 p-0 form-floating" style="overflow-y:auto;overflow-x:hidden;">

@@ -10,7 +10,23 @@ fwrite($programFile, $code);
 fclose($programFile);
 
 if ($language == "php") {
-    $output = shell_exec("C:\php\php.exe $filePath 2>&1");
+    if($_POST['input']){
+        $input = $_POST['input'];
+        $expected_output = implode("\n", $testCase["expected_output"]);
+
+        $inputFilePath = "input_" . $random . ".txt";
+        $outputFilePath = "output_" . $random . ".txt";
+        file_put_contents($inputFilePath, $input);
+        $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
+        shell_exec($command);
+        $actual_output = file_get_contents($outputFilePath);
+        echo $actual_output;
+        unlink($inputFilePath);
+        unlink($outputFilePath);
+    }
+    else{
+        $output = shell_exec("C:\php\php.exe $filePath 2>&1");
+    }
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath);
     }

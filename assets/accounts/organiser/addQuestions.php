@@ -58,7 +58,7 @@ $test_id = $_GET['test_id'];
             <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
             <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
                 Questions</button>
-            <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Set Users</button>
+            <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Add Students</button>
             <button class="btn btn-outline-success me-2" type="button" id="users_btn">Responses</button>
         </form>
     </nav>
