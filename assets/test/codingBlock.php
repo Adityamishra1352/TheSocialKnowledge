@@ -46,15 +46,19 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         </div>
     </nav>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Feature under maintainence.</strong> Dont use inputs.
+        <strong>Feature under maintainence.</strong> Some functions might not work.
+    </div>
+    <div class="alert alert-warning alert-dismissible fade show input-warning" role="alert" style="display:none;">
+         You should choose wheather or not you want inputs.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container" style="width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex" id="languages" aria-label="Language" style="width:20%;"
                 onchange="changeLanguage()">
+                <option value="nodejs">NodeJS</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
-                <option value="nodejs">NodeJS</option>
                 <option value="php">PHP</option>
                 <option value="python">Python</option>
                 <option value="htmlcssjs">HTML,CSS and JavaScript</option>

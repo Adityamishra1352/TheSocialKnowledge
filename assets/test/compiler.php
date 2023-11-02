@@ -8,7 +8,7 @@ $filePath = "answers/" . $user_id . $language . $random . "." . $language;
 $programFile = fopen($filePath, "w");
 fwrite($programFile, $code);
 fclose($programFile);
-$output=null;
+// $output=null;
 if ($language == "php") {
     if(isset($_POST['input'])){
         $input = $_POST['input'];
@@ -30,7 +30,7 @@ if ($language == "php") {
         unlink($filePath);
     }
 } else if ($language == "c" || $language == "cpp") {
-    $output = shell_exec("");
+    $output = shell_exec("C:\TDM-GCC-64\bin\cpp.exe $filePath 2>&1");
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath);
     }
@@ -39,10 +39,10 @@ if ($language == "php") {
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
     $output = shell_exec("node $filePath.js 2>&1");
+    echo $output;
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath . ".js");
     }
-    echo $output;
 }
 
 $directory = "answers/";
