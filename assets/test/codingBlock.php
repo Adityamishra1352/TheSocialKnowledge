@@ -32,6 +32,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     <li class="nav-item">
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="htmlcssEditor.php">Web Development</a>
+                    </li>
                 </ul>
                 <ul class="d-flex" style="width:20%;">
                     <input type="number" id="fontSizeInput" class="form-control" placeholder="Font Size" min="10"
@@ -46,7 +49,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         </div>
     </nav>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Feature under maintainence.</strong> Some functions might not work.
+        <strong>Feature under maintainence.</strong> Some functions might not work. Check out the Web Development Feature.
     </div>
     <div class="alert alert-warning alert-dismissible fade show input-warning" role="alert" style="display:none;">
          You should choose wheather or not you want inputs.
@@ -61,7 +64,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
                 <option value="python">Python</option>
-                <option value="htmlcssjs">HTML,CSS and JavaScript</option>
             </select>
         </div>
         <div class="row codeEditor" style="width:100%">
@@ -95,24 +97,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <div class="output container border" id="output" style="height:300px;"></div>
                 <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
             </div>
-        </div>
-        <div class="htmlcssjs_container container" style="width:90%;display:none;">
-            <div class="inputArea row p-1">
-                <div class="col-md-4 p-0 form-floating" style="overflow-y:auto;overflow-x:hidden;">
-                    <textarea id="htmlInput" class="form-control" style="width:100%;height:200px;"
-                        oninput="compileHTMLCode()"></textarea>
-                    <label for="htmlInput">HTML</label>
-                </div>
-                <div class="col-md-4 p-0 form-floating" style="overflow-y:auto;overflow-x:hidden;">
-                    <textarea id="cssInput" class="form-control" style="width:100%;height:200px;"
-                        oninput="compileHTMLCode()"></textarea><label for="cssInput">CSS</label>
-                </div>
-                <div class="col-md-4 p-0 form-floating" style="overflow-y:auto;overflow-x:hidden;">
-                    <textarea id="jsInput" class="form-control" style="width:100%;height:200px;"
-                        oninput="compileHTMLCode()"></textarea><label for="jsInput">JavaScript</label>
-                </div>
-            </div>
-            <div class="outputContainer container p-2 border my-2" id="outputHTML" style="height:200px;"></div>
         </div>
 
     </div>
