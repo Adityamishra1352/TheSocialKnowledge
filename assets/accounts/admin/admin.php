@@ -55,8 +55,7 @@ include '../../_dbconnect.php';
             <button class="btn btn-outline-success me-2" type="button" id="quiz_btn">Quizes</button>
             <button class="btn btn-outline-success me-2" type="button" id="addCourse_btn">Add Course</button>
             <button class="btn btn-outline-success me-2" type="button" id="courseTest_btn">Course Tests</button>
-            <button class="btn btn-outline-success me-2" type="button" id="addUsers_btn">Add Users</button>
-            <button class="btn btn-outline-success me-2" type="button" id="addUsers_btn">Add Users</button>
+            <button class="btn btn-outline-success me-2" type="button" id="addUsers_btn">Add Students</button>
         </form>
     </nav>
     <?php

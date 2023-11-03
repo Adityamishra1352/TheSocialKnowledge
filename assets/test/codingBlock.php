@@ -33,7 +33,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="htmlcssEditor.php">Web Development</a>
+                        <a class="nav-link" href="htmlcssEditor.php">Frontend Development</a>
                     </li>
                 </ul>
                 <ul class="d-flex" style="width:20%;">
@@ -49,7 +49,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         </div>
     </nav>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Feature under maintainence.</strong> Some functions might not work. Check out the Web Development Feature.
+        <strong>Feature under maintainence.</strong> Some functions might not work. Check out the Frontend Development Feature.
     </div>
     <div class="alert alert-warning alert-dismissible fade show input-warning" role="alert" style="display:none;">
          You should choose wheather or not you want inputs.

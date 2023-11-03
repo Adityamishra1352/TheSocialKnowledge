@@ -13,7 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $enrollment = $data[1];
                 $batch=$data[2];
                 $year=$data[3];
-                echo $enrollment;
+                $checkSQL="SELECT enrollment FROM `adminusers` WHERE `enrollment`='$enrollment'";
+                $checkResult=mysqli_query($conn, $checkSQL);
+                if (mysqli_num_rows($checkResult) == 0) {
                 $sql = "INSERT INTO adminusers (`email`, `enrollment`, `batch`, `year`) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssss", $email, $enrollment, $batch, $year);
@@ -22,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo "Error: " . $stmt->error;
                 }
+            }
             }
             if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
                 header('location:admin.php?uploadUsers=true');
