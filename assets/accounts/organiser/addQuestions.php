@@ -236,7 +236,8 @@ $test_id = $_GET['test_id'];
                             echo "<tr>
                         <th scope='row'>$count</th>
                         <td>";
-                            if ($question == NULL) {
+                            if ($questionImage != NULL) {
+                                echo $question;
                                 echo '<img src="../../images/questions/' . $questionImage . '">';
                             } else {
                                 echo $question;
