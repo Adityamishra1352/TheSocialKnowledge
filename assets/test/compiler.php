@@ -10,19 +10,25 @@ fwrite($programFile, $code);
 fclose($programFile);
 // $output=null;
 if ($language == "php") {
-    if(isset($_POST['input'])){
+    if (isset($_POST['input'])) {
         $input = $_POST['input'];
-        $inputFilePath ="temporary/"."input_" . $random . ".txt";
-        $outputFilePath ="temporary/". "output_" . $random . ".txt";
+        $inputFilePath = "temporary/" . "input_" . $random . ".txt";
+        $outputFilePath = "temporary/" . "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
         $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
         $output = file_get_contents($outputFilePath);
         echo $output;
+        $programFile = fopen($filePath, "a+");
+        $existingCode = fread($programFile, filesize($filePath));
+        $updatedCode = $existingCode . "\n\n// Input by user: $input";
+        ftruncate($programFile, 0);
+        fseek($programFile, 0);
+        fwrite($programFile, $updatedCode);
+        fclose($programFile);
         unlink($inputFilePath);
         unlink($outputFilePath);
-    }
-    else{
+    } else {
         $output = shell_exec("C:\php\php.exe $filePath 2>&1");
         echo $output;
     }

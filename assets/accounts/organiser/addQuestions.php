@@ -642,9 +642,6 @@ $test_id = $_GET['test_id'];
         const highestScoringUsers = <?php echo json_encode($highestScoringUsers); ?>;
         const lowestScoringUsers = <?php echo json_encode($lowestScoringUsers); ?>;
         const averageScoringUsers = <?php echo json_encode($averageScoringUsers); ?>;
-        console.log(highestScoringUsers);
-        console.log(averageScoringUsers);
-        console.log(lowestScoringUsers);
 
         function getTooltipText(context) {
             const datasetIndex = context.datasetIndex;
