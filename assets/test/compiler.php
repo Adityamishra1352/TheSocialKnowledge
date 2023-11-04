@@ -36,7 +36,7 @@ if ($language == "php") {
         unlink($filePath);
     }
 } else if ($language == "c" || $language == "cpp") {
-    $output = shell_exec("C:\TDM-GCC-64\bin\cpp.exe $filePath 2>&1");
+    $output = shell_exec("C:\TDM-GCC-64\bin\gcc.exe $filePath 2>&1");
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath);
     }
