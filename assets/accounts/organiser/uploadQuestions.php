@@ -15,31 +15,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return preg_replace('/ {3}/', '<br>', $text);
         }
 
-        for ($i = 0; $i < count($questions); $i++) {
-            $questionText = addLineBreaks($questions[$i]);
-            $questionImage = $questionImages['tmp_name'][$i];
-            // $answer = $answers[$i];
-
-            if (!empty($questionImage)) {
-                $imageFileName = $_FILES['question-images']['name'][$i];
-                move_uploaded_file($questionImage, $imageDirectory . $imageFileName);
-            } else {
-                $imageFileName = null;
+        if (isset($_POST['answer_type']) && $_POST['answer_type'] == 'singleAnswer') {
+            for ($i = 0; $i < count($questions); $i++) {
+                $questionText = addLineBreaks($questions[$i]);
+                $questionImage = $questionImages['tmp_name'][$i];
+                if (!empty($questionImage)) {
+                    $imageFileName = $_FILES['question-images']['name'][$i];
+                    move_uploaded_file($questionImage, $imageDirectory . $imageFileName);
+                } else {
+                    $imageFileName = null;
+                }
+                if (!empty($questionText)) {
+                    $questionScript = $questionText;
+                } else {
+                    $questionScript = null;
+                }
+                $selectedAnswer = $_POST['correct-answer-' . $i];
+                if (preg_match('/options_(\d+)\[(\d+)\]/', $selectedAnswer, $matches)) {
+                    $questionIndex = $matches[1];
+                    $optionIndex = $matches[2];
+                    $selectedAnswerValue = $_POST['options_' . $questionIndex][$optionIndex];
+                }
+                $options = json_encode($_POST['options_' . $i]);
+                echo $selectedAnswerValue;
+                echo var_dump($options);
             }
-            if (!empty($questionText)) {
-                $questionScript = $questionText;
-            } else {
-                $questionScript = null;
-            }
-            $selectedAnswer = $_POST['correct-answer-' . $i];
-            if (preg_match('/options_(\d+)\[(\d+)\]/', $selectedAnswer, $matches)) {
-                $questionIndex = $matches[1];
-                $optionIndex = $matches[2];
-                $selectedAnswerValue = $_POST['options_' . $questionIndex][$optionIndex];
-            }
-            $options = json_encode($_POST['options_' . $i]);
-            echo $selectedAnswerValue;
-            echo var_dump($options);
             $sql = "INSERT INTO questions (question, image, options, answer, test_id) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $options = json_encode($_POST['options_' . $i]);
@@ -55,6 +55,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $stmt->error;
             }
         }
+        if (isset($_POST['answer_type']) && $_POST['answer_type'] == 'multipleAnswer') {
+            for ($i = 0; $i < count($questions); $i++) {
+                $questionText = addLineBreaks($questions[$i]);
+                $questionImage = $questionImages['tmp_name'][$i];
+                if (!empty($questionImage)) {
+                    $imageFileName = $_FILES['question-images']['name'][$i];
+                    move_uploaded_file($questionImage, $imageDirectory . $imageFileName);
+                } else {
+                    $imageFileName = null;
+                }
+                if (!empty($questionText)) {
+                    $questionScript = $questionText;
+                } else {
+                    $questionScript = null;
+                }
+
+                $selectedAnswers = $_POST['correct-answer-' . $i]; // This will be an array
+                echo var_dump($selectedAnswers);
+                $selectedAnswerValues = array();
+
+                if (is_array($selectedAnswers)) {
+                    // Loop through the selected answers and store their values
+                    foreach ($selectedAnswers as $selectedAnswer) {
+                        if (preg_match('/options_(\d+)\[(\d+)\]/', $selectedAnswer, $matches)) {
+                            $questionIndex = $matches[1];
+                            $optionIndex = $matches[2];
+                            $selectedAnswerValues[] = $_POST['options_' . $questionIndex][$optionIndex];
+                        }
+                    }
+                }
+
+                $options = json_encode($_POST['options_' . $i]);
+                echo var_dump($selectedAnswerValues);
+                echo var_dump($options);
+
+                $sql = "INSERT INTO questions (question, image, options, answer, test_id) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $options = json_encode($_POST['options_' . $i]);
+                $selectedAnswerValues = json_encode($selectedAnswerValues); // Convert to JSON
+                $stmt->bind_param("ssssi", $questionScript, $imageFileName, $options, $selectedAnswerValues, $test_id);
+
+                if ($stmt->execute()) {
+                    if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
+                        header('location:editCourse.php?course_id=' . $_GET['course_id'] . '&uploadContent=true');
+                    }
+                    if (isset($_SESSION['organiser']) && $_SESSION['organiser'] == true) {
+                        header('location:addQuestions.php?test_id=' . $test_id . '&uploadQuestions=true');
+                    }
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
+            }
+        }
+
 
         // $stmt->close();
     }

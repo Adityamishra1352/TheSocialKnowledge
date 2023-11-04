@@ -44,7 +44,7 @@ if ($language == "php") {
     echo $output;
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
-    $output = shell_exec("node $filePath.js 2>&1");
+    $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");
     echo $output;
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath . ".js");

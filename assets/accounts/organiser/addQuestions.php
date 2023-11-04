@@ -166,11 +166,19 @@ $test_id = $_GET['test_id'];
                         <h6>Add Questions Individually:</h6>
                     </li>
                 </ul>
+                <div class="container p-2">
+                <label for="questionType"><h6>Select the Type of question:</h6></label>
+                <select name="questionType" class="form-select" id="questionType" style="width:40%;">
+                    <option value="singleAnswer">Single Answer</option>
+                    <option value="multipleAnswer">Multiple Answer</option>
+                </select>
+                </div>
                 <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces
                     for a line break.</span><span class="fst-italic text-secondary"> Select the Answers by clicking on the radio button.</span>
                 <div class="container my-2">
                     <form id="question-form" action="uploadQuestions.php" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
+                        <input type="hidden" name="answer_type" id="answerType">
                         <div id="questions">
                         </div>
                         <button type="button" class="btn btn-primary m-2" id="add-question">Add Question</button>
