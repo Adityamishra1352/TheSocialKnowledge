@@ -127,7 +127,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
     <div class="container my-2 postedQuiz_container" style="display:none;">
         <ul>
             <li>
-                <h4 class="text">Ongoing Quizes:</h4>
+                <h6 class="text">Ongoing Quizes:</h6>
             </li>
         </ul>
         <div class="container " style="display: grid;grid-template-columns:1fr 1fr 1fr;">
@@ -183,12 +183,11 @@ $updateresult = mysqli_query($conn, $updateSQL);
         </div>
         <ul class="my-2">
             <li>
-                <h4>Quizes not visible:</h4>
+                <h6>Quizes not visible:</h6>
             </li>
         </ul>
         <div class="container my-2" style="display: grid;grid-template-columns:1fr 1fr 1fr;">
             <?php
-            include '../../_dbconnect.php';
             $questionsExist = "Add Questions";
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=0";
@@ -220,6 +219,56 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <p class="card-text">Question Count: ' . $questionsofeach . '</p>
                   <p class="card-text">Time for each question: ' . $timeforeach . '</p>
                   <a href="addQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
+                  <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
+                </div>
+              </div>';
+                $count++;
+            }
+            if ($count == 0) {
+                echo '<div class="card">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>You have not posted any quizes.</p>
+                    <footer class="blockquote-footer"><cite title="Source Title">Admin</cite></footer>
+                    </blockquote>
+                    </div>
+                    </div>';
+            }
+            ?>
+        </div>
+        <div class="container my-2">
+            <ul><li><h6>Tests:</h6></li></ul>
+            <?php
+            include '../../_dbconnect.php';
+            $questionsExist = "Add Questions";
+            $organiser_id = $_SESSION['user_id'];
+            $testfetch_sql = "SELECT * FROM `testBlock` WHERE `organiser_id`='$organiser_id' AND `displayed`=0";
+            $fetch_result = mysqli_query($conn, $testfetch_sql);
+            $count = 0;
+            while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
+                $test_id = $rowQuiz['test_id'];
+                $heldtill = $rowQuiz['heldtill'];
+                $heldfrom = $rowQuiz['heldfrom'];
+                $timefortest = $rowQuiz['timefortest'];
+                $questions_sql = "SELECT * FROM `questionsTestBlock` WHERE `test_id`='$test_id'";
+                $questions_result = mysqli_query($conn, $questions_sql);
+                if ($questions_result) {
+                    $numRows = mysqli_num_rows($questions_result);
+                    if ($numRows > 1) {
+                        $questionsExist = "View Test";
+                    }
+                }
+                $heading = $rowQuiz['heading'];
+                $timestamp = strtotime($heldfrom);
+                $formattedDate = date('d F Y', $timestamp);
+                $formattedTime = date('H:i', $timestamp);
+                $description = $rowQuiz['description'];
+                echo '<div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">' . $heading . '</h5>
+                  <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', ' . $formattedDate . '</p>
+                  <p class="card-text">Time for test: ' . $timefortest . '</p>
+                  <a href="addQuestionsBlock.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
@@ -285,8 +334,8 @@ $updateresult = mysqli_query($conn, $updateSQL);
                     <input type="text" class="form-control" name="description" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Time to attend:</label>
-                    <input type="text" class="form-control" name="timefortest" required>
+                    <label for="exampleInputEmail1" class="form-label">Time to attend(in minutes):</label>
+                    <input type="number" class="form-control" name="timefortest" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Held From:*</label>
