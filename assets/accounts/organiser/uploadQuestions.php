@@ -1,13 +1,11 @@
 <?php
 session_start();
 include '../../_dbconnect.php';
-// echo "hii";
 $imageDirectory = '../../images/questions/';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['test_id']) && isset($_POST['questions'])) {
         $test_id = $_POST['test_id'];
         $questions = $_POST['questions'];
-        // $answers = $_POST['answers'];
         $questionImages = $_FILES['question-images'];
 
         function addLineBreaks($text)
@@ -71,12 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $questionScript = null;
                 }
 
-                $selectedAnswers = $_POST['correct-answer-' . $i]; // This will be an array
+                $selectedAnswers = $_POST['correct-answer-' . $i];
                 echo var_dump($selectedAnswers);
                 $selectedAnswerValues = array();
 
                 if (is_array($selectedAnswers)) {
-                    // Loop through the selected answers and store their values
                     foreach ($selectedAnswers as $selectedAnswer) {
                         if (preg_match('/options_(\d+)\[(\d+)\]/', $selectedAnswer, $matches)) {
                             $questionIndex = $matches[1];
@@ -89,12 +86,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $options = json_encode($_POST['options_' . $i]);
                 echo var_dump($selectedAnswerValues);
                 echo var_dump($options);
-
-                $sql = "INSERT INTO questions (question, image, options, answer, test_id) VALUES (?, ?, ?, ?, ?)";
+                $one=1;
+                $sql = "INSERT INTO questions (question, image, options, answer, test_id,ismultiplechoice) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $options = json_encode($_POST['options_' . $i]);
-                $selectedAnswerValues = json_encode($selectedAnswerValues); // Convert to JSON
-                $stmt->bind_param("ssssi", $questionScript, $imageFileName, $options, $selectedAnswerValues, $test_id);
+                $selectedAnswerValues = json_encode($selectedAnswerValues);
+                $stmt->bind_param("ssssii", $questionScript, $imageFileName, $options, $selectedAnswerValues, $test_id, $one);
 
                 if ($stmt->execute()) {
                     if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
@@ -108,9 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
-
-
-        // $stmt->close();
     }
 }
 ?>

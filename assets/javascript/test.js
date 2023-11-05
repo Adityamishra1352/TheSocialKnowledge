@@ -74,33 +74,32 @@ const option_list = document.querySelector(".option_list");
 const time_line = document.querySelector("header .time_line");
 const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
-const end_box=document.querySelector(".end_box");
+const end_box = document.querySelector(".end_box");
 const totalTimeForEach = timeforeach * questionsforeach;
 //skip question implementation
 function skipCurrentQuestion() {
   if (que_count < questions.length - 1) {
-      que_count++;
-      que_numb++;
-      showQuetions(que_count);
-      queCounter(que_numb);
-      clearInterval(counter);
-      // clearInterval(counterLine);
-      startTimer(timeValue);
-      // startTimerLine(widthValue);
-      timeText.textContent = "Time Left";
-      next_btn.classList.remove("show");
+    que_count++;
+    que_numb++;
+    showQuetions(que_count);
+    queCounter(que_numb);
+    clearInterval(counter);
+    // clearInterval(counterLine);
+    startTimer(timeValue);
+    // startTimerLine(widthValue);
+    timeText.textContent = "Time Left";
+    next_btn.classList.remove("show");
   } else {
-      clearInterval(counter);
-      // clearInterval(counterLine);
-      showResult();
+    clearInterval(counter);
+    // clearInterval(counterLine);
+    showResult();
   }
 }
 // string box implementation
-const string_box=document.querySelector(".string_box");
-if(showTest==0){
+const string_box = document.querySelector(".string_box");
+if (showTest == 0) {
   info_box.classList.add("deactivateInfo");
-}
-else{
+} else {
   info_box.classList.remove("deactivateInfo");
   string_box.classList.add("deactivateString");
 }
@@ -109,9 +108,11 @@ function checkTimeAndShowResult() {
   const endDateTime = new Date(endTime);
   const currentTime = new Date();
   if (currentTime > endDateTime && quiz_box.classList.contains("activeQuiz")) {
-      showResult();
-  }
-  else if(currentTime> endDateTime && !info_box.classList.contains("deactivateInfo")){
+    showResult();
+  } else if (
+    currentTime > endDateTime &&
+    !info_box.classList.contains("deactivateInfo")
+  ) {
     end_box.classList.add("activeEndBox");
     info_box.classList.add("deactivateInfo");
   }
@@ -167,21 +168,21 @@ document.addEventListener("fullscreenchange", function () {
     warningBox_control();
   }
 });
-const skipQuestion_btn=document.querySelector("#skipQuestion");
-const skip_box=document.querySelector(".skip-box");
-skipQuestion_btn.onclick=()=>{
+const skipQuestion_btn = document.querySelector("#skipQuestion");
+const skip_box = document.querySelector(".skip-box");
+skipQuestion_btn.onclick = () => {
   skip_box.classList.add("activateSkip");
   const allOptions = option_list.children.length;
   for (i = 0; i < allOptions; i++) {
     option_list.children[i].classList.add("disabled");
   }
   next_btn.classList.add("show");
-}
-const skipQuestionConfirm=document.querySelector("#confirmSkip");
-skipQuestionConfirm.onclick=()=>{
+};
+const skipQuestionConfirm = document.querySelector("#confirmSkip");
+skipQuestionConfirm.onclick = () => {
   skip_box.classList.remove("activateSkip");
   skipCurrentQuestion();
-}
+};
 function warningBox_control() {
   quiz_box.classList.remove("activeQuiz");
   warningBox.classList.add("activeWarning");
@@ -211,16 +212,25 @@ next_btn.onclick = () => {
   }
 };
 var counterrors = 0;
+var isMultipleChoice = false;
 function showQuetions(index) {
+  const isMultipleChoice = questions[index].ismultiplechoice;
+  console.log(isMultipleChoice);
   const que_text = document.querySelector(".que_text");
   const que_image = document.querySelector(".que_image");
 
   if (questions[index].question_text !== null) {
-    que_text.innerHTML = `<span>${index + 1}. ${questions[index].question_text}</span>`;
+    que_text.innerHTML = `<span>${index + 1}. ${
+      questions[index].question_text
+    }</span>`;
     que_image.style.display = "none";
   } else if (questions[index].image !== null) {
     que_text.innerHTML = "";
-    que_image.innerHTML = `<span>${index+1}.</span><img src="../images/questions/${questions[index].image}" alt="Question Image">`;
+    que_image.innerHTML = `<span>${
+      index + 1
+    }.</span><img src="../images/questions/${
+      questions[index].image
+    }" alt="Question Image">`;
     que_image.style.display = "block";
   }
   let option_tag = "";
@@ -243,10 +253,35 @@ function showQuetions(index) {
 
   const option = option_list.querySelectorAll(".option");
   for (i = 0; i < option.length; i++) {
-    option[i].setAttribute("onclick", "optionSelected(this)");
+    if (isMultipleChoice == 0) {
+      option[i].setAttribute("onclick", "optionSelected(this)");
+    } else {
+      option[i].setAttribute("onclick", "multipleOption(this)");
+    }
   }
 }
-
+function multipleOption(answer) {
+  let userAns = answer.textContent;
+  let correcAns = questions[que_count].correct_answer;
+  const allOptions = option_list.children.length;
+  if (userAns === correcAns || correcAns.includes(userAns)) {
+    answer.classList.add("correct");
+    const selectedCorrectOptions =
+      option_list.querySelectorAll(".correct").length;
+    if (selectedCorrectOptions === correcAns.length) {
+      for (i = 0; i < allOptions; i++) {
+        option_list.children[i].classList.add("disabled");
+      }
+      next_btn.classList.add("show");
+    }
+  } else {
+    for (i = 0; i < allOptions; i++) {
+      option_list.children[i].classList.add("disabled");
+    }
+    answer.classList.remove("correct");
+    next_btn.classList.remove("show");
+  }
+}
 const answers = [];
 function optionSelected(answer) {
   clearInterval(counter);
@@ -259,9 +294,9 @@ function optionSelected(answer) {
     userScore += 1;
   }
   const questionObject = {
-    question_id:questions[que_count].question_id,
+    question_id: questions[que_count].question_id,
     question: questions[que_count].question_text,
-    image:questions[que_count].image,
+    image: questions[que_count].image,
     answer: userAns,
     correctAnswer: questions[que_count].correct_answer,
   };
@@ -278,7 +313,7 @@ function showResult() {
   info_box.classList.add("deactivateInfo");
   quiz_box.classList.remove("activeQuiz");
   result_box.classList.add("activeResult");
-      // userScore +
+  // userScore +
 }
 function startTimer(time) {
   counter = setInterval(timer, 1000);
@@ -335,7 +370,7 @@ function sendToStorage() {
     test_id: test_id,
     user_id: user_id,
     userScore: userScore,
-    answers:answers
+    answers: answers,
   };
   fetch("storeUserData.php", {
     method: "POST",

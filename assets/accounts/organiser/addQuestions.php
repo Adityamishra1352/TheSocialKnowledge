@@ -99,7 +99,11 @@ $test_id = $_GET['test_id'];
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
     }
+
     ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Multiple Choice Feature under maintainence.</strong> Some functions might not work.
+    </div>
     <?php
     $recent_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
     $recent_result = mysqli_query($conn, $recent_sql);
@@ -167,14 +171,17 @@ $test_id = $_GET['test_id'];
                     </li>
                 </ul>
                 <div class="container p-2">
-                <label for="questionType"><h6>Select the Type of question:</h6></label>
-                <select name="questionType" class="form-select" id="questionType" style="width:40%;">
-                    <option value="singleAnswer">Single Answer</option>
-                    <option value="multipleAnswer">Multiple Answer</option>
-                </select>
+                    <label for="questionType">
+                        <h6>Select the Type of question:</h6>
+                    </label>
+                    <select name="questionType" class="form-select" id="questionType" style="width:40%;">
+                        <option value="singleAnswer">Single Answer</option>
+                        <option value="multipleAnswer">Multiple Answer</option>
+                    </select>
                 </div>
                 <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give three spaces
-                    for a line break.</span><span class="fst-italic text-secondary"> Select the Answers by clicking on the radio button.</span>
+                    for a line break.</span><span class="fst-italic text-secondary"> Select the Answers by clicking on
+                    the radio button.</span>
                 <div class="container my-2">
                     <form id="question-form" action="uploadQuestions.php" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
@@ -415,7 +422,8 @@ $test_id = $_GET['test_id'];
                                 </p>
                                 <p class="card-text"><b>Ends At:</b>
                                     <?php $timestamp = strtotime($timeEnd);
-                $formattedDate = date('d F Y', $timestamp);echo $formattedDate; ?>
+                                    $formattedDate = date('d F Y', $timestamp);
+                                    echo $formattedDate; ?>
                                 </p>
                                 <p class="card-text"><b>Start String: </b>
                                     <?php echo $startString; ?>
@@ -431,11 +439,12 @@ $test_id = $_GET['test_id'];
                 <table class="table my-2 table-hover" id="attendedUserTable">
                     <thead>
                         <tr>
-                            <th scope="col">S.no</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Enrollment</th>
-                            <th scope="col">Score</th>
+                            <th class="sortable" data-column="0"><button type="button" class="border-0 p-0 m-0 bg-white">&#8964</button>S.no</th>
+                            <th class="sortable" data-column="1"><button type="button">&#8964</button>Name</th>
+                            <th class="sortable" data-column="2"><button type="button">&#8964</button>Email</th>
+                            <th class="sortable" data-column="3"><button type="button">&#8964</button>Enrollment</th>
+                            <th class="sortable" data-column="4"><button type="button">&#8964</button>Score</th>
+
                             <th scope="col">
                                 <div class="form-check">
                                     <input class="form-check-input" id="attemptedAll" type="checkbox" value="">
@@ -623,6 +632,33 @@ $test_id = $_GET['test_id'];
     </div>
     </form>
     <script src="../../jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+    $(".sortable").click(function () {
+        const column = $(this).data("column");
+        const $table = $("#attendedUserTable");
+        const isAscending = !$table.data("sort-ascending");
+        
+        const rows = $table.find("tbody > tr").get();
+        rows.sort(function (a, b) {
+            const keyA = $(a).children("td").eq(column).text();
+            const keyB = $(b).children("td").eq(column).text();
+            if (isAscending) {
+                return keyA.localeCompare(keyB);
+            } else {
+                return keyB.localeCompare(keyA);
+            }
+        });
+
+        $table.data("sort-ascending", isAscending);
+        $.each(rows, function (index, row) {
+            $table.children("tbody").append(row);
+        });
+    });
+});
+
+    </script>
+
     <script>
         //filter user functionality
         $(document).ready(function () {

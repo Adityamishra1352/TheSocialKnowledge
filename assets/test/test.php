@@ -113,7 +113,7 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                             <p class="card-text">' . $limitedDescription . '</p>
                         </div>
                         <div class="card-footer">
-                            <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Attend Test</a>
+                            <a href="quizFeaturetry.php?testid=' . $test_id . '" class="btn btn-outline-success">Take Test</a>
                         </div>
                     </div></div>';
                 }

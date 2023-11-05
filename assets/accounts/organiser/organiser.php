@@ -53,6 +53,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
         <form class="container-fluid justify-content-start">
             <button class="btn btn-outline-success me-2" type="button" id="postedQuiz_btn">Quizes Posted by You</button>
             <button class="btn btn-sm btn-outline-secondary" type="button" id="addQuiz_btn">Add A Quiz</button>
+            <button class="btn btn-sm btn-outline-secondary" type="button" id="addTest_btn">Add A Test</button>
         </form>
     </nav>
     <?php
@@ -241,6 +242,37 @@ $updateresult = mysqli_query($conn, $updateSQL);
     <div class="container my-3">
         <div class="p-2 container addQuiz_container" style="width: 40%;display:none">
             <form action="createQuiz.php" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:*</label>
+                    <input type="text" name="heading" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Description:*</label>
+                    <input type="text" class="form-control" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Time For Each Question(in seconds):</label>
+                    <input type="text" class="form-control" name="timeforeach" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Number of Questions to show in Quiz:</label>
+                    <input type="number" class="form-control" name="questionsforeach" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Held From:*</label>
+                    <input type="datetime-local" class="form-control" name="time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Quiz held till:</label>
+                    <input type="datetime-local" class="form-control" name="heldtill" required>
+                </div>
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="container my-3">
+        <div class="p-2 container addTest_container" style="width: 40%;display:none">
+            <form action="createTest.php" method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:*</label>
                     <input type="text" name="heading" class="form-control" required>

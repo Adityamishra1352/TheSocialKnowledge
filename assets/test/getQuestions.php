@@ -12,7 +12,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'question_text' => $row['question'],
         'options' => array(),
         'correct_answer' => $row['answer'],
-        'image'=> $row['image']
+        'image'=> $row['image'],
+        'ismultiplechoice'=> $row['ismultiplechoice'],
     );
     $optionsJSON = $row['options'];
     $options = json_decode($optionsJSON);
