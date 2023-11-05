@@ -52,8 +52,8 @@ $updateresult = mysqli_query($conn, $updateSQL);
     <nav class="navbar bg-body-tertiary">
         <form class="container-fluid justify-content-start">
             <button class="btn btn-outline-success me-2" type="button" id="postedQuiz_btn">Quizes Posted by You</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button" id="addQuiz_btn">Add A Quiz</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button" id="addTest_btn">Add A Test</button>
+            <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addQuiz_btn">Add A Quiz</button>
+            <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addTest_btn">Add A Test</button>
         </form>
     </nav>
     <?php
@@ -102,7 +102,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
                         $upcomingTest = mysqli_query($conn, $upcomingTestSql);
                         $count = 0;
                         while ($upcomingTestRow = mysqli_fetch_assoc($upcomingTest)) {
-                            $timeDate=$upcomingTestRow['time'];
+                            $timeDate = $upcomingTestRow['time'];
                             $timestamp = strtotime($timeDate);
                             $formattedDate = date('d F Y', $timestamp);
                             echo '<div class="container m-0 p-2 bg-transparent">
@@ -137,7 +137,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=1";
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
-            $count=0;
+            $count = 0;
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
                 $timeEnd = $rowQuiz['heldtill'];
@@ -167,9 +167,9 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
-              $count++;
+                $count++;
             }
-            if($count==0){
+            if ($count == 0) {
                 echo '<div class="card">
                     <div class="card-body">
                     <blockquote class="blockquote mb-0">
@@ -193,7 +193,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             $organiser_id = $_SESSION['user_id'];
             $quizfetch_sql = "SELECT * FROM `test` WHERE `organiser_id`='$organiser_id' AND `displayed`=0";
             $fetch_result = mysqli_query($conn, $quizfetch_sql);
-            $count=0;
+            $count = 0;
             while ($rowQuiz = mysqli_fetch_assoc($fetch_result)) {
                 $test_id = $rowQuiz['test_id'];
                 $timeEnd = $rowQuiz['heldtill'];
@@ -223,9 +223,9 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
-              $count++;
+                $count++;
             }
-            if($count==0){
+            if ($count == 0) {
                 echo '<div class="card">
                     <div class="card-body">
                     <blockquote class="blockquote mb-0">
@@ -272,9 +272,12 @@ $updateresult = mysqli_query($conn, $updateSQL);
     </div>
     <div class="container my-3">
         <div class="p-2 container addTest_container" style="width: 40%;display:none">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Feature not available yet.</strong> Some functions might not work.
+            </div>
             <form action="createTest.php" method="post">
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:*</label>
+                    <label for="exampleInputEmail1" class="form-label">Topic for the Test:*</label>
                     <input type="text" name="heading" class="form-control" required>
                 </div>
                 <div class="mb-3">
@@ -282,12 +285,8 @@ $updateresult = mysqli_query($conn, $updateSQL);
                     <input type="text" class="form-control" name="description" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Time For Each Question(in seconds):</label>
-                    <input type="text" class="form-control" name="timeforeach" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Number of Questions to show in Quiz:</label>
-                    <input type="number" class="form-control" name="questionsforeach" required>
+                    <label for="exampleInputEmail1" class="form-label">Time to attend:</label>
+                    <input type="text" class="form-control" name="timefortest" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Held From:*</label>
@@ -308,15 +307,25 @@ $updateresult = mysqli_query($conn, $updateSQL);
         const addQuiz_btn = document.querySelector("#addQuiz_btn");
         const addQuiz_container = document.querySelector(".addQuiz_container");
         const first_container = document.querySelector(".first_container");
+        const addTest_btn=document.querySelector("#addTest_btn");
+        const addTest_container=document.querySelector(".addTest_container");
         postedQuiz.onclick = () => {
             postedQuiz_container.style.display = "block";
             addQuiz_container.style.display = "none";
             first_container.style.display = "none";
+            addTest_container.style.display="none";
         }
         addQuiz_btn.onclick = () => {
+            addTest_container.style.display="none";
             first_container.style.display = "none";
             postedQuiz_container.style.display = "none";
             addQuiz_container.style.display = "block";
+        }
+        addTest_btn.onclick = () => {
+            addTest_container.style.display="block";
+            first_container.style.display = "none";
+            postedQuiz_container.style.display = "none";
+            addQuiz_container.style.display = "none";
         }
     </script>
 </body>
