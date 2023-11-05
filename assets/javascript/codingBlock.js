@@ -99,7 +99,7 @@ function changeEditorFontSize() {
   const editor = ace.edit("editor");
   const fontSize = parseInt(fontSizeInput.value);
 
-  if (fontSize >= 10 && fontSize <= 30) {
+  if (fontSize >= 13 && fontSize <= 30) {
     editor.setFontSize(fontSize + "px");
   } else {
     alert("Font size must be between 10 and 30.");

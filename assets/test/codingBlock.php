@@ -37,7 +37,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     </li>
                 </ul>
                 <ul class="d-flex" style="width:20%;">
-                    <input type="number" id="fontSizeInput" class="form-control" placeholder="Font Size" min="10"
+                    <input type="number" id="fontSizeInput" class="form-control" placeholder="Font Size" min="13"
                         max="30" onchange="changeEditorFontSize()">
                 </ul>
 
@@ -68,7 +68,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         </div>
         <div class="row codeEditor" style="width:100%">
             <div class="col-md-8 m-0 p-0">
-                <div class="editor container border" id="editor" style="width:100%;height:300px;font-size:15px;"></div>
+                <div class="editor container border" id="editor" style="width:100%;height:300px;font-size:15px;overflow:scroll;"></div>
                 <div class="button-container container my-1">
                     <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Compile</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
@@ -94,7 +94,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 </div>
             </div>
             <div class="col-md-4 m-0 p-0">
-                <div class="output container border" id="output" style="height:300px;"></div>
+                <div class="output container border" id="output" style="height:300px;overflow:scroll;"></div>
                 <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
             </div>
         </div>
