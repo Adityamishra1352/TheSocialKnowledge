@@ -635,6 +635,7 @@ $test_id = $_GET['test_id'];
     <script src="../../jquery/dist/jquery.min.js"></script>
     <script src="../../datatables.net/js/jquery.dataTables.js"></script>
     <script>
+        //data tables for searching ascending and decreasing order processes
         $(document).ready( function () {
     $('#attendedUserTable').DataTable();
     $('#mytable').DataTable();
