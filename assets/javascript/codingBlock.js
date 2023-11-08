@@ -64,6 +64,7 @@ radio2.addEventListener("change", function () {
 function executeCode() {
   if (radioValue != null) {
     console.log(radioValue);
+    document.querySelector("#loader").style.display="flex";
     if (radioValue == "no") {
       $.ajax({
         url: "../test/compiler.php",
@@ -74,6 +75,7 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
+          document.querySelector("#loader").style.display="none";
         },
       });
     } else if (radioValue == "yes") {
@@ -87,6 +89,7 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
+          document.querySelector("#loader").style.display="none";
         },
       });
     }

@@ -10,9 +10,10 @@
     <style>
         
 body {
-  background-image: url(images/pxfuel.jpg);
+  background-image: url(images/816811.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
+  background-position: cover;
 }
 
 .mainbox {

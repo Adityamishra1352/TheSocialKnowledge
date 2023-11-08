@@ -25,7 +25,7 @@
     <div class="page">
         <nav>
             <h4>The Social Knowledge</h4>
-            <!-- <a href="assets/courses/courses.php">Courses</a> -->
+            <a href="assets/courses/courses.php">Courses</a>
             <a href="assets/sorting_visualizer/index.php">Sorting Visualizer</a>
             <a href="assets/test/test.php">Test</a>
             <a href="assets/test/codingBlock.php">Practise Coding</a>

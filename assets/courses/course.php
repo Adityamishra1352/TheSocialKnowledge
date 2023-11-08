@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         <?php echo $courseHeading; ?>
     </title>
     <link rel="stylesheet" href="../css/c++course.css">
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             </div>
         </div>
     </nav>
-    <nav id="sidebar">
+    <nav id="sidebar" class="my-2 container" style="height:100vh">
         <h2>
             <?php echo $courseHeading; ?>
         </h2>
