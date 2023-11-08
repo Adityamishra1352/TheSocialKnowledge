@@ -19,6 +19,7 @@ $test_id = $_GET['test_id'];
     <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
     <script src="../../chart.js/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../../datatables.net-dt/css/jquery.dataTables.css">
     <style>
         .carousel-item img {
             width: 970px;
@@ -439,11 +440,11 @@ $test_id = $_GET['test_id'];
                 <table class="table my-2 table-hover" id="attendedUserTable">
                     <thead>
                         <tr>
-                            <th class="sortable" data-column="0"><button type="button" class="border-0 p-0 m-0 bg-white">&#8964</button>S.no</th>
-                            <th class="sortable" data-column="1"><button type="button">&#8964</button>Name</th>
-                            <th class="sortable" data-column="2"><button type="button">&#8964</button>Email</th>
-                            <th class="sortable" data-column="3"><button type="button">&#8964</button>Enrollment</th>
-                            <th class="sortable" data-column="4"><button type="button">&#8964</button>Score</th>
+                            <th class="sortable">S.no</th>
+                            <th class="sortable">Name</th>
+                            <th class="sortable">Email</th>
+                            <th class="sortable">Enrollment</th>
+                            <th class="sortable">Score</th>
 
                             <th scope="col">
                                 <div class="form-check">
@@ -521,7 +522,7 @@ $test_id = $_GET['test_id'];
                 <td><a href="viewUserAnswers.php?user_id=' . $user_id . '&test_id=' . $test_id . '">' . $name . '</a></td>
                 <td>' . $email . '</td>
                 <td>' . $enrollment . '</td>
-                <td>' . $score . '</td>
+                <td class="sort-ascending">' . $score . '</td>
                 <td><input type="checkbox" name="allowRestart[]" value="' . $user_id . '" class="form-check-input"></td>
                 </tr>';
                             $countUser = $countUser + 1;
@@ -609,7 +610,7 @@ $test_id = $_GET['test_id'];
         </form>
         <form action="userForTest.php?test_id=<?php echo $test_id; ?>" method="post" class="tableFilterUser"
             style="display:none;">
-            <table class="table my-2 table-hover">
+            <table class="table my-2 table-hover" id="selectUsersTable">
                 <thead>
                     <tr>
                         <th scope="col">Sno</th>
@@ -632,30 +633,12 @@ $test_id = $_GET['test_id'];
     </div>
     </form>
     <script src="../../jquery/dist/jquery.min.js"></script>
+    <script src="../../datatables.net/js/jquery.dataTables.js"></script>
     <script>
-        $(document).ready(function () {
-    $(".sortable").click(function () {
-        const column = $(this).data("column");
-        const $table = $("#attendedUserTable");
-        const isAscending = !$table.data("sort-ascending");
-        
-        const rows = $table.find("tbody > tr").get();
-        rows.sort(function (a, b) {
-            const keyA = $(a).children("td").eq(column).text();
-            const keyB = $(b).children("td").eq(column).text();
-            if (isAscending) {
-                return keyA.localeCompare(keyB);
-            } else {
-                return keyB.localeCompare(keyA);
-            }
-        });
-
-        $table.data("sort-ascending", isAscending);
-        $.each(rows, function (index, row) {
-            $table.children("tbody").append(row);
-        });
-    });
-});
+        $(document).ready( function () {
+    $('#attendedUserTable').DataTable();
+    $('#mytable').DataTable();
+} );
 
     </script>
 
