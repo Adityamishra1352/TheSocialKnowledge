@@ -48,13 +48,12 @@
         $formattedDate = date('d F Y', $timestamp);
         $formattedTime = date('H:i', $timestamp);
         $answersJSON = $scoreRow['answers'];
-        $answersJSON = str_replace('"',' ', $answersJSON);
-        echo $answersJSON;
-        $answers = json_decode($answersJSON, true);
-        
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            echo "JSON decoding error: " . json_last_error_msg();
+        $pattern = '/"answer":"\[(.*?)\]"/';
+        if (preg_match($pattern, $answersJSON)) {
+            $answersJSON = preg_replace($pattern, '"answer":[$1]', $answersJSON);
+            $answersJSON = preg_replace('/"correctAnswer":"\[(.*?)\]"/', '"correctAnswer":[$1]', $answersJSON);
         }
+        $answers = json_decode($answersJSON, true);
 
         $testSQL = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
         $testResult = mysqli_query($conn, $testSQL);
@@ -101,7 +100,6 @@
             <tbody>
                 <?php
                 $count = 1;
-                echo var_dump($answers);
                 foreach ($answers as $answer) {
                     $question = $answer['question'];
                     $image = $answer['image'];

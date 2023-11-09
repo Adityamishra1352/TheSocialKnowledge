@@ -54,6 +54,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             <button class="btn btn-outline-success me-2" type="button" id="postedQuiz_btn">Quizes Posted by You</button>
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addQuiz_btn">Add A Quiz</button>
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addTest_btn">Add A Test</button>
+            <button class="btn btn-sm btn-outline-primary me-2" type="button" onclick="window.location.href=(`codingQuestion.php`)">Add A Coding Test</button>
         </form>
     </nav>
     <?php
