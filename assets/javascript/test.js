@@ -212,77 +212,126 @@ next_btn.onclick = () => {
   }
 };
 var counterrors = 0;
+const answers = [];
 var isMultipleChoice = false;
 function showQuetions(index) {
   const isMultipleChoice = questions[index].ismultiplechoice;
   console.log(isMultipleChoice);
   const que_text = document.querySelector(".que_text");
   const que_image = document.querySelector(".que_image");
-
+  que_image.style.display = "none";
   if (questions[index].question_text !== null) {
     que_text.innerHTML = `<span>${index + 1}. ${
       questions[index].question_text
     }</span>`;
-    que_image.style.display = "none";
-  } else if (questions[index].image !== null) {
-    que_text.innerHTML = "";
-    que_image.innerHTML = `<span>${
-      index + 1
-    }.</span><img src="../images/questions/${
-      questions[index].image
-    }" alt="Question Image">`;
-    que_image.style.display = "block";
+    if (questions[index].image !== null) {
+      que_image.innerHTML = `<span>${
+        index + 1
+      }.</span><img src="../images/questions/${
+        questions[index].image
+      }" alt="Question Image">`;
+      que_image.style.display = "block";
+    }
+  } else {
+    if (questions[index].image !== null) {
+      que_image.innerHTML = `<img src="../images/questions/${
+        questions[index].image
+      }" alt="Question Image">`;
+      que_image.style.display = "block";
+    }
   }
   let option_tag = "";
   if (questions[index].options !== null) {
-    for (let i = 0; i < questions[index].options.length; i++) {
-      if (questions[index].options[i]) {
-        option_tag +=
-          '<div class="option"><span>' +
-          questions[index].options[i] +
-          "</span></div>";
+    if (questions[index].ismultiplechoice == 0) {
+      for (let i = 0; i < questions[index].options.length; i++) {
+        if (questions[index].options[i]) {
+          option_tag +=
+            '<div class="option"><span>' +
+            questions[index].options[i] +
+            "</span></div>";
+        }
       }
+
+      option_list.innerHTML = option_tag;
+
+      const option = option_list.querySelectorAll(".option");
+      for (i = 0; i < option.length; i++) {
+        option[i].setAttribute("onclick", "optionSelected(this)");
+      }
+    } else {
+      for (let i = 0; i < questions[index].options.length; i++) {
+        if (questions[index].options[i]) {
+          option_tag += `<div class="option">
+          <input class="form-check-input" type="checkbox" value="${questions[index].options[i]}">
+          <span>${questions[index].options[i]}</span>
+          </div>`;
+        }
+      }
+      option_list.innerHTML = option_tag;
+      const nextButton = document.createElement("button");
+      nextButton.setAttribute("class", "btn btn-outline-success");
+      nextButton.setAttribute("id", "multipleChoiceNextButton");
+      nextButton.textContent = "Next Question";
+      document.querySelector(".quiz_box .footer").appendChild(nextButton);
+      nextButton.onclick = () => {
+        const selectOptions = [];
+        const checkboxes = option_list.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+        checkboxes.forEach((checkbox, index) => {
+          if (checkbox.checked) {
+            selectOptions.push(checkbox.value);
+          }
+        });
+        console.log(selectOptions);
+        const correctAnswerIndices = questions[index].correct_answer;
+
+        const isCorrect = arraysAreEqual(selectOptions, correctAnswerIndices);
+
+        if (isCorrect) {
+          userScore += 1;
+        }
+        const questionObject = {
+          question_id: questions[que_count].question_id,
+          question: questions[que_count].question_text,
+          image: questions[que_count].image,
+          answer: JSON.stringify(selectOptions),
+          correctAnswer: questions[que_count].correct_answer,
+        };
+        answers.push(questionObject);
+        if (que_count < questions.length - 1) {
+          que_count++;
+          que_numb++;
+          showQuetions(que_count);
+          queCounter(que_numb);
+          clearInterval(counter);
+          startTimer(timeValue);
+          timeText.textContent = "Time Left";
+          next_btn.classList.remove("show");
+          nextButton.style.display = "none";
+        } else {
+          clearInterval(counter);
+          showResult();
+        }
+      };
     }
   } else {
     option_tag =
       '<div class="option"><span>Error occured! Dont worry this questions wont be counted</span>';
     counterrors += 1;
   }
-
-  option_list.innerHTML = option_tag;
-
-  const option = option_list.querySelectorAll(".option");
-  for (i = 0; i < option.length; i++) {
-    if (isMultipleChoice == 0) {
-      option[i].setAttribute("onclick", "optionSelected(this)");
-    } else {
-      option[i].setAttribute("onclick", "multipleOption(this)");
+}
+function arraysAreEqual(array1, array2) {
+  if (array1.length !== array2.length) {
+    return false;
+  }
+  for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      return false;
     }
   }
+  return true;
 }
-function multipleOption(answer) {
-  let userAns = answer.textContent;
-  let correcAns = questions[que_count].correct_answer;
-  const allOptions = option_list.children.length;
-  if (userAns === correcAns || correcAns.includes(userAns)) {
-    answer.classList.add("correct");
-    const selectedCorrectOptions =
-      option_list.querySelectorAll(".correct").length;
-    if (selectedCorrectOptions === correcAns.length) {
-      for (i = 0; i < allOptions; i++) {
-        option_list.children[i].classList.add("disabled");
-      }
-      next_btn.classList.add("show");
-    }
-  } else {
-    for (i = 0; i < allOptions; i++) {
-      option_list.children[i].classList.add("disabled");
-    }
-    answer.classList.remove("correct");
-    next_btn.classList.remove("show");
-  }
-}
-const answers = [];
 function optionSelected(answer) {
   clearInterval(counter);
   // clearInterval(counterLine);
