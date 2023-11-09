@@ -4,6 +4,25 @@ window.onload = function () {
   editor.setTheme("ace/theme/github");
   editor.session.setMode("ace/mode/c_cpp");
 };
+function changeTheme(){
+  let theme=$("#theme").val();
+  if(theme=="github"){
+    editor.setTheme("ace/theme/github");
+  }else if(theme=="chaos"){
+    editor.setTheme("ace/theme/chaos");
+  }else if(theme=="cobalt"){
+    editor.setTheme("ace/theme/cobalt");
+  }
+  else if(theme=="nord_dark"){
+    editor.setTheme("ace/theme/nord_dark");
+  }
+  else if(theme=="monokai"){
+    editor.setTheme("ace/theme/monokai");
+  }
+  else if(theme=="sqlserver"){
+    editor.setTheme("ace/theme/sqlserver");
+  }
+}
 function changeLanguage() {
   let language = $("#languages").val();
   if (language == "c" || language == "cpp") {
@@ -20,47 +39,30 @@ function changeLanguage() {
     document.querySelector(".codeEditor").style.display = "flex";
   }
 }
-var radioValue = null;
-const radio1 = document.getElementById("inlineRadio1");
-const radio2 = document.getElementById("inlineRadio2");
-const inputArea = document.getElementById("inputArea");
-radio1.addEventListener("change", function () {
-  if (radio1.checked) {
-    radioValue = "yes";
-  }
-});
-
-radio2.addEventListener("change", function () {
-  if (radio2.checked) {
-    radioValue = "no";
-  }
-});
-
+const inputTextarea=document.querySelector("#inputArea");
 function executeCode() {
-  if (radioValue != null) {
-    console.log(radioValue);
     document.querySelector("#loader").style.display="flex";
-    if (radioValue == "no") {
+    if (inputTextarea.value != null) {
       $.ajax({
         url: "../codeTests/codeAlongCompiler.php",
         method: "POST",
         data: {
           language: $("#languages").val(),
           code: editor.getSession().getValue(),
+          input: inputTextarea.value,
         },
         success: function (response) {
           $(".output").text(response);
           document.querySelector("#loader").style.display="none";
         },
       });
-    } else if (radioValue == "yes") {
+    }else{
       $.ajax({
         url: "../codeTests/codeAlongCompiler.php",
         method: "POST",
         data: {
           language: $("#languages").val(),
           code: editor.getSession().getValue(),
-          input: inputArea.value,
         },
         success: function (response) {
           $(".output").text(response);
@@ -68,10 +70,6 @@ function executeCode() {
         },
       });
     }
-  }
-  else{
-    document.querySelector(".input-warning").style.display="block";
-  }
 }
 function changeEditorFontSize() {
   const editor = ace.edit("editor");
