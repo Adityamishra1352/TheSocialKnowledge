@@ -6,6 +6,7 @@ if (
 ) {
     header('location: ../../403.php');
 }
+$test_id=$_GET['test_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +23,7 @@ if (
 
 <body>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="../../../index.php">The Social Knowledge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -49,6 +50,21 @@ if (
             </div>
         </div>
     </nav>
+    <div class="container my-2">
+        <ul><li><b>Add Questions:</b></li></ul>
+    </div>
+    <div class="container my-2">
+        <form id="question-form" action="uploadQuestions.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="test_id" value="<?php echo $_GET['test_id']; ?>">
+            <input type="hidden" name="answer_type" id="answerType">
+            <div id="questions">
+            </div>
+            <button type="button" class="btn btn-primary m-2" id="add-question">Add Question</button>
+            <button type="submit" class="btn btn-success m-2">Submit</button>
+        </form>
+    </div>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../javascript/codingQuestion.js"></script>
 </body>
+
 </html>

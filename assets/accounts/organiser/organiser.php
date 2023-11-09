@@ -54,7 +54,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             <button class="btn btn-outline-success me-2" type="button" id="postedQuiz_btn">Quizes Posted by You</button>
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addQuiz_btn">Add A Quiz</button>
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addTest_btn">Add A Test</button>
-            <button class="btn btn-sm btn-outline-primary me-2" type="button" onclick="window.location.href=(`codingQuestion.php`)">Add A Coding Test</button>
+            <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addCodingTest_btn">Add A Coding Test</button>
         </form>
     </nav>
     <?php
@@ -350,6 +350,36 @@ $updateresult = mysqli_query($conn, $updateSQL);
             </form>
         </div>
     </div>
+    <div class="container my-3">
+        <div class="p-2 container addCodingTest_container" style="width: 40%;display:none">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Feature not available yet.</strong> Some functions might not work.
+            </div>
+            <form action="createCodingTest.php" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Topic for the Test:*</label>
+                    <input type="text" name="heading" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Description:*</label>
+                    <input type="text" class="form-control" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Time to attend(in minutes):</label>
+                    <input type="number" class="form-control" name="timefortest" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Held From:*</label>
+                    <input type="datetime-local" class="form-control" name="time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Held till:</label>
+                    <input type="datetime-local" class="form-control" name="heldtill" required>
+                </div>
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+            </form>
+        </div>
+    </div>
     <script src="../../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const postedQuiz = document.querySelector("#postedQuiz_btn");
@@ -359,23 +389,35 @@ $updateresult = mysqli_query($conn, $updateSQL);
         const first_container = document.querySelector(".first_container");
         const addTest_btn=document.querySelector("#addTest_btn");
         const addTest_container=document.querySelector(".addTest_container");
+        const addCodingTest_btn=document.querySelector("#addCodingTest_btn");
+        const addCodingTest_container=document.querySelector(".addCodingTest_container");
         postedQuiz.onclick = () => {
             postedQuiz_container.style.display = "block";
             addQuiz_container.style.display = "none";
             first_container.style.display = "none";
             addTest_container.style.display="none";
+            addCodingTest_container.style.display="none";
         }
         addQuiz_btn.onclick = () => {
             addTest_container.style.display="none";
             first_container.style.display = "none";
             postedQuiz_container.style.display = "none";
             addQuiz_container.style.display = "block";
+            addCodingTest_container.style.display="none";
         }
         addTest_btn.onclick = () => {
             addTest_container.style.display="block";
             first_container.style.display = "none";
             postedQuiz_container.style.display = "none";
             addQuiz_container.style.display = "none";
+            addCodingTest_container.style.display="none";
+        }
+        addCodingTest_btn.onclick = () => {
+            addTest_container.style.display="none";
+            first_container.style.display = "none";
+            postedQuiz_container.style.display = "none";
+            addQuiz_container.style.display = "none";
+            addCodingTest_container.style.display="block";
         }
     </script>
 </body>
