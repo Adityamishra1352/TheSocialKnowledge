@@ -48,7 +48,14 @@
         $formattedDate = date('d F Y', $timestamp);
         $formattedTime = date('H:i', $timestamp);
         $answersJSON = $scoreRow['answers'];
+        $answersJSON = str_replace('"',' ', $answersJSON);
+        echo $answersJSON;
         $answers = json_decode($answersJSON, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo "JSON decoding error: " . json_last_error_msg();
+        }
+
         $testSQL = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
         $testResult = mysqli_query($conn, $testSQL);
         $testRow = mysqli_fetch_assoc($testResult);
@@ -74,7 +81,7 @@
                     <div class="card-body">
                     <ul>
                         <p class="card-text"><b>Score:</b> ' . $score . '</p>
-                        <p class="card-text"><b>Time of Submission:</b> ' . $formattedTime .' '.$formattedDate. '</p>
+                        <p class="card-text"><b>Time of Submission:</b> ' . $formattedTime . ' ' . $formattedDate . '</p>
                         <p class="card-text"><b>Number of Questions:</b> ' . $numberofQuestions . '</p>
                     </div>
                 </div>
@@ -106,7 +113,7 @@
                     }
                     if (is_string($answer['answer'])) {
                         $selectedAnswer = json_decode($answer['answer'], true);
-                    }else{
+                    } else {
                         $selectedAnswer = $answer['answer'];
                     }
                     $correctAnswer = $answer['correctAnswer'];

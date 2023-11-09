@@ -234,9 +234,7 @@ function showQuetions(index) {
     }
   } else {
     if (questions[index].image !== null) {
-      que_image.innerHTML = `<span>${
-        index + 1
-      }.</span><img src="../images/questions/${
+      que_image.innerHTML = `<img src="../images/questions/${
         questions[index].image
       }" alt="Question Image">`;
       que_image.style.display = "block";
@@ -297,7 +295,7 @@ function showQuetions(index) {
           question_id: questions[que_count].question_id,
           question: questions[que_count].question_text,
           image: questions[que_count].image,
-          answer: json_encode(selectOptions),
+          answer: JSON.stringify(selectOptions),
           correctAnswer: questions[que_count].correct_answer,
         };
         answers.push(questionObject);
