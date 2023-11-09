@@ -107,11 +107,7 @@ if ($language == "c" || $language == "cpp") {
     echo $output;
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
-<<<<<<< HEAD
     $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");
-=======
-    $output = shell_exec("C:\Nodejs\Node.exe $filePath.js 2>&1");
->>>>>>> compilerChanges
     echo $output;
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath . ".js");
