@@ -202,7 +202,7 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
                 <div class="option_list">
                 </div>
             </section>
-            <footer>
+            <footer class="footer">
                 <div class="total_que">
                 </div>
                 <div class="d-flex">

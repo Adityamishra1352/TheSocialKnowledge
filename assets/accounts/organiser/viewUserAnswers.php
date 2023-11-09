@@ -94,6 +94,7 @@
             <tbody>
                 <?php
                 $count = 1;
+                echo var_dump($answers);
                 foreach ($answers as $answer) {
                     $question = $answer['question'];
                     $image = $answer['image'];
@@ -103,7 +104,11 @@
                     } else {
                         $questionShow = $question;
                     }
-                    $selectedAnswer = $answer['answer'];
+                    if (is_string($answer['answer'])) {
+                        $selectedAnswer = json_decode($answer['answer'], true);
+                    }else{
+                        $selectedAnswer = $answer['answer'];
+                    }
                     $correctAnswer = $answer['correctAnswer'];
                     echo '<tr>
                     <td>' . $count . '</td>
