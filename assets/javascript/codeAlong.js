@@ -39,6 +39,7 @@ radio2.addEventListener("change", function () {
 function executeCode() {
   if (radioValue != null) {
     console.log(radioValue);
+    document.querySelector("#loader").style.display="flex";
     if (radioValue == "no") {
       $.ajax({
         url: "../codeTests/codeAlongCompiler.php",
@@ -49,11 +50,12 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
+          document.querySelector("#loader").style.display="none";
         },
       });
     } else if (radioValue == "yes") {
       $.ajax({
-        url: "../test/codeTests/codeAlongCompiler.php",
+        url: "../codeTests/codeAlongCompiler.php",
         method: "POST",
         data: {
           language: $("#languages").val(),
@@ -62,18 +64,20 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
+          document.querySelector("#loader").style.display="none";
         },
       });
     }
-  } else {
-    document.querySelector(".input-warning").style.display = "block";
+  }
+  else{
+    document.querySelector(".input-warning").style.display="block";
   }
 }
 function changeEditorFontSize() {
   const editor = ace.edit("editor");
   const fontSize = parseInt(fontSizeInput.value);
 
-  if (fontSize >= 10 && fontSize <= 30) {
+  if (fontSize >= 13 && fontSize <= 30) {
     editor.setFontSize(fontSize + "px");
   } else {
     alert("Font size must be between 10 and 30.");

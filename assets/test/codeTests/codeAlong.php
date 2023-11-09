@@ -91,7 +91,16 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 </div>
             </div>
             <div class="col-md-4 m-0 p-0">
-                <div class="output container border" id="output" style="height:300px;"></div>
+                <div class="container border" style="height:300px;">
+                    <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                        <strong class="text-primary" role="status">Loading...</strong>
+                        <div class="spinner-grow text-primary ms-auto" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="output container p-1" id="output" style="height:100%;overflow:auto;">
+                    </div>
+                </div>
                 <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
             </div>
         </div>
