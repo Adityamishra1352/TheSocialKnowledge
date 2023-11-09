@@ -16,33 +16,15 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../../index.php">The Social Knowledge</a>
+            <a class="navbar-brand mx-auto" href="../../index.php">The Social Knowledge</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../../../contactus.php">Contact Us</a>
-                    </li>
-                </ul>
-                <ul class="d-flex" style="width:20%;">
-                    <input type="number" id="fontSizeInput" class="form-control" placeholder="Font Size" min="10"
-                        max="30" onchange="changeEditorFontSize()">
-                </ul>
-
-                <ul class="d-flex">
-                    <button class="btn btn-outline-danger me-2"
-                        onclick="window.location.href=(`../logout.php`)">Logout</button>
-                </ul>
-            </div>
         </div>
     </nav>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
