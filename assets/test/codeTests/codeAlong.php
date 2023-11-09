@@ -93,7 +93,8 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     <?php
                     include '../../_dbconnect.php';
                     $test_id = $_GET['test_id'];
-                    $questionSQL = "SELECT * FROM `codingquestions` WHERE `test_id`='$test_id'";
+                    $question_id = $_GET['question_id'];
+                    $questionSQL = "SELECT * FROM `codingquestions` WHERE `test_id`='$test_id' AND `code_id`='$question_id'";
                     $questionResult = mysqli_query($conn, $questionSQL);
                     $row = mysqli_fetch_assoc($questionResult);
                     $question = $row["question"];
@@ -111,7 +112,8 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             <div class="col-md-8 m-0 p-0" style="overflow:auto;" draggable="true">
                 <div class="editor container border" id="editor" style="width:100%;height:300px;font-size:15px;"></div>
                 <div class="button-container container my-1">
-                    <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Compile</button>
+                    <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Run</button>
+                    <button class="btn btn-outline-success ml-1" onclick="">Submit</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
                 </div>
                 <div class="container inputContainer mb-3" id="inputContainer"
@@ -124,7 +126,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     </p>
                     <div class="collapse form-floating p-1" id="collapseExample">
                         <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
-                            class="form-control border"></textarea>
+                            class="form-control border" value=""></textarea>
                         <label for="inputArea">Custom Input:</label>
                     </div>
                 </div>

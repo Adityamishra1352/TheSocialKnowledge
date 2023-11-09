@@ -43,6 +43,7 @@ $test_id = $_GET['test_id'];
               <a href="codeAlong.php?test_id='.$test_id.'&question_id='.$questionID.'" class="btn btn-outline-primary col-md-2">Attempt</a>
             </div>
           </div>';
+          $countQuestion+=1;
         }
         ?>
     </div>

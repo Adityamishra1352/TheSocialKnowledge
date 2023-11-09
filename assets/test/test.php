@@ -146,7 +146,7 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                             <p class="card-text">' . $rowCoding['description'] . '</p>
                         </div>
                         <div class="card-footer">
-                            <a href="codeTests/codeQuestions.php?test_id=' . $test_id . '" class="btn btn-outline-success">Take Test</a>
+                            <a href="codeTests/codeQuestions.php?test_id=' . $rowCoding['test_id'] . '" class="btn btn-outline-success">Take Test</a>
                         </div>
                     </div></div>';
         }

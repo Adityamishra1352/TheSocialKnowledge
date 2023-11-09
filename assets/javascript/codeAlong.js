@@ -42,7 +42,9 @@ function changeLanguage() {
 const inputTextarea=document.querySelector("#inputArea");
 function executeCode() {
     document.querySelector("#loader").style.display="flex";
-    if (inputTextarea.value != null) {
+    var inputTextAreaValue=inputTextarea.value;
+    console.log(inputTextAreaValue);
+    if (inputTextAreaValue !== "") {
       $.ajax({
         url: "../codeTests/codeAlongCompiler.php",
         method: "POST",
@@ -53,10 +55,10 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
-          document.querySelector("#loader").style.display="none";
+          document.querySelector("#loader").style.display = "none";
         },
       });
-    }else{
+    } else {
       $.ajax({
         url: "../codeTests/codeAlongCompiler.php",
         method: "POST",
@@ -66,10 +68,11 @@ function executeCode() {
         },
         success: function (response) {
           $(".output").text(response);
-          document.querySelector("#loader").style.display="none";
+          document.querySelector("#loader").style.display = "none";
         },
       });
     }
+    
 }
 function changeEditorFontSize() {
   const editor = ace.edit("editor");

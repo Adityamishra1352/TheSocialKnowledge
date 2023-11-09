@@ -65,7 +65,7 @@ $test_id = $_GET['test_id'];
             </form>
         </div>
         <div class="container my-2">
-            <form action="deleteQuestions.php?test_id=<?php echo $test_id; ?>" method="post">
+            <form action="deleteCodingQuestions.php?test_id=<?php echo $test_id; ?>" method="post">
                 <ul>
                     <li>
                         <h4>Existing Questions:</h4>
@@ -76,7 +76,7 @@ $test_id = $_GET['test_id'];
                         <tr>
                             <th scope="col">Sno</th>
                             <th scope="col">Question</th>
-                            <th scope="col">Options</th>
+                            <th scope="col">Testcase Array</th>
                             <th scope="col">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="selectAll">
