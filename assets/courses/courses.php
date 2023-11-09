@@ -8,7 +8,7 @@ session_start();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Courses</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -53,7 +53,6 @@ session_start();
     $description=$rowCourse['description'];
     $course_id=$rowCourse['course_id'];
     echo '<div class="card my-2" style="width: 18rem;">
-    <img src="https://source.unsplash.com/400x400/?'.$heading.',programming" class="card-img-top" alt="'.$heading.'">
     <div class="card-body">
       <h5 class="card-title">'.$heading.'</h5>
       <p class="card-text">'.$description.'</p>
