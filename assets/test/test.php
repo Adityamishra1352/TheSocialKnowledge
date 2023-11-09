@@ -132,6 +132,26 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
 
         </div>
     </div>
+    <div class="container my-2 row">
+        <?php 
+        $codingSQL="SELECT * FROM `codingtest`";
+        $codingResult=mysqli_query($conn,$codingSQL);
+        while($rowCoding = mysqli_fetch_assoc($codingResult)){
+            echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
+                        <div class="card-header">
+                            <h5 class="card-title">' . $rowCoding['heading'] . '</h5>
+                            <p class="text-secondary card-text">Code Along</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">' . $rowCoding['description'] . '</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="codeTests/codeAlong.php?testid=' . $test_id . '" class="btn btn-outline-success">Take Test</a>
+                        </div>
+                    </div></div>';
+        }
+        ?>
+    </div>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
