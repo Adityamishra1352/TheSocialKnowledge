@@ -54,6 +54,8 @@ function executeCode() {
           input: inputTextarea.value,
         },
         success: function (response) {
+          document.querySelector(".outputScreen").style.display="block";
+          $(".inputGiven").text(inputTextAreaValue);
           $(".output").text(response);
           document.querySelector("#loader").style.display = "none";
         },

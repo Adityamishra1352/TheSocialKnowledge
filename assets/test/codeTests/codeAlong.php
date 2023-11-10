@@ -32,10 +32,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         <strong>Feature under maintainence.</strong> Some functions might not work.
     </div>
     <div class="container m-0 p-0" style="max-width:100%">
-        <div class="control-panel p-1 container m-0"
-            style="max-width:100%;display:flex;justify-content:flex-end;">
-            <select class="form-select languages d-flex border-dark" id="languages"
-                aria-label="Language" style="width:20%;" onchange="changeLanguage()">
+        <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
+            <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
+                style="width:20%;" onchange="changeLanguage()">
                 <option value="nodejs">NodeJS</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
@@ -59,8 +58,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                                     <span class="text">Change the theme</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <select aria-label="theme" id="theme"
-                                        class="form-select theme w-100 border-dark"
+                                    <select aria-label="theme" id="theme" class="form-select theme w-100 border-dark"
                                         onchange="changeTheme()">
                                         <option value="github">Github</option>
                                         <option value="chaos">Chaos</option>
@@ -77,8 +75,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                                     <span class="text ">Change Font Size:</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="number" id="fontSizeInput" class="form-control border-dark" placeholder="Font Size"
-                                        min="13" max="30" onchange="changeEditorFontSize()" style="width:40%">
+                                    <input type="number" id="fontSizeInput" class="form-control border-dark"
+                                        placeholder="Font Size" min="13" max="30" onchange="changeEditorFontSize()"
+                                        style="width:40%">
                                 </div>
                             </div>
                         </div>
@@ -100,12 +99,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     $question = $row["question"];
                     echo '<h6 class="my-1"> Question:' . $question . '</h6>';
                     ?>
-                    <div class="align-items-center" id="loader" style="display:none;width:95%;">
-                        <strong class="text-primary" role="status">Loading...</strong>
-                        <div class="spinner-grow text-primary ms-auto" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -119,8 +112,8 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <div class="container inputContainer mb-3" id="inputContainer"
                     style="width:100%; height:auto;font-size:15px;">
                     <p class="d-inline-flex gap-1" style="width:100%">
-                        <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample"
-                            role="button" aria-expanded="false" aria-controls="collapseExample" style="width:100%">
+                        <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                            aria-expanded="false" aria-controls="collapseExample" style="width:100%">
                             Test Against Custom Input:
                         </a>
                     </p>
@@ -128,6 +121,24 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                         <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
                             class="form-control border" value=""></textarea>
                         <label for="inputArea">Custom Input:</label>
+                        <div class="outputContainer container mb-3">
+                            <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                                <strong class="text-primary" role="status">Loading...</strong>
+                                <div class="spinner-grow text-primary ms-auto" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="outputScreen container border bg-dark" style="display:none;">
+                            <div class="inputDiv container my-2">
+                                <label class="text-light">Input:</label>
+                                <div class="inputGiven container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
+                            </div>
+                            <div class="outputDiv container mb-3">
+                                <label class="text-light">Output:</label>
+                                <div class="output container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
