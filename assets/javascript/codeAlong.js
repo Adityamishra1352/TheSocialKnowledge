@@ -45,6 +45,7 @@ function submitCode(){
       language:$("#languages").val(),
       code:editor.getSession().getValue(),
       question_id:question_id,
+      test_id:test_id,
     },
     success:function(response){
       document.querySelector("#loader").style.display = "none";

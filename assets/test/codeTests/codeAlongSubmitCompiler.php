@@ -3,6 +3,7 @@ session_start();
 $user_id = $_SESSION['user_id'];
 $language = strtolower($_POST['language']);
 $code = $_POST['code'];
+$test_id=$_POST['test_id'];
 $question_id = $_POST['question_id'];
 include '../../_dbconnect.php';
 $testCases_sql = "SELECT * FROM `codingquestions` WHERE `code_id`='$question_id'";
@@ -15,7 +16,6 @@ $filePath = "answers/" . $user_id. $question_id . $random . "." . $language;
 $programFile = fopen($filePath, "w");
 fwrite($programFile, $code);
 fclose($programFile);
-// $output=null;
 if ($language == "php") {
     $isCorrect = true;
 
@@ -42,7 +42,7 @@ if ($language == "php") {
     } else {
         echo "Some test cases failed. Code is incorrect.";
     }
-    $updateScore="INSERT INTO `codinganswers`(`question_id`,`filename`,`user_id`,`correct`) VALUES('$question_id','$filePath','$user_id','$isCorrect')";
+    $updateScore="INSERT INTO `codinganswers`(`question_id`,`filename`,`user_id`,`correct`,`test_id`) VALUES('$question_id','$filePath','$user_id','$isCorrect','$test_id')";
     $updateResult=mysqli_query($conn,$updateScore);
 } else if ($language == "c" || $language == "cpp") {
     $output = shell_exec("C:\TDM-GCC-64\bin\gcc.exe $filePath 2>&1");

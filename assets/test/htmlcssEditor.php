@@ -61,8 +61,8 @@
     <!-- <button class="btn btn-outline-success my-2" onclick="runCode()">Run Code</button> -->
 
     <div class="container my-2">
-    <div class="output-container container border overflow-auto">
-        <iframe id="output" class="output-iframe"></iframe>
+    <div class="output-container container border overflow-auto" style="width:100%">
+        <iframe id="output" class="output-iframe" style="width:100%"></iframe>
     </div>
     </div>
 

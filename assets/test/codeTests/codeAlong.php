@@ -16,6 +16,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
     <script>
         const question_id=<?php echo $_GET['question_id'];?>;
+        const test_id=<?php echo $_GET['test_id'];?>;
     </script>
 </head>
 

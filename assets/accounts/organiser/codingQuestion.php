@@ -42,6 +42,12 @@ $test_id = $_GET['test_id'];
                     <li class="nav-item">
                         <a class="nav-link" href="../dashboard.php">Dashboard</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                            aria-controls="offcanvasExample">
+                            Test Options
+                        </a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"
@@ -50,7 +56,76 @@ $test_id = $_GET['test_id'];
             </div>
         </div>
     </nav>
-    <div class="container my-2">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">The Social Knowledge: Code Along</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            View Responses for this test:
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success" id="responses_btn">Responses</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Add/Delete Questions for this test:
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success" id="responses_btn">Add/Delete Questions</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="responses_container container my-2 p-2" style="display:none">
+        <table class="table my-2 table-hover" id="responsesTable">
+            <thead>
+                <tr>
+                    <th scope="col">Sno</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Enrollment</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="selectAll">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Allow Restart
+                            </label>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $count = 1;
+                $sql = "SELECT * FROM `codinganswers` WHERE `test_id`='$test_id'";
+                $result = mysqli_query($conn, $sql);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $user_id = $row['user_id'];
+                    $correct = $row['correct'];
+                    $user_sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
+                    $user_result = mysqli_query($conn, $user_sql);
+                    $user_row = mysqli_fetch_assoc($user_result);
+                    $name= $user_row['fname']." ".$user_row['lname'];
+                    $enrollment=$user_row['enrollment'];
+                    echo "<tr><th>$count</th><td>$name</td><td>$enrollment</td><td>$correct</td><td><input type='checkbox' name='restart[]' value='$user_id' class='form-check-input'></td></tr>";
+                    $count += 1;
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="container my-2 addQuestions_container">
         <ul>
             <li><b>Add Questions:</b></li>
         </ul>
@@ -88,7 +163,7 @@ $test_id = $_GET['test_id'];
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
+                        <?php
                         $count = 1;
                         $sql = "SELECT * FROM `codingquestions` WHERE `test_id`='$test_id'";
                         $result = mysqli_query($conn, $sql);
@@ -108,7 +183,7 @@ $test_id = $_GET['test_id'];
                             //     echo "$countOption. $inputOuput<br>";
                             //     $countOption += 1;
                             // }
-
+                        
                             echo "</td>
                         <td><input type='checkbox' name='delete[]' value='$questionId' class='form-check-input'></td>
                         </tr>";
@@ -128,9 +203,10 @@ $test_id = $_GET['test_id'];
     <script src="../../datatables.net/js/jquery.dataTables.js"></script>
     <script>
         //data tables for searching ascending and decreasing order processes
-        $(document).ready( function () {
-    $('#mytable').DataTable();
-} );
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+            $('#responsesTable').DataTable();
+        });
 
     </script>
 </body>

@@ -1,3 +1,10 @@
+const addQuestions_container=document.querySelector(".addQuestions_container");
+const responses_container=document.querySelector(".responses_container");
+const responses_btn=document.querySelector("#responses_btn");
+responses_btn.onclick=()=>{
+  responses_container.style.display="block";
+  addQuestions_container.style.display="none";
+}
 document.getElementById("selectAll").addEventListener("change", function () {
   const checkboxes = document.querySelectorAll("input[name='delete[]']");
   checkboxes.forEach((checkbox) => {
