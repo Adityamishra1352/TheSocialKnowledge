@@ -14,6 +14,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
+    <script>
+        const question_id=<?php echo $_GET['question_id'];?>;
+    </script>
 </head>
 
 <body>
@@ -100,13 +103,13 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     echo '<h6 class="my-1"> Question:' . $question . '</h6>';
                     ?>
                 </div>
-
+                <div id="outputTerminal"></div>
             </div>
             <div class="col-md-8 m-0 p-0" style="overflow:auto;" draggable="true">
                 <div class="editor container border" id="editor" style="width:100%;height:300px;font-size:15px;"></div>
                 <div class="button-container container my-1">
                     <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Run</button>
-                    <button class="btn btn-outline-success ml-1" onclick="">Submit</button>
+                    <button class="btn btn-outline-success ml-1" onclick="submitCode()" id="submitCode">Submit</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
                 </div>
                 <div class="container inputContainer mb-3" id="inputContainer"
