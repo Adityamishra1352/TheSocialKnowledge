@@ -76,9 +76,10 @@ if ($language == "c" || $language == "cpp") {
         }
     }
 }
- else if ($language == "python") {
+else if ($language == "py") {
     if (isset($_POST['input'])) {
         $input = $_POST['input'];
+        rename($filePath, $filePath . ".py");
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
@@ -104,7 +105,6 @@ if ($language == "c" || $language == "cpp") {
         unlink($filePath);
     }
 
-    echo $output;
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
     $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");

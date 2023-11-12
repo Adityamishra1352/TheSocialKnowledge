@@ -14,11 +14,11 @@ function changeLanguage() {
     editor.session.setMode("ace/mode/php");
     document.querySelector(".codeEditor").style.display = "flex";
     document.querySelector(".htmlcssjs_container").style.display = "none";
-  } else if (language == "nodejs") {
+  } else if (language == "js") {
     editor.session.setMode("ace/mode/javascript");
     document.querySelector(".codeEditor").style.display = "flex";
     document.querySelector(".htmlcssjs_container").style.display = "none";
-  } else if (language == "python") {
+  } else if (language == "py") {
     editor.session.setMode("ace/mode/python");
     document.querySelector(".codeEditor").style.display = "flex";
     document.querySelector(".htmlcssjs_container").style.display = "none";

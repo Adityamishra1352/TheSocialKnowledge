@@ -60,11 +60,11 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         <div class="control-panel p-1 container" style="width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex" id="languages" aria-label="Language" style="width:20%;"
                 onchange="changeLanguage()">
-                <option value="nodejs">NodeJS</option>
+                <option value="js">NodeJS</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
-                <option value="python">Python</option>
+                <option value="py">Python</option>
             </select>
         </div>
         <div class="row codeEditor" style="width:100%">
