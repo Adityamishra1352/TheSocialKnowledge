@@ -74,26 +74,36 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <div class="button-container container my-1">
                     <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Compile</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label" for="inlineRadio3">Need Inputs?</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                            value="yes">
-                        <label class="form-check-label" for="inlineRadio1">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                            value="no">
-                        <label class="form-check-label" for="inlineRadio2">No</label>
-                    </div>
                 </div>
-                <div class="container inputContainer border" id="inputContainer"
-                    style="width:100%; height:auto;font-size:15px;">
-                    <h6 class="text m-1">Input:</h6>
-                    <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
-                        class="form-control border"></textarea>
-                </div>
+                <p class="d-inline-flex gap-1" style="width:100%">
+                        <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                            aria-expanded="false" aria-controls="collapseExample" style="width:100%">
+                            Test Against Custom Input:
+                        </a>
+                    </p>
+                    <div class="collapse form-floating p-1" id="collapseExample">
+                        <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
+                            class="form-control border" value=""></textarea>
+                        <label for="inputArea">Custom Input:</label>
+                        <div class="outputContainer container mb-3">
+                            <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                                <strong class="text-primary" role="status">Loading...</strong>
+                                <div class="spinner-grow text-primary ms-auto" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <!-- <div class="outputScreen container border bg-dark" style="display:none;">
+                            <div class="inputDiv container my-2">
+                                <label class="text-light">Input:</label>
+                                <div class="inputGiven container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
+                            </div>
+                            <div class="outputDiv container mb-3">
+                                <label class="text-light">Output:</label>
+                                <div class="container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
+                            </div>
+                            </div> -->
+                        </div>
+                    </div>
             </div>
             <div class="col-md-4 m-0 p-0">
                 <div class="container border" style="height:300px;">
