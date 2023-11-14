@@ -59,7 +59,24 @@ if ($language == "php") {
     }
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
-    $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");
+    if (isset($_POST['input'])) {
+        $input = $_POST['input'];
+        $inputFilePath = "temporary/" . "input_" . $random . ".txt";
+        $outputFilePath = "temporary/" . "output_" . $random . ".txt";
+        file_put_contents($inputFilePath, $input);
+        $command = "C:\Program Files (x86)\nodejs\node.exe $filePath < $inputFilePath > $outputFilePath";
+        shell_exec($command);
+        $output = file_get_contents($outputFilePath);
+        echo $output;
+        $programFile = fopen($filePath, "a+");
+        $existingCode = fread($programFile, filesize($filePath));
+        $updatedCode = $existingCode . "\n\n// Input by user: $input";
+        unlink($inputFilePath);
+        unlink($outputFilePath);
+    } else {
+        $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");
+        echo $output;
+    }
     echo $output;
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
         unlink($filePath . ".js");
