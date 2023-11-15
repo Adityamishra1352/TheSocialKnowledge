@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: 403</title>
-    <script src="fontawesome-free-5.15.4-web/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="modules/fontawesome-free-5.15.4-web/js/all.min.js" crossorigin="anonymous"></script>
     <style>
         
 body {

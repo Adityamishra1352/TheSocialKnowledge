@@ -13,7 +13,7 @@ if (!isset($_SESSION['organiser']) && $_SESSION['organiser'] != true) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Add Test</title>
-    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -125,7 +125,7 @@ if (!isset($_SESSION['organiser']) && $_SESSION['organiser'] != true) {
             </main>
         </div>
     </div>
-    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>
         const firstContainer = document.querySelector(".firstcontainer");
         const addQuestions_container = document.querySelector(".addQuestions_container");

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         <?php echo $courseHeading; ?>
     </title>
     <link rel="stylesheet" href="../css/c++course.css">
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             </article>
         </main>
     </div>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var startTime = new Date().getTime();
         var wordCount = 0;

@@ -56,9 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Dashboard</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
-    <script src="../jquery/dist/jquery.min.js"></script>
+    <script src="../modules/jquery/dist/jquery.min.js"></script>
     <style>
         .gridStructure {
             display: grid;
@@ -429,7 +429,7 @@ foreach (scandir($directory) as $file) {
     ?>
 
     </div> -->
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -8,7 +8,7 @@
         <title>The Social Knowledge: Team</title>
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="shortcut icon" href="/websitelogo.jpg" type="image/png">
-    <link rel="stylesheet" href="assets/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link rel="stylesheet" href="assets/modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600@display=swap" rel="stylesheet" /> -->
 </head>
 

@@ -67,10 +67,10 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Test</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/quizFeature.css">
     <script src="certificategenerator/certificate-gen.js"></script>
-    <link rel="stylesheet" href="../fontawesome-free-5.15.4-web/css/all.min.css">
+    <link rel="stylesheet" href="../modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <script>
         const showTest=<?php echo $showTest;?>;
@@ -239,9 +239,9 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
         const timeforeach = <?php echo json_encode($timeforeach); ?>;
     </script>
     <script src="../javascript/test.js"></script>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="../@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../modules/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="../modules/@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
 
     <!-- <script>
         const timeCount = document.querySelector(".timer .time_sec");

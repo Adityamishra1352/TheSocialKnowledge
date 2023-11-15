@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge:Login</title>
     <link rel="stylesheet" href="../css/login.css">
-        <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <!-- <script type="text/javascript">
       document.addEventListener("contextmenu", function(e) {
         e.preventDefault();
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <a href="forgotpassword.php">Forgot Password</a>
         </div> -->
     </div>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

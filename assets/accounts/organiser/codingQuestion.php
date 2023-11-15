@@ -15,10 +15,10 @@ $test_id = $_GET['test_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
-    <script src="../../chart.js/dist/chart.umd.js"></script>
-    <link rel="stylesheet" href="../../datatables.net-dt/css/jquery.dataTables.css">
+    <script src="../../modules/chart.js/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../../modules/datatables.net-dt/css/jquery.dataTables.css">
 </head>
 
 <body>
@@ -197,10 +197,10 @@ $test_id = $_GET['test_id'];
             </form>
         </div>
     </div>
-    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../javascript/codingQuestion.js"></script>
-    <script src="../../jquery/dist/jquery.min.js"></script>
-    <script src="../../datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../../modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../modules/datatables.net/js/jquery.dataTables.js"></script>
     <script>
         //data tables for searching ascending and decreasing order processes
         $(document).ready(function () {

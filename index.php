@@ -16,7 +16,7 @@
     <meta property="og:description"
         content="Learn C++ from quality blogs with proper guidelines and solved examples at Social Knowledge.">
     <meta property="og:image" content="walling-XLqiL-rz4V8-unsplash.jpg">
-    <link rel="stylesheet" href="assets/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link rel="stylesheet" href="assets/modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="shortcut icon" href="assets/images/websitelogo.jpg" type="image/png">
     <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>

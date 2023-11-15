@@ -16,10 +16,10 @@ $test_id = $_GET['test_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
-    <script src="../../chart.js/dist/chart.umd.js"></script>
-    <link rel="stylesheet" href="../../datatables.net-dt/css/jquery.dataTables.css">
+    <script src="../../modules/chart.js/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../../modules/datatables.net-dt/css/jquery.dataTables.css">
     <style>
         .carousel-item img {
             width: 970px;
@@ -604,8 +604,8 @@ $test_id = $_GET['test_id'];
             <button type="submit" class="btn btn-outline-success my-2 me-2" name="allowSelected">Allow Selected</button>
     </div>
     </form>
-    <script src="../../jquery/dist/jquery.min.js"></script>
-    <script src="../../datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../../modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../modules/datatables.net/js/jquery.dataTables.js"></script>
     <script>
         //data tables for searching ascending and decreasing order processes
         $(document).ready( function () {
@@ -726,7 +726,7 @@ $test_id = $_GET['test_id'];
             },
         });
     </script>
-    <script src="../../xlsx/dist/xlsx.full.min.js"></script>
+    <script src="../../modules/xlsx/dist/xlsx.full.min.js"></script>
     <script>
         //excel sheet export functionality
         document.getElementById("exportExcel").addEventListener("click", function () {
@@ -751,7 +751,7 @@ $test_id = $_GET['test_id'];
             window.URL.revokeObjectURL(url);
         });
     </script>>
-    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script src="../../javascript/addQuestions.js"></script>
 </body>
 

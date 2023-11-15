@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Test</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <script>
         const questions = [];
         // console.log(showTest);
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script>
         console.log(questions);
     </script>

@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Social Knowledge: Certificate</title>
-        <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <script src="../test/certificategenerator/certificate-gen.js"></script>
-    <script src="../pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="../@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
+    <script src="../modules/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="../modules/@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
 </head>
 
 <body>
@@ -51,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         </div>
     </nav>
     <div class="container my-2 p-2 certificate_box" style="height:max-content">
-        <center><iframe src="" id="certificatepdf" frameborder="0" style="width:400px;height:400px;overflow:hidden;"></iframe></center>
+        <center><iframe src="" id="certificatepdf" frameborder="0"
+                style="width:400px;height:400px;overflow:hidden;"></iframe></center>
     </div>
     <!-- <div class="helpButton">
         <button class="chat_btn">
@@ -76,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             </form>
         </div>
     </section> -->
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let fname = "<?php echo $fname; ?>";
         let lname = "<?php echo $lname; ?>";
         let certificateFormating = "<?php echo $certificateFormating ?>";
-        let name=fname+" "+lname;
+        let name = fname + " " + lname;
         generatePdf(name, certificateFormating);
     </script>
     <!-- <script src="../javascript/help.js"></script> -->

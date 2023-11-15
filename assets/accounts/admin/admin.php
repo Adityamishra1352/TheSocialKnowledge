@@ -12,7 +12,7 @@ include '../../_dbconnect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Admin</title>
-    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -262,7 +262,7 @@ include '../../_dbconnect.php';
             ?>
         </div>
     </div>
-    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const runningCourse_btn = document.querySelector("#runningCourse_btn");
         const runningCourses = document.querySelector(".runningCourses");

@@ -17,7 +17,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Organiser</title>
-    <link rel="stylesheet" href="../../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
 </head>
 
@@ -53,7 +53,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
         <form class="container-fluid justify-content-start">
             <button class="btn btn-outline-success me-2" type="button" id="postedQuiz_btn">Quizes Posted by You</button>
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addQuiz_btn">Add A Quiz</button>
-            <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addTest_btn">Add A Test</button>
+            <!-- <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addTest_btn">Add A Test</button> -->
             <button class="btn btn-sm btn-outline-primary me-2" type="button" id="addCodingTest_btn">Add A Coding Test</button>
         </form>
     </nav>
@@ -430,7 +430,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             </form>
         </div>
     </div>
-    <script src="../../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const postedQuiz = document.querySelector("#postedQuiz_btn");
         const postedQuiz_container = document.querySelector(".postedQuiz_container");
@@ -455,13 +455,13 @@ $updateresult = mysqli_query($conn, $updateSQL);
             addQuiz_container.style.display = "block";
             addCodingTest_container.style.display="none";
         }
-        addTest_btn.onclick = () => {
-            addTest_container.style.display="block";
-            first_container.style.display = "none";
-            postedQuiz_container.style.display = "none";
-            addQuiz_container.style.display = "none";
-            addCodingTest_container.style.display="none";
-        }
+        // addTest_btn.onclick = () => {
+        //     addTest_container.style.display="block";
+        //     first_container.style.display = "none";
+        //     postedQuiz_container.style.display = "none";
+        //     addQuiz_container.style.display = "none";
+        //     addCodingTest_container.style.display="none";
+        // }
         addCodingTest_btn.onclick = () => {
             addTest_container.style.display="none";
             first_container.style.display = "none";

@@ -10,26 +10,19 @@ while ($scoreRow = mysqli_fetch_array($scoreResult)) {
     $answers = json_decode($scoreRow["answers"], true);
     
     foreach ($answers as $answer) {
-        // Check if 'question_id' exists in this answer element
         if (isset($answer['question_id'])) {
             $question_idsUser[] = $answer['question_id'];
         }
     }
 }
-
-// Initialize the attempts count for each question
 $attempts = [];
-
-// Step 1: Retrieve data from the database
-$sql = "SELECT question_id FROM questions WHERE test_id = 19"; // Replace '1' with the actual test_id
+$sql = "SELECT question_id FROM questions WHERE test_id = 19"; 
 $result = mysqli_query($conn, $sql);
 
 while ($row = mysqli_fetch_assoc($result)) {
     $questionId = $row['question_id'];
-    $attempts[$questionId] = 0; // Initialize attempts count to 0 for each question
+    $attempts[$questionId] = 0;
 }
-
-// Count the attempts for each question
 foreach ($question_idsUser as $userQuestion) {
     if (isset($attempts[$userQuestion])) {
         $attempts[$userQuestion]++;

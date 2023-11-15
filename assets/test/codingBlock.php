@@ -11,9 +11,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Social Knowledge: Code Along</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
-    <link rel="stylesheet" href="../fontawesome-free-5.15.4-web/css/all.min.css">
+    <link rel="stylesheet" href="../modules/fontawesome-free-5.15.4-web/css/all.min.css">
 </head>
 
 <body>
@@ -166,7 +166,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
 
     </div>
 
-    <script src="../jquery/dist/jquery.min.js"></script>
+    <script src="../modules/jquery/dist/jquery.min.js"></script>
     <script src="../javascript/compiler/ace.js"></script>
     <script src="../javascript/compiler/theme-github_dark.js"></script>
     <script src="../javascript/compiler/theme-dawn.js"></script>
@@ -179,7 +179,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <script src="../javascript/compiler/theme-nord_dark.js"></script>
     <script src="../javascript/compiler/theme-monokai.js"></script>
     <script src="../javascript/compiler/theme-sqlserver.js"></script>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script src="../javascript/codingBlock.js"></script>
 </body>
 
