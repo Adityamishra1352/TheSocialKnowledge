@@ -278,7 +278,7 @@ function showQuetions(index) {
         const checkboxes = option_list.querySelectorAll(
           'input[type="checkbox"]'
         );
-        checkboxes.forEach((checkbox, index) => {
+        checkboxes.forEach((checkbox) => {
           if (checkbox.checked) {
             selectOptions.push(checkbox.value);
           }
@@ -322,15 +322,8 @@ function showQuetions(index) {
   }
 }
 function arraysAreEqual(array1, array2) {
-  if (array1.length !== array2.length) {
-    return false;
-  }
-  for (let i = 0; i < array1.length; i++) {
-    if (array1[i] !== array2[i]) {
-      return false;
-    }
-  }
-  return true;
+  // Check if every element in array1 is present in array2
+  return array1.every(element => array2.includes(element));
 }
 function optionSelected(answer) {
   clearInterval(counter);
