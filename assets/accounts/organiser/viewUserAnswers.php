@@ -28,7 +28,7 @@
                     </li>
                 </ul>
                 <ul class="d-flex">
-                    <button class="btn btn-outline-danger me-2"
+                    <button class="btn btn-outline-danger"
                         onclick="window.location.href=(`../logout.php`)">Logout</button>
                 </ul>
             </div>

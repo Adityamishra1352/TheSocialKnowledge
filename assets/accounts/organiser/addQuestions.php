@@ -103,9 +103,6 @@ $test_id = $_GET['test_id'];
     }
 
     ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Multiple Choice Feature under maintainence.</strong> Some functions might not work.
-    </div>
     <?php
     $recent_sql = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
     $recent_result = mysqli_query($conn, $recent_sql);
