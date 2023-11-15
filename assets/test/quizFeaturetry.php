@@ -187,7 +187,7 @@ if(isset($_GET['string']) && $_GET['string']==$test_id.$user_id){
                     <?php echo $heading; ?>: Quiz
                 </div>
                 <div class="timer">
-                    <div class="time_left_txt">Time Left</div>
+                    <div class="time_left_txt">Question Time Left</div>
                     <div class="timer_sec">
                         <?php echo $timeforeach; ?>
                     </div>

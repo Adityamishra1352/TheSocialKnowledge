@@ -87,7 +87,7 @@ function skipCurrentQuestion() {
     // clearInterval(counterLine);
     startTimer(timeValue);
     // startTimerLine(widthValue);
-    timeText.textContent = "Time Left";
+    timeText.textContent = "Question Time Left";
     next_btn.classList.remove("show");
   } else {
     clearInterval(counter);
@@ -194,6 +194,7 @@ function warningBox_control() {
 }
 
 next_btn.onclick = () => {
+  sendToStorage();
   if (que_count < questions.length - 1) {
     que_count++;
     que_numb++;
@@ -203,7 +204,7 @@ next_btn.onclick = () => {
     // clearInterval(counterLine);
     startTimer(timeValue);
     // startTimerLine(widthValue);
-    timeText.textContent = "Time Left";
+    timeText.textContent = "Question Time Left";
     next_btn.classList.remove("show");
   } else {
     clearInterval(counter);
@@ -298,6 +299,7 @@ function showQuetions(index) {
           answer: JSON.stringify(selectOptions),
           correctAnswer: questions[que_count].correct_answer,
         };
+  sendToStorage();
         answers.push(questionObject);
         if (que_count < questions.length - 1) {
           que_count++;
@@ -306,7 +308,7 @@ function showQuetions(index) {
           queCounter(que_numb);
           clearInterval(counter);
           startTimer(timeValue);
-          timeText.textContent = "Time Left";
+          timeText.textContent = "Question Time Left";
           next_btn.classList.remove("show");
           nextButton.style.display = "none";
         } else {
@@ -349,7 +351,6 @@ function optionSelected(answer) {
   next_btn.classList.add("show");
 }
 function showResult() {
-  sendToStorage();
   exitFullscreen();
   console.log(answers);
   info_box.classList.add("deactivateInfo");
