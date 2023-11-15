@@ -69,6 +69,11 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
     </nav>
     <div class="container my-2">
         <div class="row">
+            <ul>
+                <li>
+                    <h6>Quizes:</h6>
+                </li>
+            </ul>
             <?php
             $user_id = $_SESSION['user_id'];
             $user_id = mysqli_real_escape_string($conn, $user_id);
@@ -85,7 +90,7 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
             if (!$result) {
                 die("Query failed: " . mysqli_error($conn));
             }
-            $countQuizes=0;
+            $countQuizes = 0;
             while ($rowTest = mysqli_fetch_assoc($result)) {
                 $userfortest = json_decode($rowTest['userfortest'], true);
                 if (is_array($userfortest) && in_array($adminUser_id, $userfortest)) {
@@ -99,11 +104,11 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                     $description = $rowTest['description'];
                     $words = explode(' ', $description);
                     $limitedDescription = implode(' ', array_slice($words, 0, 15));
-                    
+
                     if (count($words) > 15) {
                         $limitedDescription .= '...';
                     }
-                    
+
                     echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
                         <div class="card-header">
                             <h5 class="card-title">' . $heading . '</h5>
@@ -118,7 +123,7 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                     </div></div>';
                 }
             }
-            if($countQuizes==0){
+            if ($countQuizes == 0) {
                 echo '<div class="card" style="max-width:500px;">
                     <div class="card-body">
                       <blockquote class="blockquote mb-0">
@@ -132,12 +137,19 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
 
         </div>
     </div>
-    <div class="container my-2 row">
-        <?php 
-        $codingSQL="SELECT * FROM `codingtest`";
-        $codingResult=mysqli_query($conn,$codingSQL);
-        while($rowCoding = mysqli_fetch_assoc($codingResult)){
-            echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
+    <div class="container my-2">
+        <div class="row">
+
+            <ul>
+                <li>
+                    <h6>Coding Quizes:</h6>
+                </li>
+            </ul>
+            <?php
+            $codingSQL = "SELECT * FROM `codingtest`";
+            $codingResult = mysqli_query($conn, $codingSQL);
+            while ($rowCoding = mysqli_fetch_assoc($codingResult)) {
+                echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
                         <div class="card-header">
                             <h5 class="card-title">' . $rowCoding['heading'] . '</h5>
                             <p class="text-secondary card-text">Code Along</p>
@@ -149,8 +161,9 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                             <a href="codeTests/codeQuestions.php?test_id=' . $rowCoding['test_id'] . '" class="btn btn-outline-success">Take Test</a>
                         </div>
                     </div></div>';
-        }
-        ?>
+            }
+            ?>
+        </div>
     </div>
     <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>

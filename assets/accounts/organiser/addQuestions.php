@@ -19,6 +19,7 @@ $test_id = $_GET['test_id'];
     <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
     <script src="../../modules/chart.js/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../../modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="stylesheet" href="../../modules/datatables.net-dt/css/jquery.dataTables.css">
     <style>
         .carousel-item img {
@@ -45,25 +46,46 @@ $test_id = $_GET['test_id'];
                     <li class="nav-item">
                         <a class="nav-link" href="organiser.php">Organiser Panel</a>
                     </li>
-                    
+
                 </ul>
                 <ul class="d-flex">
-                    <button class="btn btn-outline-danger me-2"
-                        onclick="window.location.href=(`../logout.php`)">Logout</button>
+                    <a class="btn" style="font-size:20px;color:black;" data-bs-toggle="offcanvas"
+                        href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i
+                            class="fa fa-bars"></i></a>
                 </ul>
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-light bg-light">
-        <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success me-2" type="button" id="setString">Authentication Code</button>
-            <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
-            <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
-                Questions</button>
-            <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Add Students</button>
-            <button class="btn btn-outline-success me-2" type="button" id="users_btn">Responses</button>
-        </form>
-    </nav>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">The Social Knowledge: Test Features</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul>
+                <li class="my-2">
+                    <button class="btn btn-outline-success me-2" type="button" id="setString">Authentication
+                        Code</button>
+                </li>
+                <li class="my-2">
+                    <button class="btn btn-outline-success me-2" type="button" id="setTime_btn">Edit Features</button>
+                </li>
+                <li class="my-2">
+                    <button class="btn btn-outline-success me-2" type="button" id="editQuestions_btn">Edit/Add
+                        Questions</button>
+                </li>
+                <li class="my-2">
+                    <button class="btn btn-outline-success me-2" type="button" id="setUsers_btn">Add Students</button>
+                </li>
+                <li class="my-2">
+                    <button class="btn btn-outline-success me-2" type="button" id="users_btn">Responses</button>
+                </li>
+                <li class="my-2">
+                    <button class="btn btn-outline-danger me-2" type="button" onclick="window.location.href=(`../logout.php`)">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </div>
     <?php
     if (isset($_GET['uploadQuestions']) && $_GET['uploadQuestions'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -374,7 +396,7 @@ $test_id = $_GET['test_id'];
         $question_idsUser = [];
         $scoreSQL = "SELECT answers FROM `testscores` WHERE `test_id` = '$test_id'";
         $scoreResult = mysqli_query($conn, $scoreSQL);
-        
+
         while ($scoreRow = mysqli_fetch_array($scoreResult)) {
             $answers = json_decode($scoreRow["answers"], true);
             if ($answers !== null) {
@@ -391,7 +413,7 @@ $test_id = $_GET['test_id'];
                             $answer['correctAnswer'] = $decodedCorrectAnswer;
                         }
                     }
-        
+
                     if (isset($answer['question_id'])) {
                         $question_idsUser[] = $answer['question_id'];
                     }
@@ -399,7 +421,7 @@ $test_id = $_GET['test_id'];
                 unset($answer);
             }
         }
-        
+
         $attempts = [];
         $sql = "SELECT question_id FROM questions WHERE test_id = '$test_id'";
         $result = mysqli_query($conn, $sql);
@@ -608,10 +630,10 @@ $test_id = $_GET['test_id'];
     <script src="../../modules/datatables.net/js/jquery.dataTables.js"></script>
     <script>
         //data tables for searching ascending and decreasing order processes
-        $(document).ready( function () {
-    $('#attendedUserTable').DataTable();
-    $('#mytable').DataTable();
-} );
+        $(document).ready(function () {
+            $('#attendedUserTable').DataTable();
+            $('#mytable').DataTable();
+        });
 
     </script>
 

@@ -163,7 +163,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
 
     </div>
 
-    <script src="../../jquery/dist/jquery.min.js"></script>
+    <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <script src="../../javascript/compiler/ace.js"></script>
     <script src="../../javascript/compiler/theme-github.js"></script>
     <script src="../../javascript/compiler/theme-chaos.js"></script>

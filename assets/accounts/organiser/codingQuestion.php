@@ -79,7 +79,7 @@ $test_id = $_GET['test_id'];
                             Add/Delete Questions for this test:
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-outline-success" id="responses_btn">Add/Delete Questions</button>
+                            <button class="btn btn-outline-success" id="questions_btn">Add/Delete Questions</button>
                         </div>
                     </div>
                 </li>
