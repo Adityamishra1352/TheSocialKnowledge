@@ -377,14 +377,32 @@ $test_id = $_GET['test_id'];
         $question_idsUser = [];
         $scoreSQL = "SELECT answers FROM `testscores` WHERE `test_id` = '$test_id'";
         $scoreResult = mysqli_query($conn, $scoreSQL);
+        
         while ($scoreRow = mysqli_fetch_array($scoreResult)) {
             $answers = json_decode($scoreRow["answers"], true);
-            foreach ($answers as $answer) {
-                if (isset($answer['question_id'])) {
-                    $question_idsUser[] = $answer['question_id'];
+            if ($answers !== null) {
+                foreach ($answers as &$answer) {
+                    if (isset($answer['answer']) && is_array($answer['answer'])) {
+                        $decodedAnswer = json_decode($answer['answer'], true);
+                        if (json_last_error() == JSON_ERROR_NONE) {
+                            $answer['answer'] = $decodedAnswer;
+                        }
+                    }
+                    if (isset($answer['correctAnswer']) && is_array($answer['correctAnswer'])) {
+                        $decodedCorrectAnswer = json_decode($answer['correctAnswer'], true);
+                        if (json_last_error() == JSON_ERROR_NONE) {
+                            $answer['correctAnswer'] = $decodedCorrectAnswer;
+                        }
+                    }
+        
+                    if (isset($answer['question_id'])) {
+                        $question_idsUser[] = $answer['question_id'];
+                    }
                 }
+                unset($answer);
             }
         }
+        
         $attempts = [];
         $sql = "SELECT question_id FROM questions WHERE test_id = '$test_id'";
         $result = mysqli_query($conn, $sql);
@@ -548,50 +566,6 @@ $test_id = $_GET['test_id'];
         </div>
     </div>
     <div class="container setUsers_container my-2 p-1" style="display:none;">
-        <!-- <nav class="navbar">
-            <form class="container-fluid justify-content-start">
-                <div class="d-flex">
-                    <button class="btn btn-outline-success me-2" data-bs-toggle="modal"
-                        data-bs-target="#currentUserModal" type="button" id="exportExcel">Current Users</button>
-                </div>
-            </form>
-        </nav> -->
-        <!-- <div class="modal fade" id="currentUserModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Current Users:</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table my-2 table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Sno</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Enrollment</th>
-                                    <th scope="col">
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                Select
-                                            </label>
-                                            <input class="form-check-input" type="checkbox" value=""">
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <form id="filter-form">
             <div class="row">
                 <div class="form-group col" style="width:40%;">

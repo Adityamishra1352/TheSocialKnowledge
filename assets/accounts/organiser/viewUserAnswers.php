@@ -54,7 +54,25 @@
             $answersJSON = preg_replace('/"correctAnswer":"\[(.*?)\]"/', '"correctAnswer":[$1]', $answersJSON);
         }
         $answers = json_decode($answersJSON, true);
-
+            foreach ($answers as &$answer) {
+                if (isset($answer['answer']) && is_string($answer['answer'])) {
+                    $decodedAnswer = json_decode($answer['answer'], true);
+                    if (json_last_error() == JSON_ERROR_NONE) {
+                        $answer['answer'] = $decodedAnswer;
+                    }
+                }
+                if (isset($answer['correctAnswer']) && is_string($answer['correctAnswer'])) {
+                    $decodedCorrectAnswer = json_decode($answer['correctAnswer'], true);
+                    if (json_last_error() == JSON_ERROR_NONE) {
+                        $answer['correctAnswer'] = $decodedCorrectAnswer;
+                    }
+                }
+    
+                if (isset($answer['question_id'])) {
+                    $question_idsUser[] = $answer['question_id'];
+                }
+            }
+            unset($answer);
         $testSQL = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
         $testResult = mysqli_query($conn, $testSQL);
         $testRow = mysqli_fetch_assoc($testResult);
@@ -109,12 +127,16 @@
                     } else {
                         $questionShow = $question;
                     }
-                    if (is_string($answer['answer'])) {
-                        $selectedAnswer = json_decode($answer['answer'], true);
+                    if (is_array($answer['answer'])) {
+                        $selectedAnswer = implode(', ', $answer['answer']);;
                     } else {
                         $selectedAnswer = $answer['answer'];
                     }
-                    $correctAnswer = $answer['correctAnswer'];
+                    if (is_array($answer['correctAnswer'])) {
+                        $correctAnswer = implode(', ', $answer['correctAnswer']);;
+                    } else {
+                        $correctAnswer = $answer['correctAnswer'];
+                    }
                     echo '<tr>
                     <td>' . $count . '</td>
                     <td>' . $questionShow . '</td>
