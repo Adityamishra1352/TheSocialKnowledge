@@ -20,27 +20,14 @@ if ($language == "php") {
     if (isset($_POST['input'])) {
         $input = $_POST['input'];
         $inputLines = implode("\n", explode(",", $input)) . "\n";
-
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
-
-        // Write each input line to the input file
         file_put_contents($inputFilePath, $inputLines);
-
         $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
-
         $output = file_get_contents($outputFilePath);
         echo $output;
-
-        $programFile = fopen($filePath, "a+");
-        $existingCode = fread($programFile, filesize($filePath));
-        $updatedCode = $existingCode . "\n\n// Input by user:\n" . $input;
-        ftruncate($programFile, 0);
-        fseek($programFile, 0);
-        fwrite($programFile, $updatedCode);
-        fclose($programFile);
-
+        unlink($filePath);
         unlink($inputFilePath);
         unlink($outputFilePath);
     } else {

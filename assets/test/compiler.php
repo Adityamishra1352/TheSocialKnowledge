@@ -12,9 +12,10 @@ fclose($programFile);
 if ($language == "php") {
     if (isset($_POST['input'])) {
         $input = $_POST['input'];
+        $inputLines = implode("\n", explode(",", $input)) . "\n";
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
-        file_put_contents($inputFilePath, $input);
+        file_put_contents($inputFilePath, $inputLines);
         $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
         $output = file_get_contents($outputFilePath);

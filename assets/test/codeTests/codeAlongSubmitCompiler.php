@@ -18,11 +18,10 @@ fwrite($programFile, $code);
 fclose($programFile);
 if ($language == "php") {
     $isCorrect = true;
-
+    $filenameArray[] = $filePath;
     foreach ($testCasesarray as $testCase) {
         $input = implode("\n", explode(",", $testCase["input"])) . "\n";
         $expected_output = implode("\n", explode(",", $testCase["expected_output"]));
-
         $inputFilePath = "input_" . $random . ".txt";
         $outputFilePath = "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
@@ -36,14 +35,30 @@ if ($language == "php") {
         unlink($inputFilePath);
         unlink($outputFilePath);
     }
-
-    if ($isCorrect) {
-        echo "All test cases passed. Code is correct.";
-    } else {
-        echo "Some test cases failed. Code is incorrect.";
+    if($isCorrect){
+        echo "yeah";
     }
-    $updateScore="INSERT INTO `codinganswers`(`question_id`,`filename`,`user_id`,`correct`,`test_id`) VALUES('$question_id','$filePath','$user_id','$isCorrect','$test_id')";
-    $updateResult=mysqli_query($conn,$updateScore);
+    else{
+        echo "oops";
+    }
+    $selectSql = "SELECT * FROM `codinganswers` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
+    $selectResult = mysqli_query($conn, $selectSql);
+    
+    if (mysqli_num_rows($selectResult) > 0) {
+        $rowCode=mysqli_fetch_assoc($selectResult);
+        $existingFilenames = json_decode($rowCode["filename"], true);
+        $filenameArray = array_merge($existingFilenames, $filenameArray);
+        $userScore=$rowCode["correct"];
+        if ($isCorrect) {
+            $userScore+=1;
+        }
+        $updateScore = "UPDATE `codinganswers` SET `filename`='" . json_encode($filenameArray) . "', `correct`='$userScore' WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
+        $updateResult = mysqli_query($conn, $updateScore);
+    } else {
+        // Insert a new row with the filenames and initial score
+        $updateScore = "INSERT INTO `codinganswers`(`question_id`,`filename`,`user_id`,`correct`,`test_id`) VALUES('$question_id','" . json_encode($filenameArray) . "','$user_id','$isCorrect','$test_id')";
+        $updateResult = mysqli_query($conn, $updateScore);
+    }
 } else if ($language == "c" || $language == "cpp") {
     $output = shell_exec("C:\TDM-GCC-64\bin\gcc.exe $filePath 2>&1");
     if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
