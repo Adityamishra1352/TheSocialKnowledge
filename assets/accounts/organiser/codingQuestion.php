@@ -116,9 +116,10 @@ $test_id = $_GET['test_id'];
                     $user_sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
                     $user_result = mysqli_query($conn, $user_sql);
                     $user_row = mysqli_fetch_assoc($user_result);
+                    $user_id = $user_row["user_id"];
                     $name= $user_row['fname']." ".$user_row['lname'];
                     $enrollment=$user_row['enrollment'];
-                    echo "<tr><th>$count</th><td>$name</td><td>$enrollment</td><td>$correct</td><td><input type='checkbox' name='restart[]' value='$user_id' class='form-check-input'></td></tr>";
+                    echo "<tr><th>$count</th><td><a href='viewUserCode.php?user_id=$user_id&test_id=$test_id'>$name</a></td><td>$enrollment</td><td>$correct</td><td><input type='checkbox' name='restart[]' value='$user_id' class='form-check-input'></td></tr>";
                     $count += 1;
                 }
                 ?>

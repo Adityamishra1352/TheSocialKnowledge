@@ -39,44 +39,20 @@
         include '../../_dbconnect.php';
         $test_id = $_GET['test_id'];
         $user_id = $_GET['user_id'];
-        $scoreSQL = "SELECT * FROM `testscores` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
+        $scoreSQL = "SELECT * FROM `codinganswers` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
         $scoreResult = mysqli_query($conn, $scoreSQL);
         $scoreRow = mysqli_fetch_assoc($scoreResult);
-        $score = $scoreRow['score'];
+        $score = $scoreRow['correct'];
         $timesubmit = $scoreRow['date'];
         $timestamp = strtotime($timesubmit);
         $formattedDate = date('d F Y', $timestamp);
         $formattedTime = date('H:i', $timestamp);
-        $answersJSON = $scoreRow['answers'];
-        $pattern = '/"answer":"\[(.*?)\]"/';
-        if (preg_match($pattern, $answersJSON)) {
-            $answersJSON = preg_replace($pattern, '"answer":[$1]', $answersJSON);
-            $answersJSON = preg_replace('/"correctAnswer":"\[(.*?)\]"/', '"correctAnswer":[$1]', $answersJSON);
-        }
-        $answers = json_decode($answersJSON, true);
-            foreach ($answers as &$answer) {
-                if (isset($answer['answer']) && is_string($answer['answer'])) {
-                    $decodedAnswer = json_decode($answer['answer'], true);
-                    if (json_last_error() == JSON_ERROR_NONE) {
-                        $answer['answer'] = $decodedAnswer;
-                    }
-                }
-                if (isset($answer['correctAnswer']) && is_string($answer['correctAnswer'])) {
-                    $decodedCorrectAnswer = json_decode($answer['correctAnswer'], true);
-                    if (json_last_error() == JSON_ERROR_NONE) {
-                        $answer['correctAnswer'] = $decodedCorrectAnswer;
-                    }
-                }
-    
-                if (isset($answer['question_id'])) {
-                    $question_idsUser[] = $answer['question_id'];
-                }
-            }
-            unset($answer);
-        $testSQL = "SELECT * FROM `test` WHERE `test_id`='$test_id'";
+        $filepaths = $scoreRow['filename'];
+        $files = json_decode($filepaths, true);
+        $testSQL = "SELECT * FROM `codingtest` WHERE `test_id`='$test_id'";
         $testResult = mysqli_query($conn, $testSQL);
         $testRow = mysqli_fetch_assoc($testResult);
-        $numberofQuestions = $testRow['questionsforeach'];
+        $timefortest = $testRow['timefortest'];
         $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
         $user_result = mysqli_query($conn, $user_sql);
         $user_row = mysqli_fetch_assoc($user_result);
@@ -99,55 +75,50 @@
                     <ul>
                         <p class="card-text"><b>Score:</b> ' . $score . '</p>
                         <p class="card-text"><b>Time of Submission:</b> ' . $formattedTime . ' ' . $formattedDate . '</p>
-                        <p class="card-text"><b>Number of Questions:</b> ' . $numberofQuestions . '</p>
+                        <p class="card-text"><b>Time for the test:</b> ' . $timefortest . '</p>
                     </div>
                 </div>
             </div>
         </div>
         </div>';
         ?>
-        <table class="table table-hover my-2">
-            <thead>
-                <tr>
-                    <th scope="col">Sno.</th>
-                    <th scope="col">Question</th>
-                    <th scope="col">Selected Answer</th>
-                    <th scope="col">Correct Answer</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $count = 1;
-                foreach ($answers as $answer) {
-                    $question = $answer['question'];
-                    $image = $answer['image'];
-                    $questionShow = null;
-                    if ($question == null) {
-                        $questionShow = '<img src="../../images/questions/' . $image . '">';
-                    } else {
-                        $questionShow = $question;
-                    }
-                    if (is_array($answer['answer'])) {
-                        $selectedAnswer = implode(', ', $answer['answer']);;
-                    } else {
-                        $selectedAnswer = $answer['answer'];
-                    }
-                    if (is_array($answer['correctAnswer'])) {
-                        $correctAnswer = implode(', ', $answer['correctAnswer']);;
-                    } else {
-                        $correctAnswer = $answer['correctAnswer'];
-                    }
-                    echo '<tr>
-                    <td>' . $count . '</td>
-                    <td>' . $questionShow . '</td>
-                    <td>' . $selectedAnswer . '</td>
-                    <td>' . $correctAnswer . '</td>
-                    </tr>';
-                    $count++;
+    </div>
+    <div class="container">
+        <div class="row">
+
+            <?php
+            $numbers = [];
+            $basePath = "../../test/codeTests";
+            foreach ($files as $filename) {
+                $number = 0;
+                if (preg_match("/answers\/(\d+)php/", $filename, $matches)) {
+                    $number = $matches[1];
+                }else if (preg_match("/answers\/(\d+)js/", $filename, $matches)) {
+                    $number = $matches[1];
+                }else if (preg_match("/answers\/(\d+)cpp/", $filename, $matches)) {
+                    $number = $matches[1];
+                }else if (preg_match("/answers\/(\d+)python/", $filename, $matches)) {
+                    $number = $matches[1];
                 }
-                ?>
-            </tbody>
-        </table>
+                $question_sql = "SELECT * FROM `codingquestions` WHERE `code_id`='$number'";
+                $questions_result = mysqli_query($conn, $question_sql);
+                $questionsRow = mysqli_fetch_assoc($questions_result);
+                $questionText = $questionsRow['question'];
+                $filePath = $basePath . '/' . $filename;
+                $fileContent = file_get_contents($filePath);
+                $previewContent = substr($fileContent, 0, 100);
+                $downloadLink=$filePath;
+                echo '<div class="col"><div class="card p-2" style="width: 18rem;">
+            <pre class="card-text">' . htmlspecialchars($previewContent) . '</pre>
+            <div class="card-body">
+            <h6 class="card-title">' . $questionText . '</h6>
+            <a href="' . $downloadLink . '" class="btn btn-primary" download>Download File</a>
+            </div>
+            </div></div>';
+            }
+            ?>
+
+        </div>
     </div>
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
 </body>
