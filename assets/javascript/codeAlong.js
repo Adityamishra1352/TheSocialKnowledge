@@ -1,9 +1,45 @@
 let editor;
+//full screen feature
+function openFullscreen() {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) {
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+}
+var fullScreenModal = new bootstrap.Modal(document.querySelector(".fullScreenModal"));
 window.onload = function () {
-  editor = ace.edit("editor");
-  editor.setTheme("ace/theme/github");
-  editor.session.setMode("ace/mode/c_cpp");
+  fullScreenModal.show();
+  document.querySelector("#fullScreen_btn").onclick=()=>{
+    openFullscreen();
+    fullScreenModal.hide();
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.session.setMode("ace/mode/c_cpp");
+  };
 };
+document.addEventListener("fullscreenchange", function () {
+  if (!document.fullscreenElement) {
+    // Show the modal when exiting full-screen
+    fullScreenModal.show();
+  }
+});
 function changeTheme() {
   let theme = $("#theme").val();
   if (theme == "github") {
@@ -36,23 +72,24 @@ function changeLanguage() {
     document.querySelector(".codeEditor").style.display = "flex";
   }
 }
-function submitCode(){
+function submitCode() {
   document.querySelector("#loader").style.display = "flex";
   $.ajax({
-    url:"../codeTests/codeAlongSubmitCompiler.php",
-    method:"POST",
-    data:{
-      language:$("#languages").val(),
-      code:editor.getSession().getValue(),
-      question_id:question_id,
-      test_id:test_id,
+    url: "../codeTests/codeAlongSubmitCompiler.php",
+    method: "POST",
+    data: {
+      language: $("#languages").val(),
+      code: editor.getSession().getValue(),
+      question_id: question_id,
+      test_id: test_id,
     },
-    success:function(response){
+    success: function (response) {
       document.querySelector("#loader").style.display = "none";
       $("#outputTerminal").text(response);
-      document.querySelector("#submitCode").disabled=true;
-    }
-  })
+      document.querySelector("#submitCode").disabled = true;
+      exitFullscreen();
+    },
+  });
 }
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {
@@ -83,7 +120,7 @@ function executeCode() {
       data: {
         language: $("#languages").val(),
         code: editor.getSession().getValue(),
-        question_id:question_id,
+        question_id: question_id,
       },
       success: function (response) {
         $(".output").text(response);

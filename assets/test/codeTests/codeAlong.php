@@ -14,9 +14,14 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <link rel="stylesheet" href="../../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
+    <style>
+        .fullScreenModal {
+            backdrop-filter: blur(10px);
+        }
+    </style>
     <script>
-        const question_id=<?php echo $_GET['question_id'];?>;
-        const test_id=<?php echo $_GET['test_id'];?>;
+        const question_id = <?php echo $_GET['question_id']; ?>;
+        const test_id = <?php echo $_GET['test_id']; ?>;
     </script>
 </head>
 
@@ -32,6 +37,23 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </button>
         </div>
     </nav>
+    <!-- Modal -->
+    <div class="modal fade fullScreenModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
+                </div>
+                <div class="modal-body">
+                    The Test can only be given in FullScreen mode!!!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="fullScreen_btn">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Some functions might not work.
     </div>
@@ -133,14 +155,16 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                                 </div>
                             </div>
                             <div class="outputScreen container border bg-dark" style="display:none;">
-                            <div class="inputDiv container my-2">
-                                <label class="text-light">Input:</label>
-                                <div class="inputGiven container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
-                            </div>
-                            <div class="outputDiv container mb-3">
-                                <label class="text-light">Output:</label>
-                                <div class="output container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
-                            </div>
+                                <div class="inputDiv container my-2">
+                                    <label class="text-light">Input:</label>
+                                    <div class="inputGiven container bg-secondary text-light p-2 rounded-top"
+                                        style="width:100%"></div>
+                                </div>
+                                <div class="outputDiv container mb-3">
+                                    <label class="text-light">Output:</label>
+                                    <div class="output container bg-secondary text-light p-2 rounded-top"
+                                        style="width:100%"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
