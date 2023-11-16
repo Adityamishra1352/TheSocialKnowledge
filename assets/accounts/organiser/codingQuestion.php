@@ -19,6 +19,14 @@ $test_id = $_GET['test_id'];
     <link rel="shortcut icon" href="../../images/websitelogo.jpg" type="image/png">
     <script src="../../modules/chart.js/dist/chart.umd.js"></script>
     <link rel="stylesheet" href="../../modules/datatables.net-dt/css/jquery.dataTables.css">
+    <style>
+        .toast{
+            position: fixed;
+            top:13%;
+            right:0%;
+            z-index: 999;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,7 +71,7 @@ $test_id = $_GET['test_id'];
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item my-2">
                     <div class="row">
                         <div class="col-md-6">
                             View Responses for this test:
@@ -73,19 +81,70 @@ $test_id = $_GET['test_id'];
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item my-2">
                     <div class="row">
                         <div class="col-md-6">
                             Add/Delete Questions for this test:
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-outline-success" id="questions_btn">Add/Delete Questions</button>
+                            <button class="btn btn-outline-success" id="questions_btn">Edit Questions</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item my-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Edit Test Features:
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success" id="editFeatures_btn">Edit Features</button>
                         </div>
                     </div>
                 </li>
             </ul>
         </div>
     </div>
+    <!-- Toasts and Alerts -->
+    
+    <?php 
+    if(isset($_GET['timeUpdate']) && $_GET['timeUpdate']==true){
+        echo '<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="../../images/websitelogo.jpg" class="rounded me-2" alt="..." style="width:10%">
+          <strong class="me-auto">The Social Knowledge</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Features for the test have been updated successfully!!
+        </div>
+      </div>';
+    }
+    if(isset($_GET['uploadQuestions']) && $_GET['uploadQuestions']==true){
+        echo '<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="../../images/websitelogo.jpg" class="rounded me-2" alt="..." style="width:10%">
+          <strong class="me-auto">The Social Knowledge</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          The questions have been uploaded successfully!!
+        </div>
+      </div>';
+    }
+    if(isset($_GET['deleteQuestion']) && $_GET['deleteQuestion']==true){
+        echo '<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="../../images/websitelogo.jpg" class="rounded me-2" alt="..." style="width:10%">
+          <strong class="me-auto">The Social Knowledge</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          The questions have been deleted successfully!!
+        </div>
+      </div>';
+    }
+    ?>
+    <!-- Responses Functionality -->
     <div class="responses_container container my-2 p-2" style="display:none">
         <table class="table my-2 table-hover" id="responsesTable">
             <thead>
@@ -113,12 +172,12 @@ $test_id = $_GET['test_id'];
                 while ($row = mysqli_fetch_assoc($result)) {
                     $user_id = $row['user_id'];
                     $correct = $row['correct'];
-                    $user_sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
+                    $user_sql = "SELECT * FROM `users` WHERE `user_id`='$user_id'";
                     $user_result = mysqli_query($conn, $user_sql);
                     $user_row = mysqli_fetch_assoc($user_result);
                     $user_id = $user_row["user_id"];
-                    $name= $user_row['fname']." ".$user_row['lname'];
-                    $enrollment=$user_row['enrollment'];
+                    $name = $user_row['fname'] . " " . $user_row['lname'];
+                    $enrollment = $user_row['enrollment'];
                     echo "<tr><th>$count</th><td><a href='viewUserCode.php?user_id=$user_id&test_id=$test_id'>$name</a></td><td>$enrollment</td><td>$correct</td><td><input type='checkbox' name='restart[]' value='$user_id' class='form-check-input'></td></tr>";
                     $count += 1;
                 }
@@ -126,6 +185,7 @@ $test_id = $_GET['test_id'];
             </tbody>
         </table>
     </div>
+    <!-- Add Questions Container Functionality -->
     <div class="container my-2 addQuestions_container">
         <ul>
             <li><b>Add Questions:</b></li>
@@ -197,6 +257,25 @@ $test_id = $_GET['test_id'];
                     Selected</button>
             </form>
         </div>
+    </div>
+    <!-- Edit Test Functionality -->
+    <div class="my-2 editFeatures_container container" style="width:40%;display:none;">
+        <form action="editCodingFeatures.php" method="post">
+            <div class="mb-3">
+                <label for="startTime" class="form-label">Time To Start:</label>
+                <input type="datetime-local" class="form-control" id="startTime" name="startTime">
+            </div>
+            <div class="mb-3">
+                <label for="timefortest" class="form-label">Time for the Test(in minutes):</label>
+                <input type="number" class="form-control" id="timefortest" name="timefortest">
+            </div>
+            <div class="mb-3">
+                <label for="endTime" class="form-label">Time To End:</label>
+                <input type="datetime-local" class="form-control" id="endTime" name="endTime">
+                <input type="hidden" name="test_id" value=<?php echo $test_id; ?>>
+            </div>
+            <button type="submit" class="btn btn-outline-success">Submit</button>
+        </form>
     </div>
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../javascript/codingQuestion.js"></script>

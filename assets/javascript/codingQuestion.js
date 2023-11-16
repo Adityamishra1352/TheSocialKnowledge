@@ -1,23 +1,33 @@
+// active classes functionality
 const addQuestions_container=document.querySelector(".addQuestions_container");
 const responses_container=document.querySelector(".responses_container");
 const responses_btn=document.querySelector("#responses_btn");
 const addQuestions_btn=document.querySelector("#questions_btn");
-
+const editFeatures_btn=document.querySelector("#editFeatures_btn");
+const editFeatures_container=document.querySelector(".editFeatures_container");
 responses_btn.onclick=()=>{
   responses_container.style.display="block";
   addQuestions_container.style.display="none";
+  editFeatures_container.style.display="none";
 }
 addQuestions_btn.onclick=()=>{
+  editFeatures_container.style.display="none";
   responses_container.style.display="none";
   addQuestions_container.style.display="block";
 }
-
+editFeatures_btn.onclick=()=>{
+  editFeatures_container.style.display="block";
+  responses_container.style.display="none";
+  addQuestions_container.style.display="none";
+}
+// checkbuttons functionality
 document.getElementById("selectAll").addEventListener("change", function () {
   const checkboxes = document.querySelectorAll("input[name='delete[]']");
   checkboxes.forEach((checkbox) => {
     checkbox.checked = this.checked;
   });
 });
+//add questions functionality
 document.addEventListener("DOMContentLoaded", function () {
     const addQuestionButton = document.getElementById("add-question");
     const questionsContainer = document.getElementById("questions");
