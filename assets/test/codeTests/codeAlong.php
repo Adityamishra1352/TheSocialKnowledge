@@ -37,7 +37,10 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </button>
         </div>
     </nav>
-    <!-- Modal -->
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
+                    aria-valuemin="0" aria-valuemax="100" style="width:100%;height:3px">
+                    <div class="progress-bar bg-danger" style="width: 0%" id="timeProgressBar"></div>
+                </div>
     <div class="modal fade fullScreenModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -54,9 +57,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </div>
         </div>
     </div>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Some functions might not work.
-    </div>
+    </div> -->
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
@@ -186,7 +189,16 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         </div>
 
     </div>
-
+    <?php
+    $timeSQL = "SELECT * FROM `codingtest` WHERE `test_id`='$test_id'";
+    $timeResult = mysqli_query($conn, $timeSQL);
+    $rowTimer = mysqli_fetch_assoc($timeResult);
+    $time = $rowTimer["timefortest"];
+    ?>
+    <script>
+        var timefortest = <?php echo $time; ?>;
+        console.log(timefortest);
+    </script>
     <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <script src="../../javascript/compiler/ace.js"></script>
     <script src="../../javascript/compiler/theme-github.js"></script>

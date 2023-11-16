@@ -34,12 +34,22 @@ window.onload = function () {
     editor.session.setMode("ace/mode/c_cpp");
   };
 };
-document.addEventListener("fullscreenchange", function () {
-  if (!document.fullscreenElement) {
-    // Show the modal when exiting full-screen
-    fullScreenModal.show();
-  }
-});
+//timer
+function updateProgressBar() {
+    var currentTime = new Date().getTime() / 1000; // Current time in seconds
+    var elapsedTime = currentTime - startTime; // Elapsed time in seconds
+    var percentage = (elapsedTime / (timefortest * 60)) * 100; // Calculate percentage
+    document.getElementById('timeProgressBar').style.width = percentage + '%';
+}
+var startTime = new Date().getTime() / 1000;
+setInterval(updateProgressBar, 1000);
+//full screen when disabled
+// document.addEventListener("fullscreenchange", function () {
+//   if (!document.fullscreenElement) {
+//     fullScreenModal.show();
+//   }
+// });
+//change theme for the editor feature
 function changeTheme() {
   let theme = $("#theme").val();
   if (theme == "github") {
@@ -56,6 +66,7 @@ function changeTheme() {
     editor.setTheme("ace/theme/sqlserver");
   }
 }
+//change programming language feature
 function changeLanguage() {
   let language = $("#languages").val();
   if (language == "c" || language == "cpp") {
@@ -72,6 +83,7 @@ function changeLanguage() {
     document.querySelector(".codeEditor").style.display = "flex";
   }
 }
+//test answer submit feature
 function submitCode() {
   document.querySelector("#loader").style.display = "flex";
   $.ajax({
@@ -91,6 +103,7 @@ function submitCode() {
     },
   });
 }
+//test answer custom input feature
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {
   document.querySelector("#loader").style.display = "flex";
@@ -129,6 +142,7 @@ function executeCode() {
     });
   }
 }
+//font size feature
 function changeEditorFontSize() {
   const editor = ace.edit("editor");
   const fontSize = parseInt(fontSizeInput.value);
@@ -139,6 +153,7 @@ function changeEditorFontSize() {
     alert("Font size must be between 10 and 30.");
   }
 }
+//clear test on the editor feature
 function clearCompiler() {
   editor = ace.edit("editor");
   editor.setValue("");
