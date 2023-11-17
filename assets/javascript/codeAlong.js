@@ -34,21 +34,13 @@ window.onload = function () {
     editor.session.setMode("ace/mode/c_cpp");
   };
 };
-//timer
-function updateProgressBar() {
-    var currentTime = new Date().getTime() / 1000; // Current time in seconds
-    var elapsedTime = currentTime - startTime; // Elapsed time in seconds
-    var percentage = (elapsedTime / (timefortest * 60)) * 100; // Calculate percentage
-    document.getElementById('timeProgressBar').style.width = percentage + '%';
-}
-var startTime = new Date().getTime() / 1000;
-setInterval(updateProgressBar, 1000);
+
 //full screen when disabled
-// document.addEventListener("fullscreenchange", function () {
-//   if (!document.fullscreenElement) {
-//     fullScreenModal.show();
-//   }
-// });
+document.addEventListener("fullscreenchange", function () {
+  if (!document.fullscreenElement) {
+    fullScreenModal.show();
+  }
+});
 //change theme for the editor feature
 function changeTheme() {
   let theme = $("#theme").val();

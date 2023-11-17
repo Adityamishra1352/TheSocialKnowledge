@@ -35,12 +35,19 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-    </nav>
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
-                    aria-valuemin="0" aria-valuemax="100" style="width:100%;height:3px">
-                    <div class="progress-bar bg-danger" style="width: 0%" id="timeProgressBar"></div>
+            <div class="navbarSupportedContent">
+                <div class="container p-2 border border-danger" style="background-color:#ffbaba;border-radius:10px;">
+                    <span>Time Left:</span>
+                    <span id="timeRemaining"></span>
                 </div>
+            </div>
+        </div>
+
+    </nav>
+    <!-- <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0"
+        aria-valuemax="100" style="width:100%;height:3px">
+        <div class="progress-bar bg-danger" style="width: 0%" id="timeProgressBar"></div>
+    </div> -->
     <div class="modal fade fullScreenModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -196,8 +203,37 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     $time = $rowTimer["timefortest"];
     ?>
     <script>
-        var timefortest = <?php echo $time; ?>;
+        var timefortest = <?php echo $_SESSION['timeLeft']; ?>;
         console.log(timefortest);
+    </script>
+    <script>
+        //timer
+        function updateRemainingTime() {
+            var currentTime = new Date().getTime() / 1000;
+            var elapsedTime = Math.round(currentTime - startTime);
+            var remainingTime = Math.max(0, Math.round(timefortest - elapsedTime));
+            $.ajax({
+                    url: 'updateTimeLeft.php',
+                    type: 'POST',
+                    data: { timeLeft: Math.round((timefortest) - elapsedTime) },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.error('Error updating time left:', error);
+                    }
+                });
+            var minutes = Math.floor(remainingTime / 60);
+            var seconds = remainingTime % 60;
+            var formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+            document.getElementById('timeRemaining').innerText = formattedTime;
+            if (remainingTime <= 0) {
+                clearInterval(intervalId);
+            }
+        }
+        
+        var startTime = new Date().getTime() / 1000;
+        var intervalId = setInterval(updateRemainingTime, 1000);
     </script>
     <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <script src="../../javascript/compiler/ace.js"></script>
