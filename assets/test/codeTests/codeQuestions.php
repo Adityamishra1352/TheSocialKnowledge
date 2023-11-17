@@ -9,20 +9,20 @@ $testSQL = "SELECT * FROM `codingtest` WHERE `test_id`='$test_id'";
 $testResult = mysqli_query($conn, $testSQL);
 $testRow = mysqli_fetch_assoc($testResult);
 $timefortest = $testRow['timefortest'];
+$attemptedQuestionIDs = [];
 $inTest = 1;
 $user_id = $_SESSION['user_id'];
 $answersql = "SELECT * FROM `codinganswers` WHERE `test_id`='$test_id' AND `user_id`='$user_id'";
 $answersresult = mysqli_query($conn, $answersql);
 $answersrow = mysqli_fetch_assoc($answersresult);
+$attemptedQuestionIDs[] = json_decode($answersrow['question_id'],true);
+if (is_array($attemptedQuestionIDs) && !empty($attemptedQuestionIDs)) {
+    $attemptedQuestionIDs = array_merge(...$attemptedQuestionIDs);
+}
 $filePaths = $answersrow["filename"];
 $filePaths = json_decode($filePaths, true);
 $numberoffiles = count($filePaths);
 $completeTest = 1;
-if ($numberoffiles == 4) {
-    $completeTest = 1;
-} else {
-    $completeTest = 0;
-}
 if (isset($_SESSION['startTime'])) {
     $startTime = $_SESSION['startTime'];
     $currentTime = time();
@@ -48,9 +48,7 @@ if (isset($_SESSION['startTime'])) {
     <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="../../modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
-    <script>
-        var completeTest = <?php echo $completeTest; ?>;
-    </script>
+    
 </head>
 
 <body>
@@ -81,7 +79,6 @@ if (isset($_SESSION['startTime'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Information Box</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <ul>
@@ -103,7 +100,6 @@ if (isset($_SESSION['startTime'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="container">
@@ -129,17 +125,30 @@ if (isset($_SESSION['startTime'])) {
         while ($row = mysqli_fetch_assoc($questionResult)) {
             $questionID = $row["code_id"];
             $question = $row["question"];
+            $isAttempted = in_array((string)$questionID, $attemptedQuestionIDs);
             echo '<div class="card w-100 mb-3">
-            <div class="card-body row">
-              <h5 class="card-title col-md-10">Question ' . $countQuestion . '.' . $question . '</h5>
-              <a href="codeAlong.php?test_id=' . $test_id . '&question_id=' . $questionID . '" class="btn btn-outline-primary col-md-2">Attempt</a>
-            </div>
-          </div>';
+                <div class="card-body row">
+                    <h5 class="card-title col-md-10">Question ' . $countQuestion . '.' . $question . '</h5>';
+            if ($isAttempted) {
+                echo '<span class="text-success">&#10003; Attempted</span>';
+            } else {
+                echo '<a href="codeAlong.php?test_id=' . $test_id . '&question_id=' . $questionID . '" class="btn btn-outline-primary col-md-2">Attempt</a>';
+            }
+
+            echo '</div></div>';
+
             $countQuestion += 1;
+        }
+        if ($numberoffiles == $countQuestion-1) {
+            $completeTest = 1;
+        } else {
+            $completeTest = 0;
         }
         ?>
     </div>
-
+    <script>
+        var completeTest = <?php echo $completeTest; ?>;
+    </script>
     <script>
         const exit_btn = document.querySelector("#exit_btn");
         exit_btn.onclick = () => {
@@ -149,7 +158,7 @@ if (isset($_SESSION['startTime'])) {
                 dataType: "json",
                 success: function (response) {
                     if (response.success) {
-                        window.location.href=(`../../../index.php`);
+                        window.location.href = (`../../../index.php`);
                     } else {
                     }
                 },
@@ -161,13 +170,12 @@ if (isset($_SESSION['startTime'])) {
         var infoModal = new bootstrap.Modal(document.querySelector(".startingmodal"));
         var resultModal = new bootstrap.Modal(document.querySelector(".resultModal"));
         if (completeTest == 1) {
+            infoModal.hide();
             resultModal.show();
         }
         var inTest = <?php echo $inTest; ?>;
         if (inTest == 0) {
-            window.onload = () => {
-                infoModal.show();
-            }
+            infoModal.show();
             var timefortest = <?php echo $timefortest * 60; ?>;
             document.querySelector("#continue_btn").onclick = () => {
                 var timenow = Date.now();
