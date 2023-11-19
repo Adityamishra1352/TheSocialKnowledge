@@ -83,12 +83,35 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Some functions might not work.
     </div> -->
+    <div class="modal fade timemodal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(10px);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <center><i class="fas fa-clock" style="font-size:64px;"></i></center>
+                    </div>
+                    <ul class="my-2">
+                        <li class="my-1">The time for the test has ended.</li>
+                        <li class="my-1">Click on exit to go back.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="exitWindow()">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
                 style="width:20%;" onchange="changeLanguage()">
-                <option value="nodejs">NodeJS</option>
+                <option value="selectOptionValue">Select Language</option>
                 <option value="c">C</option>
+                <option value="nodejs">NodeJS</option>
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
                 <option value="python">Python</option>
@@ -210,7 +233,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
             </div> -->
         </div>
-<div class="outputTest"></div>
     </div>
     <?php
     $timeSQL = "SELECT * FROM `codingtest` WHERE `test_id`='$test_id'";
@@ -218,6 +240,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     $rowTimer = mysqli_fetch_assoc($timeResult);
     $time = $rowTimer["timefortest"];
     ?>
+    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="../../modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../javascript/codeAlong.js"></script>
     <script>
         var timefortest = <?php echo $_SESSION['timeLeft']; ?>;
         console.log(timefortest);
@@ -228,6 +253,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             var currentTime = new Date().getTime() / 1000;
             var elapsedTime = Math.round(currentTime - startTime);
             var remainingTime = Math.max(0, Math.round(timefortest - elapsedTime));
+            if (remainingTime == 0) {
+                    timeModal.show();
+                }
             $.ajax({
                     url: 'updateTimeLeft.php',
                     type: 'POST',
@@ -251,7 +279,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         var startTime = new Date().getTime() / 1000;
         var intervalId = setInterval(updateRemainingTime, 1000);
     </script>
-    <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <script src="../../javascript/compiler/ace.js"></script>
     <script src="../../javascript/compiler/theme-github.js"></script>
     <script src="../../javascript/compiler/theme-chaos.js"></script>
@@ -259,8 +286,6 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <script src="../../javascript/compiler/theme-nord_dark.js"></script>
     <script src="../../javascript/compiler/theme-monokai.js"></script>
     <script src="../../javascript/compiler/theme-sqlserver.js"></script>
-    <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
-    <script src="../../javascript/codeAlong.js"></script>
 </body>
 
 </html>
