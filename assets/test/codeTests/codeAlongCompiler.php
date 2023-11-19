@@ -42,21 +42,42 @@ if ($language == "php") {
  else if ($language == "c" || $language == "cpp") {
     if (isset($_POST['input'])) {
         $input = $_POST['input'];
+        $random = uniqid();
+        $inputLines = implode("\n", explode(",", $input)) . "\n";
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
-        file_put_contents($inputFilePath, $input);
-        $command = "C:\TDM-GCC-64\bin\gcc.exe $filePath < $inputFilePath > $outputFilePath";
-        shell_exec($command);
-        $output = file_get_contents($outputFilePath);
-        echo $output;
+        file_put_contents($inputFilePath, $inputLines);
+        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1";
+        exec($command, $outputCompile, $returnCode);
+
+        if ($returnCode === 0) {
+            $command = "program.exe < $inputFilePath > $outputFilePath 2>&1";
+            exec($command, $outputExecute, $returnCode);
+
+            if ($returnCode === 0) {
+                $programOutput = file_get_contents($outputFilePath);
+                echo $programOutput;
+            } else {
+                echo "Execution error:<br>";
+                echo implode("\n", $outputExecute);
+            }
+        } else {
+            echo "Compilation error:<br>";
+            echo implode("\n", $outputCompile);
+        }
         unlink($inputFilePath);
         unlink($outputFilePath);
     } else {
-        $output = shell_exec("C:\TDM-GCC-64\bin\gcc.exe $filePath 2>&1");
-        echo $output;
-    }
-    if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
-        unlink($filePath);
+        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1";
+        exec($command, $outputCompile, $returnCode);
+
+        if ($returnCode === 0) {
+            $programOutput = shell_exec("program.exe 2>&1");
+            echo $programOutput;
+        } else {
+            echo "Compilation error:<br>";
+            echo implode("\n", $outputCompile);
+        }
     }
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");

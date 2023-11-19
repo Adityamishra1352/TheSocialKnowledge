@@ -14,11 +14,11 @@ $inTest = 1;
 $user_id = $_SESSION['user_id'];
 $answersql = "SELECT * FROM `codinganswers` WHERE `test_id`='$test_id' AND `user_id`='$user_id'";
 $answersresult = mysqli_query($conn, $answersql);
-$answersrowcount=mysqli_num_rows($answersresult);
-$numberoffiles=0;
-if($answersrowcount > 0) {
+$answersrowcount = mysqli_num_rows($answersresult);
+$numberoffiles = 0;
+if ($answersrowcount > 0) {
     $answersrow = mysqli_fetch_assoc($answersresult);
-    $attemptedQuestionIDs[] = json_decode($answersrow['question_id'],true);
+    $attemptedQuestionIDs[] = json_decode($answersrow['question_id'], true);
     if (is_array($attemptedQuestionIDs) && !empty($attemptedQuestionIDs)) {
         $attemptedQuestionIDs = array_merge(...$attemptedQuestionIDs);
     }
@@ -52,7 +52,7 @@ if (isset($_SESSION['startTime'])) {
     <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="../../modules/fontawesome-free-5.15.4-web/css/all.min.css">
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
-    
+
 </head>
 
 <body>
@@ -107,7 +107,7 @@ if (isset($_SESSION['startTime'])) {
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                    <center><i class="fas fa-clock" style="font-size:64px;"></i></center>
+                        <center><i class="fas fa-clock" style="font-size:64px;"></i></center>
                     </div>
                     <ul class="my-2">
                         <li class="my-1">The time for the test has ended.</li>
@@ -138,7 +138,8 @@ if (isset($_SESSION['startTime'])) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="exit_btn" onclick="exitWindow()">Exit Button</button>
+                    <button type="button" class="btn btn-primary" id="exit_btn" onclick="exitWindow()">Exit
+                        Button</button>
                 </div>
             </div>
         </div>
@@ -151,7 +152,7 @@ if (isset($_SESSION['startTime'])) {
         while ($row = mysqli_fetch_assoc($questionResult)) {
             $questionID = $row["code_id"];
             $question = $row["question"];
-            $isAttempted = in_array((string)$questionID, $attemptedQuestionIDs);
+            $isAttempted = in_array((string) $questionID, $attemptedQuestionIDs);
             echo '<div class="card w-100 mb-3">
                 <div class="card-body row">
                     <h5 class="card-title col-md-10">Question ' . $countQuestion . '.' . $question . '</h5>';
@@ -165,20 +166,20 @@ if (isset($_SESSION['startTime'])) {
 
             $countQuestion += 1;
         }
-        if($numberoffiles>0) {
-        if ($numberoffiles == $countQuestion-1) {
-            $completeTest = 1;
-        } else {
-            $completeTest = 0;
+        if ($numberoffiles > 0) {
+            if ($numberoffiles == $countQuestion - 1) {
+                $completeTest = 1;
+            } else {
+                $completeTest = 0;
+            }
         }
-    }
         ?>
     </div>
     <script>
         var completeTest = <?php echo $completeTest; ?>;
     </script>
     <script>
-        function exitWindow(){
+        function exitWindow() {
             $.ajax({
                 type: "POST",
                 url: "unset_session.php",
@@ -193,7 +194,7 @@ if (isset($_SESSION['startTime'])) {
                     console.error("Error in AJAX request.");
                 }
             })
-            window.location.href=(`../test.php`);
+            window.location.href = (`../test.php`);
         }
         var infoModal = new bootstrap.Modal(document.querySelector(".startingmodal"));
         var timeModal = new bootstrap.Modal(document.querySelector(".timemodal"));
@@ -256,7 +257,7 @@ if (isset($_SESSION['startTime'])) {
                 var currentTime = Date.now();
                 var elapsedTime = Math.round((currentTime - startTime) / 1000);
                 var remainingTime = Math.max(0, Math.round(timefortest - elapsedTime));
-                if(remainingTime==0){
+                if (remainingTime == 0) {
                     timeModal.show();
                 }
                 $.ajax({
@@ -277,6 +278,12 @@ if (isset($_SESSION['startTime'])) {
             var intervalId = setInterval(updateRemainingTime, 1000);
 
         }
+        // window.addEventListener('popstate', function (event) {
+        //     var currentUrl = window.location.href;
+        //     console.log('URL changed to: ' + currentUrl);
+        // });
+        // history.pushState({ page: 2 }, "", "?page=2");
+
 
 
     </script>

@@ -210,7 +210,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
             </div> -->
         </div>
-
+<div class="outputTest"></div>
     </div>
     <?php
     $timeSQL = "SELECT * FROM `codingtest` WHERE `test_id`='$test_id'";
