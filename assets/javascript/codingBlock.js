@@ -32,15 +32,27 @@ function changeTheme() {
 }
 function changeLanguage() {
   let language = $("#languages").val();
-  if (language == "c" || language == "cpp") {
+  let startingSyntax = "";
+
+  if (language == "c") {
+    startingSyntax =
+      "#include<stdio.h>\n\nint main() {\n    // Your C code here\n    return 0;\n}";
+    editor.session.setMode("ace/mode/c_cpp");
+  } else if (language == "cpp") {
+    startingSyntax =
+      "#include<iostream>\n\nusing namespace std;\n\nint main() {\n    // Your C++ code here\n    return 0;\n}";
     editor.session.setMode("ace/mode/c_cpp");
   } else if (language == "php") {
+    startingSyntax = "<?php\n\n// Your PHP code here\n?>";
     editor.session.setMode("ace/mode/php");
-  } else if (language == "js") {
+  } else if (language == "nodejs") {
+    startingSyntax = "// Your JavaScript (Node.js) code here";
     editor.session.setMode("ace/mode/javascript");
-  } else if (language == "py") {
+  } else if (language == "python") {
+    startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
   }
+  editor.setValue(startingSyntax);
 }
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {

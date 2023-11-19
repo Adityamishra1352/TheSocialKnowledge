@@ -80,9 +80,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </div>
         </div>
     </div>
-    <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Feature under maintainence.</strong> Some functions might not work.
-    </div> -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Python and Nodejs language moderation under maintainence.</strong> Some functions might not work.
+    </div>
     <div class="modal fade timemodal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(10px);">
         <div class="modal-dialog">

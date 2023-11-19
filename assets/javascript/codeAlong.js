@@ -24,32 +24,34 @@ function exitFullscreen() {
   }
 }
 function exitWindow() {
-    $.ajax({
-        type: "POST",
-        url: "unset_session.php",
-        dataType: "json",
-        success: function (response) {
-            if (response.success) {
-                window.location.href = (`../test.php`);
-            } else {
-            }
-        },
-        error: function () {
-            console.error("Error in AJAX request.");
-        }
-    })
-    window.location.href = (`../test.php`);
+  $.ajax({
+    type: "POST",
+    url: "unset_session.php",
+    dataType: "json",
+    success: function (response) {
+      if (response.success) {
+        window.location.href = `../test.php`;
+      } else {
+      }
+    },
+    error: function () {
+      console.error("Error in AJAX request.");
+    },
+  });
+  window.location.href = `../test.php`;
 }
-var fullScreenModal = new bootstrap.Modal(document.querySelector(".fullScreenModal"));
+var fullScreenModal = new bootstrap.Modal(
+  document.querySelector(".fullScreenModal")
+);
 var gobackModal = new bootstrap.Modal(document.querySelector(".gobackModal"));
 var timeModal = new bootstrap.Modal(document.querySelector(".timemodal"));
 window.onload = function () {
   fullScreenModal.show();
-  document.querySelector("#fullScreen_btn").onclick=()=>{
+  document.querySelector("#fullScreen_btn").onclick = () => {
     openFullscreen();
     fullScreenModal.hide();
     editor = ace.edit("editor");
-    editor.setTheme("ace/theme/github");
+    editor.setTheme("ace/theme/chaos");
   };
 };
 
@@ -78,35 +80,35 @@ function changeTheme() {
 }
 //change programming language feature
 function changeLanguage() {
-    let language = $("#languages").val();
-    let startingSyntax = "";
-  
-    if (language == "c") {
-      startingSyntax = "#include<stdio.h>\n\nint main() {\n    // Your C code here\n    return 0;\n}";
-      editor.session.setMode("ace/mode/c_cpp");
-      document.querySelector(".codeEditor").style.display = "flex";
-    } else if (language == "cpp") {
-      startingSyntax = "#include<iostream>\n\nusing namespace std;\n\nint main() {\n    // Your C++ code here\n    return 0;\n}";
-      editor.session.setMode("ace/mode/c_cpp");
-      document.querySelector(".codeEditor").style.display = "flex";
-    } else if (language == "php") {
-      startingSyntax = "<?php\n\n// Your PHP code here\n?>";
-      editor.session.setMode("ace/mode/php");
-      document.querySelector(".codeEditor").style.display = "flex";
-    } else if (language == "nodejs") {
-      startingSyntax = "// Your JavaScript (Node.js) code here";
-      editor.session.setMode("ace/mode/javascript");
-      document.querySelector(".codeEditor").style.display = "flex";
-    } else if (language == "python") {
-      startingSyntax = "# Your Python code here";
-      editor.session.setMode("ace/mode/python");
-      document.querySelector(".codeEditor").style.display = "flex";
-    }
-  
-    // Set the starting syntax in the editor
-    editor.setValue(startingSyntax);
+  let language = $("#languages").val();
+  let startingSyntax = "";
+
+  if (language == "c") {
+    startingSyntax =
+      "#include<stdio.h>\n\nint main() {\n    // Your C code here\n    return 0;\n}";
+    editor.session.setMode("ace/mode/c_cpp");
+    document.querySelector(".codeEditor").style.display = "flex";
+  } else if (language == "cpp") {
+    startingSyntax =
+      "#include<iostream>\n\nusing namespace std;\n\nint main() {\n    // Your C++ code here\n    return 0;\n}";
+    editor.session.setMode("ace/mode/c_cpp");
+    document.querySelector(".codeEditor").style.display = "flex";
+  } else if (language == "php") {
+    startingSyntax = "<?php\n\n// Your PHP code here\n?>";
+    editor.session.setMode("ace/mode/php");
+    document.querySelector(".codeEditor").style.display = "flex";
+  } else if (language == "nodejs") {
+    startingSyntax = "// Your JavaScript (Node.js) code here";
+    editor.session.setMode("ace/mode/javascript");
+    document.querySelector(".codeEditor").style.display = "flex";
+  } else if (language == "python") {
+    startingSyntax = "# Your Python code here";
+    editor.session.setMode("ace/mode/python");
+    document.querySelector(".codeEditor").style.display = "flex";
   }
-  
+  editor.setValue(startingSyntax);
+}
+
 //test answer submit feature
 function submitCode() {
   document.querySelector("#loader").style.display = "flex";
