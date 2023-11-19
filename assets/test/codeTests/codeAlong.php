@@ -64,6 +64,22 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </div>
         </div>
     </div>
+    <div class="modal fade gobackModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
+                </div>
+                <div class="modal-body">
+                    The answer has been submitted. Please go back!!
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Some functions might not work.
     </div> -->

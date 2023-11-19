@@ -24,6 +24,7 @@ function exitFullscreen() {
   }
 }
 var fullScreenModal = new bootstrap.Modal(document.querySelector(".fullScreenModal"));
+var gobackModal = new bootstrap.Modal(document.querySelector(".gobackModal"));
 window.onload = function () {
   fullScreenModal.show();
   document.querySelector("#fullScreen_btn").onclick=()=>{
@@ -89,9 +90,8 @@ function submitCode() {
     },
     success: function (response) {
       document.querySelector("#loader").style.display = "none";
-      $("#outputTerminal").text(response);
       document.querySelector("#submitCode").disabled = true;
-      exitFullscreen();
+      gobackModal.show();
     },
   });
 }

@@ -240,11 +240,6 @@ $test_id = $_GET['test_id'];
                         <td>";
                             $countOption = 1;
                             echo $inputOutputJSON;
-                            // foreach ($inputOutput as $inputs) {
-                            //     echo "$countOption. $inputOuput<br>";
-                            //     $countOption += 1;
-                            // }
-                        
                             echo "</td>
                         <td><input type='checkbox' name='delete[]' value='$questionId' class='form-check-input'></td>
                         </tr>";

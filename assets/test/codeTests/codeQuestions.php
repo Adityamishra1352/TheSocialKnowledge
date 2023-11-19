@@ -14,15 +14,19 @@ $inTest = 1;
 $user_id = $_SESSION['user_id'];
 $answersql = "SELECT * FROM `codinganswers` WHERE `test_id`='$test_id' AND `user_id`='$user_id'";
 $answersresult = mysqli_query($conn, $answersql);
-$answersrow = mysqli_fetch_assoc($answersresult);
-$attemptedQuestionIDs[] = json_decode($answersrow['question_id'],true);
-if (is_array($attemptedQuestionIDs) && !empty($attemptedQuestionIDs)) {
-    $attemptedQuestionIDs = array_merge(...$attemptedQuestionIDs);
+$answersrowcount=mysqli_num_rows($answersresult);
+$numberoffiles=0;
+if($answersrowcount > 0) {
+    $answersrow = mysqli_fetch_assoc($answersresult);
+    $attemptedQuestionIDs[] = json_decode($answersrow['question_id'],true);
+    if (is_array($attemptedQuestionIDs) && !empty($attemptedQuestionIDs)) {
+        $attemptedQuestionIDs = array_merge(...$attemptedQuestionIDs);
+    }
+    $filePaths = $answersrow["filename"];
+    $filePaths = json_decode($filePaths, true);
+    $numberoffiles = count($filePaths);
 }
-$filePaths = $answersrow["filename"];
-$filePaths = json_decode($filePaths, true);
-$numberoffiles = count($filePaths);
-$completeTest = 1;
+$completeTest = 0;
 if (isset($_SESSION['startTime'])) {
     $startTime = $_SESSION['startTime'];
     $currentTime = time();
@@ -94,6 +98,28 @@ if (isset($_SESSION['startTime'])) {
             </div>
         </div>
     </div>
+    <div class="modal fade timemodal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(10px);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                    <center><i class="fas fa-clock" style="font-size:64px;"></i></center>
+                    </div>
+                    <ul class="my-2">
+                        <li class="my-1">The time for the test has ended.</li>
+                        <li class="my-1">Click on exit to go back.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="exitWindow()">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade resultModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(10px);">
         <div class="modal-dialog">
@@ -106,13 +132,13 @@ if (isset($_SESSION['startTime'])) {
                         <center><i class="fas fa-crown my-2" style="font-size:64px;color:blue;"></i></center>
                         <center>
                             <span>You have successfully completed the test!!</span>
-                            <span>You programs have been saved.</span>
+                            <span>Your programs have been saved.</span>
                             <span>Please click on Exit to go back!!</span>
                         </center>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="exit_btn">Exit Button</button>
+                    <button type="button" class="btn btn-primary" id="exit_btn" onclick="exitWindow()">Exit Button</button>
                 </div>
             </div>
         </div>
@@ -139,35 +165,38 @@ if (isset($_SESSION['startTime'])) {
 
             $countQuestion += 1;
         }
+        if($numberoffiles>0) {
         if ($numberoffiles == $countQuestion-1) {
             $completeTest = 1;
         } else {
             $completeTest = 0;
         }
+    }
         ?>
     </div>
     <script>
         var completeTest = <?php echo $completeTest; ?>;
     </script>
     <script>
-        const exit_btn = document.querySelector("#exit_btn");
-        exit_btn.onclick = () => {
+        function exitWindow(){
             $.ajax({
                 type: "POST",
                 url: "unset_session.php",
                 dataType: "json",
                 success: function (response) {
                     if (response.success) {
-                        window.location.href = (`../../../index.php`);
+                        window.location.href = (`../test.php`);
                     } else {
                     }
                 },
                 error: function () {
                     console.error("Error in AJAX request.");
                 }
-            });
+            })
+            window.location.href=(`../test.php`);
         }
         var infoModal = new bootstrap.Modal(document.querySelector(".startingmodal"));
+        var timeModal = new bootstrap.Modal(document.querySelector(".timemodal"));
         var resultModal = new bootstrap.Modal(document.querySelector(".resultModal"));
         if (completeTest == 1) {
             infoModal.hide();
@@ -227,6 +256,9 @@ if (isset($_SESSION['startTime'])) {
                 var currentTime = Date.now();
                 var elapsedTime = Math.round((currentTime - startTime) / 1000);
                 var remainingTime = Math.max(0, Math.round(timefortest - elapsedTime));
+                if(remainingTime==0){
+                    timeModal.show();
+                }
                 $.ajax({
                     url: 'updateTimeLeft.php',
                     type: 'POST',
