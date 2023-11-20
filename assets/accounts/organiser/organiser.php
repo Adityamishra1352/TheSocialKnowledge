@@ -237,7 +237,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
             }
             ?>
         </div>
-        <div class="container my-2">
+        <!-- <div class="container my-2">
             <ul><li><h6>Tests:</h6></li></ul>
             <?php
             include '../../_dbconnect.php';
@@ -286,7 +286,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
                     </div>';
             }
             ?>
-        </div>
+        </div> -->
         <div class="container my-2">
             <ul><li><h6>Coding Tests:</h6></li></ul>
             <?php
@@ -320,17 +320,17 @@ $updateresult = mysqli_query($conn, $updateSQL);
                   <p class="card-text text-secondary">Starts On: ' . $formattedTime . ', ' . $formattedDate . '</p>
                   <p class="card-text">Time for test: ' . $timefortest . '</p>
                   <a href="codingQuestion.php?test_id=' . $test_id . '" class="btn btn-outline-success">' . $questionsExist . '</a>
-                  <a href="deleteQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
+                  <a href="deleteCodeQuiz.php?testid=' . $test_id . '" class="btn btn-outline-danger">Delete Quiz</a>
                 </div>
               </div>';
                 $count++;
             }
             if ($count == 0) {
-                echo '<div class="card">
+                echo '<div class="card" style="width:40%">
                     <div class="card-body">
                     <blockquote class="blockquote mb-0">
                     <p>You have not posted any quizes.</p>
-                    <footer class="blockquote-footer"><cite title="Source Title">Admin</cite></footer>
+                    <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
                     </blockquote>
                     </div>
                     </div>';

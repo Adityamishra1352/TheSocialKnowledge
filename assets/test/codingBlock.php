@@ -3,6 +3,8 @@ session_start();
 if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     header('location:../403.php');
 }
+include '../_dbconnect.php';
+$user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +38,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     <li class="nav-item">
                         <a class="nav-link" href="htmlcssEditor.php">Frontend Development</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal">View Saved Files</a>
+                    </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"
@@ -44,6 +49,44 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             </div>
         </div>
     </nav>
+    <!-- modal -->
+    <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">The Social Knowledge</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row" style="overflow:auto">
+                    <?php
+                    $sql = "SELECT * FROM `savedFiles` WHERE `user_id`='$user_id'";
+                    $result = mysqli_query($conn, $sql);
+                    $basePath = "answers";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $filename = $row['filename'];
+                        $language=$row['language'];
+                        $time = $row['date'];
+                        $timestamp = strtotime($time);
+                        $formattedDate = date('d F Y', $timestamp);
+                        $formattedTime = date('H:i', $timestamp);
+                        $filePath = $basePath . '/' . $filename;
+                        $fileContent = file_get_contents($filePath);
+                        $previewContent = substr($fileContent, 0, 100);
+                        $downloadLink = $filePath;
+                        echo '<div class="col"><div class="card p-2" style="width: 18rem;">
+            <pre class="card-text">' . htmlspecialchars($fileContent) . '</pre>
+            <div class="card-body">
+            <h5 class="card-title">Language: ' . $language . '</h5>
+            <p class="card-text text-secondary">Saved On: ' . $formattedTime . ', ' . $formattedDate . '</p>
+            <a href="" class="btn btn-primary" download>Load File</a>
+            </div>
+            </div></div>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Some functions might not work. Check out the Frontend Development
         Feature.
@@ -53,7 +96,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div class="container m-0 p-0" style="max-width:100%">
-    <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
+        <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
                 style="width:20%;" onchange="changeLanguage()">
                 <option value="nodejs">NodeJS</option>
@@ -118,25 +161,26 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 <div class="button-container container my-1">
                     <button class="btn btn-outline-success mr-1 ml-1" onclick="executeCode()">Compile</button>
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
+                    <button class="btn btn-outline-primary mr-1 ml-1" onclick="saveCode()">Save Code</button>
                 </div>
                 <p class="d-inline-flex gap-1" style="width:100%">
-                        <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample" style="width:100%">
-                            Test Against Custom Input:
-                        </a>
-                    </p>
-                    <div class="collapse form-floating p-1" id="collapseExample">
-                        <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
-                            class="form-control border" value=""></textarea>
-                        <label for="inputArea">Custom Input:</label>
-                        <div class="outputContainer container mb-3">
-                            <div class="align-items-center" id="loader" style="display:none;width:95%;">
-                                <strong class="text-primary" role="status">Loading...</strong>
-                                <div class="spinner-grow text-primary ms-auto" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                    <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample" style="width:100%">
+                        Test Against Custom Input:
+                    </a>
+                </p>
+                <div class="collapse form-floating p-1" id="collapseExample">
+                    <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
+                        class="form-control border" value=""></textarea>
+                    <label for="inputArea">Custom Input:</label>
+                    <div class="outputContainer container mb-3">
+                        <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                            <strong class="text-primary" role="status">Loading...</strong>
+                            <div class="spinner-grow text-primary ms-auto" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
-                            <!-- <div class="outputScreen container border bg-dark" style="display:none;">
+                        </div>
+                        <!-- <div class="outputScreen container border bg-dark" style="display:none;">
                             <div class="inputDiv container my-2">
                                 <label class="text-light">Input:</label>
                                 <div class="inputGiven container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
@@ -146,8 +190,8 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                                 <div class="container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
                             </div>
                             </div> -->
-                        </div>
                     </div>
+                </div>
             </div>
             <div class="col-md-4 m-0 p-0">
                 <div class="container border" style="height:300px;">

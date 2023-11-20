@@ -33,14 +33,12 @@ if ($language == "php") {
         $output = shell_exec("C:\php\php.exe $filePath 2>&1");
         echo $output;
     }
-    if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
-        unlink($filePath);
-    }
+    unlink($filePath);
 }
 if ($language == "c" || $language == "cpp") {
     if (isset($_POST['input'])) {
-        $input = $_POST['input'];
         $random = uniqid();
+        $input = implode("\n", explode(",", $_POST["input"])) . "\n";
         $inputFilePath = "temporary/input_" . $random . ".txt";
         $outputFilePath = "temporary/output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
@@ -76,6 +74,7 @@ if ($language == "c" || $language == "cpp") {
             echo implode("\n", $outputCompile);
         }
     }
+    unlink($filePath);
 }
 else if ($language == "py") {
     if (isset($_POST['input'])) {

@@ -4,6 +4,32 @@ window.onload = function () {
   editor.setTheme("ace/theme/github_dark");
   editor.session.setMode("ace/mode/nodejs");
 };
+function saveCode() {
+  const code = editor.getSession().getValue();
+  if(code==""){
+    alert("Enter some value to save.");
+    return;
+  }
+  const language = $("#languages").val();
+  const data = {
+      code: code,
+      language: language,
+  };
+  $.ajax({
+      url: "saveCode.php", 
+      method: "POST",
+      data: data,
+      success: function (response) {
+          console.log(response);
+          alert("Code saved successfully!");
+      },
+      error: function (error) {
+          console.error(error);
+          alert("Failed to save code.");
+      },
+  });
+}
+
 function changeTheme() {
   let theme = $("#theme").val();
   if (theme == "github") {
