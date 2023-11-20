@@ -1,6 +1,7 @@
 var htmlEditor, cssEditor, jsEditor;
 let startingSyntax = "";
 let cssstartingSyntax="";
+let jsSyntax="";
 window.onload = function () {
     htmlEditor = ace.edit("html-editor");
     htmlEditor.setTheme("ace/theme/github");
@@ -18,8 +19,13 @@ window.onload = function () {
 
     jsEditor = ace.edit("js-editor");
     jsEditor.setTheme("ace/theme/github");
+    jsSyntax="//Your JS Code here";
     jsEditor.getSession().setMode("ace/mode/javascript");
+    jsEditor.setValue(jsSyntax);
     jsEditor.on("change", runCode);
+    htmlEditor.clearSelection();
+    cssEditor.clearSelection();
+    jsEditor.clearSelection();
 };
 
 function runCode() {
