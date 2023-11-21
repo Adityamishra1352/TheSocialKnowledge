@@ -97,7 +97,11 @@
                     $number = $matches[1];
                 }else if (preg_match("/answers\/(\d+)cpp/", $filename, $matches)) {
                     $number = $matches[1];
-                }else if (preg_match("/answers\/(\d+)python/", $filename, $matches)) {
+                }
+                else if (preg_match("/answers\/(\d+)c/", $filename, $matches)) {
+                    $number = $matches[1];
+                }
+                else if (preg_match("/answers\/(\d+)python/", $filename, $matches)) {
                     $number = $matches[1];
                 }
                 $question_sql = "SELECT * FROM `codingquestions` WHERE `code_id`='$number'";
@@ -109,7 +113,7 @@
                 $previewContent = substr($fileContent, 0, 100);
                 $downloadLink=$filePath;
                 echo '<div class="col"><div class="card p-2" style="width: 18rem;">
-            <pre class="card-text">' . htmlspecialchars($previewContent) . '</pre>
+            <pre class="card-text">' . htmlspecialchars($fileContent) . '</pre>
             <div class="card-body">
             <h6 class="card-title">' . $questionText . '</h6>
             <a href="' . $downloadLink . '" class="btn btn-primary" download>Download File</a>
