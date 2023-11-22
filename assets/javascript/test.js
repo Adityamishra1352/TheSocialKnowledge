@@ -164,7 +164,6 @@ document.addEventListener("fullscreenchange", function () {
     quiz_box.classList.contains("activeQuiz") &&
     !document.fullscreenElement
   ) {
-    console.log("hiisfjkasf");
     warningBox_control();
   }
 });
@@ -217,7 +216,6 @@ const answers = [];
 var isMultipleChoice = false;
 function showQuetions(index) {
   const isMultipleChoice = questions[index].ismultiplechoice;
-  console.log(isMultipleChoice);
   const que_text = document.querySelector(".que_text");
   const que_image = document.querySelector(".que_image");
   que_image.style.display = "none";
@@ -235,9 +233,7 @@ function showQuetions(index) {
     }
   } else {
     if (questions[index].image !== null) {
-      que_image.innerHTML = `<img src="../images/questions/${
-        questions[index].image
-      }" alt="Question Image">`;
+      que_image.innerHTML = `<img src="../images/questions/${questions[index].image}" alt="Question Image">`;
       que_image.style.display = "block";
     }
   }
@@ -262,9 +258,9 @@ function showQuetions(index) {
     } else {
       for (let i = 0; i < questions[index].options.length; i++) {
         if (questions[index].options[i]) {
-          option_tag += `<div class="option">
+          option_tag += `<div class="option" style="justify-content:start;">
           <input class="form-check-input" type="checkbox" value="${questions[index].options[i]}">
-          <span>${questions[index].options[i]}</span>
+          <span class="text-start mx-2">${questions[index].options[i]}</span>
           </div>`;
         }
       }
@@ -286,9 +282,10 @@ function showQuetions(index) {
         });
         console.log(selectOptions);
         const correctAnswerIndices = questions[index].correct_answer;
-
+        console.log("selectOptions:", selectOptions);
+        console.log("correctAnswerIndices:", correctAnswerIndices);
         const isCorrect = arraysAreEqual(selectOptions, correctAnswerIndices);
-
+        console.log("isCorrect:", isCorrect);
         if (isCorrect) {
           userScore += 1;
         }
@@ -299,8 +296,8 @@ function showQuetions(index) {
           answer: JSON.stringify(selectOptions),
           correctAnswer: questions[que_count].correct_answer,
         };
-  sendToStorage();
         answers.push(questionObject);
+        sendToStorage();
         if (que_count < questions.length - 1) {
           que_count++;
           que_numb++;
@@ -323,10 +320,13 @@ function showQuetions(index) {
     counterrors += 1;
   }
 }
-function arraysAreEqual(array1, array2) {
-  // Check if every element in array1 is present in array2
-  return array1.every(element => array2.includes(element));
+function arraysAreEqual(values, array) {
+  // Check if every element in 'values' is present in 'array'
+  return values.every(value => array.includes(value));
 }
+
+
+
 function optionSelected(answer) {
   clearInterval(counter);
   // clearInterval(counterLine);
@@ -402,11 +402,7 @@ function queCounter(index) {
     "</p> Questions</span>";
   bottom_ques_counter.innerHTML = totalQueCounTag;
 }
-function sendToStorage() {
-  console.log(userScore);
-  console.log(test_id);
-  console.log(user_id);
-  console.log(enrollment);
+async function sendToStorage() {
   const data = {
     errors: counterrors,
     enrollment: enrollment,
@@ -415,19 +411,45 @@ function sendToStorage() {
     userScore: userScore,
     answers: answers,
   };
-  fetch("storeUserData.php", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Score sent to PHP:", data);
-    })
-    .catch((error) => {
-      console.error("Error sending score to PHP:", error);
+
+  try {
+    const response = await fetch("storeUserData.php", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+
+    const responseData = await response.json();
+
+    console.log("Score sent to PHP:", responseData);
+
+    // Proceed to the next steps or questions here
+  } catch (error) {
+    console.error("Error sending score to PHP:", error);
+  }
 }
+
+// function sendToStorage() {
+//   console.log(userScore);
+//   console.log(test_id);
+//   console.log(user_id);
+//   console.log(enrollment);
+
+//   fetch("storeUserData.php", {
+//     method: "POST",
+//     body: JSON.stringify(data),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log("Score sent to PHP:", data);
+//     })
+//     .catch((error) => {
+//       console.error("Error sending score to PHP:", error);
+//     });
+// }
 // const answersString=JSON.stringify(answers);

@@ -135,7 +135,7 @@ $test_id = $_GET['test_id'];
     $timeEnd = $recentRow['heldtill'];
     $startString = $recentRow['startString'];
     ?>
-    <div class="first_container container">
+    <!-- <div class="first_container container">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner" style="width:100%;">
                 <div class="carousel-item active">
@@ -159,7 +159,7 @@ $test_id = $_GET['test_id'];
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    </div>
+    </div> -->
     <div class="container startString_container my-3 card p-2" style="display: none;width:30%;">
         <h4>Set Authentication String:</h4>
         <?php
@@ -178,7 +178,7 @@ $test_id = $_GET['test_id'];
             </form>
         </div>
     </div>
-    <div class="editQuestions_container container" style="display:none;">
+    <div class="editQuestions_container container">
         <div class="container my-2 p-1 ">
             <ul>
                 <li>

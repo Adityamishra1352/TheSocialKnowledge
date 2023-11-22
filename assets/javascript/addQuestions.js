@@ -16,13 +16,13 @@ const firstContainer = document.querySelector(".first_container");
 editQuestions_btn.onclick = () => {
   editQuestions_container.style.display = "block";
   setTime_container.style.display = "none";
-  firstContainer.style.display = "none";
+  // firstContainer.style.display = "none";
   users_container.style.display = "none";
   startString_container.style.display = "none";
   setUsers_container.style.display = "none";
 };
 setTime_btn.onclick = () => {
-  firstContainer.style.display = "none";
+  // firstContainer.style.display = "none";
   editQuestions_container.style.display = "none";
   setTime_container.style.display = "block";
   users_container.style.display = "none";
@@ -30,7 +30,7 @@ setTime_btn.onclick = () => {
   setUsers_container.style.display = "none";
 };
 users_btn.onclick = () => {
-  firstContainer.style.display = "none";
+  // firstContainer.style.display = "none";
   editQuestions_container.style.display = "none";
   setTime_container.style.display = "none";
   users_container.style.display = "block";
@@ -38,7 +38,7 @@ users_btn.onclick = () => {
   setUsers_container.style.display = "none";
 };
 startString_btn.onclick = () => {
-  firstContainer.style.display = "none";
+  // firstContainer.style.display = "none";
   editQuestions_container.style.display = "none";
   setTime_container.style.display = "none";
   users_container.style.display = "none";
@@ -46,7 +46,7 @@ startString_btn.onclick = () => {
   setUsers_container.style.display = "none";
 };
 setUsers_btn.onclick = () => {
-  firstContainer.style.display = "none";
+  // firstContainer.style.display = "none";
   editQuestions_container.style.display = "none";
   setTime_container.style.display = "none";
   users_container.style.display = "none";
