@@ -39,12 +39,12 @@ $user_id = $_SESSION['user_id'];
                         <a class="nav-link" href="htmlcssEditor.php">Frontend Development</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal">View Saved Files</a>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal" style="cursor:pointer">View Saved Files</a>
                     </li>
                 </ul>
                 <ul class="d-flex">
                     <button class="btn btn-outline-danger me-2"
-                        onclick="window.location.href=(`../logout.php`)">Logout</button>
+                        onclick="window.location.href=(`../accounts/logout.php`)">Logout</button>
                 </ul>
             </div>
         </div>
@@ -59,10 +59,12 @@ $user_id = $_SESSION['user_id'];
                 </div>
                 <div class="modal-body row" style="overflow:auto">
                     <?php
+                    $countValues=0;
                     $sql = "SELECT * FROM `savedFiles` WHERE `user_id`='$user_id'";
                     $result = mysqli_query($conn, $sql);
                     $basePath = "answers";
                     while ($row = mysqli_fetch_assoc($result)) {
+                        $countValues+=1;
                         $filename = $row['filename'];
                         $language=$row['language'];
                         $time = $row['date'];
@@ -71,16 +73,26 @@ $user_id = $_SESSION['user_id'];
                         $formattedTime = date('H:i', $timestamp);
                         $filePath = $basePath . '/' . $filename;
                         $fileContent = file_get_contents($filePath);
-                        $previewContent = substr($fileContent, 0, 100);
+                        $previewContent = substr($fileContent, 0, 150);
                         $downloadLink = $filePath;
                         echo '<div class="col"><div class="card p-2" style="width: 18rem;">
-            <pre class="card-text">' . htmlspecialchars($fileContent) . '</pre>
+            <pre class="card-text">' . htmlspecialchars($previewContent) . '</pre>
             <div class="card-body">
             <h5 class="card-title">Language: ' . $language . '</h5>
             <p class="card-text text-secondary">Saved On: ' . $formattedTime . ', ' . $formattedDate . '</p>
             <a href="" class="btn btn-primary" download>Load File</a>
             </div>
             </div></div>';
+                    }
+                    if($countValues==0){
+                        echo '<div class="card" style="width:40%">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>You have not saved any codes.</p>
+                    <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
+                    </blockquote>
+                    </div>
+                    </div>';
                     }
                     ?>
                 </div>
@@ -89,6 +101,7 @@ $user_id = $_SESSION['user_id'];
     </div>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Feature under maintainence.</strong> Give multiple inputs separated by comma (,)
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
@@ -100,6 +113,7 @@ $user_id = $_SESSION['user_id'];
                 <option value="php">PHP</option>
                 <option value="py">Python</option>
                 <option value="java">Java</option>
+                <option value="sql">SQLite</option>
             </select>
             <a class="btn" style="font-size:20px;color:black;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                     class="fa fa-bars"></i></a>
@@ -159,8 +173,8 @@ $user_id = $_SESSION['user_id'];
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
                     <button class="btn btn-outline-primary mr-1 ml-1" onclick="saveCode()">Save Code</button>
                 </div>
-                <p class="d-inline-flex gap-1" style="width:100%">
-                    <a class="btn border-dark" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                <p class="d-inline-flex gap-1" style="width:100%" >
+                <a class="btn border-dark" data-bs-toggle="collapse" id="customInput" href="#collapseExample" role="button"
                         aria-expanded="false" aria-controls="collapseExample" style="width:100%">
                         Test Against Custom Input:
                     </a>

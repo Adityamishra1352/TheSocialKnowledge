@@ -49,15 +49,15 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-md-4 resizable-editor border border-secondary" id="html-editor-container">
                 <label for="html-editor"><b>HTML</b></label>
-                <div id="html-editor" style="width:100%; height:350px;"></div>
+                <div id="html-editor" class="ace_editor" style="width:100%; height:350px;"></div>
             </div>
             <div class="col-12 col-md-4 resizable-editor border border-secondary" id="css-editor-container">
                 <label for="css-editor"><b>CSS</b></label>
-                <div id="css-editor" style="width:100%; height:350px;"></div>
+                <div id="css-editor" class="ace_editor" style="width:100%; height:350px;"></div>
             </div>
             <div class="col-12 col-md-4 resizable-editor border border-secondary" id="js-editor-container">
                 <label for="js-editor"><b>JavaScript</b></label>
-                <div id="js-editor" style="width:100%; height:350px;"></div>
+                <div id="js-editor" class="ace_editor" style="width:100%; height:350px;"></div>
             </div>
         </div>
     </div>

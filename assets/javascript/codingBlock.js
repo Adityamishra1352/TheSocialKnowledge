@@ -1,3 +1,4 @@
+let startingSyntax = "";
 let editor;
 window.onload = function () {
   editor = ace.edit("editor");
@@ -5,28 +6,32 @@ window.onload = function () {
 };
 function saveCode() {
   const code = editor.getSession().getValue();
-  if(code==""){
+  if (code == "") {
     alert("Enter some value to save.");
     return;
-  }
-  const language = $("#languages").val();
-  const data = {
+  } else if (code == startingSyntax) {
+    alert("Enter some value to save.");
+    return;
+  } else {
+    const language = $("#languages").val();
+    const data = {
       code: code,
       language: language,
-  };
-  $.ajax({
-      url: "saveCode.php", 
+    };
+    $.ajax({
+      url: "saveCode.php",
       method: "POST",
       data: data,
       success: function (response) {
-          console.log(response);
-          alert("Code saved successfully!");
+        console.log(response);
+        alert("Code saved successfully!");
       },
       error: function (error) {
-          console.error(error);
-          alert("Failed to save code.");
+        console.error(error);
+        alert("Failed to save code.");
       },
-  });
+    });
+  }
 }
 
 function changeTheme() {
@@ -57,25 +62,33 @@ function changeTheme() {
 }
 function changeLanguage() {
   let language = $("#languages").val();
-  let startingSyntax = "";
-
   if (language == "c") {
+    document.querySelector("#customInput").style.display = "block";
     startingSyntax =
       "#include<stdio.h>\n\nint main() {\n    // Your C code here\n    return 0;\n}";
     editor.session.setMode("ace/mode/c_cpp");
   } else if (language == "cpp") {
+    document.querySelector("#customInput").style.display = "block";
     startingSyntax =
       "#include<iostream>\n\nusing namespace std;\n\nint main() {\n    // Your C++ code here\n    return 0;\n}";
     editor.session.setMode("ace/mode/c_cpp");
   } else if (language == "php") {
+    document.querySelector("#customInput").style.display = "block";
     startingSyntax = "<?php\n\n// Your PHP code here\n?>";
     editor.session.setMode("ace/mode/php");
   } else if (language == "java") {
-    startingSyntax = 'public class Main\n{\n   public static void main(String[] args) {\n   System.out.println("Hello World");\n   }\n}';
+    document.querySelector("#customInput").style.display = "block";
+    startingSyntax =
+      'public class Main\n{\n   public static void main(String[] args) {\n   System.out.println("Hello World");\n   }\n}';
     editor.session.setMode("ace/mode/java");
   } else if (language == "py") {
+    document.querySelector("#customInput").style.display = "block";
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
+  } else if (language == "sql") {
+    document.querySelector("#customInput").style.display = "none";
+    startingSyntax = "# Your SQL queries here";
+    editor.session.setMode("ace/mode/sql");
   }
   editor.setValue(startingSyntax);
   editor.clearSelection();
@@ -95,7 +108,9 @@ function executeCode() {
         input: inputArea.value,
       },
       success: function (response) {
-        $(".output").text(response);
+        var outputElement = document.createElement("div");
+        outputElement.innerHTML = response;
+        document.querySelector(".output").appendChild(outputElement);
         document.querySelector("#loader").style.display = "none";
         console.log(response);
       },
@@ -109,7 +124,10 @@ function executeCode() {
         code: editor.getSession().getValue(),
       },
       success: function (response) {
-        $(".output").text(response);
+        var outputElement = document.createElement("div");
+        outputElement.innerHTML = response;
+        document.querySelector(".output").appendChild(outputElement);
+        // $(".output").text(response);
         document.querySelector("#loader").style.display = "none";
       },
     });

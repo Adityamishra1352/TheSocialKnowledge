@@ -172,15 +172,55 @@ if ($language == "c" || $language == "cpp") {
             rmdir($userDirectory);
         }
     }
-}
-$directory = "answers/";
-$twoDaysAgo = time() - (2 * 24 * 60 * 60);
+}else if ($language == "sql") {
+    $tempDbFile = 'answers/'.$user_id.'tempDatabase.sqlite';
+    try {
+        $db = new PDO('sqlite:' . $tempDbFile);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-foreach (scandir($directory) as $file) {
-    $filePath = $directory . $file;
+        $sqlQueries = explode(';', $_POST['code']);
 
-    if (is_file($filePath) && filemtime($filePath) < $twoDaysAgo) {
-        unlink($filePath);
+        foreach ($sqlQueries as $sqlQuery) {
+            if (trim($sqlQuery) == '') {
+                continue;
+            }
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($result) {
+                echo '<table class="table table-hover" id="sqlTable">';
+                echo '<tr>';
+                foreach ($result[0] as $column => $value) {
+                    echo '<th>' . htmlspecialchars($column) . '</th>';
+                }
+                echo '</tr>';
+                foreach ($result as $row) {
+                    echo '<tr>';
+                    foreach ($row as $value) {
+                        echo '<td>' . htmlspecialchars($value) . '</td>';
+                    }
+                    echo '</tr>';
+                }
+                echo '</table>';
+            } else {
+                // echo 'Query executed successfully.<br>';
+            }
+        }
+    } catch (PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
     }
+    unlink($filePath);
 }
+
+// $directory = "answers/";
+// $twoDaysAgo = time() - (2 * 24 * 60 * 60);
+
+// foreach (scandir($directory) as $file) {
+//     $filePath = $directory . $file;
+
+//     if (is_file($filePath) && filemtime($filePath) < $twoDaysAgo) {
+//         unlink($filePath);
+//     }
+// }
 ?>
