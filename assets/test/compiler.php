@@ -75,36 +75,26 @@ if ($language == "c" || $language == "cpp") {
         }
     }
     unlink($filePath);
-}
-else if ($language == "py") {
+} else if ($language == "py") {
     if (isset($_POST['input'])) {
-        $input = $_POST['input'];
-        rename($filePath, $filePath . ".py");
+        $input = implode("\n", explode(",", $_POST["input"])) . "\n";
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
-        $command = "C:\Users\mishr\AppData\Local\Programs\Python\Python312\python.exe $filePath < $inputFilePath > $outputFilePath";
+        $command = "C:\Users\mishr\AppData\Local\Programs\Python\Python38\python.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
         $output = file_get_contents($outputFilePath);
         echo $output;
-        $programFile = fopen($filePath, "a+");
-        $existingCode = fread($programFile, filesize($filePath));
-        $updatedCode = $existingCode . "\n\n// Input by user: $input";
-        ftruncate($programFile, 0);
-        fseek($programFile, 0);
-        fwrite($programFile, $updatedCode);
-        fclose($programFile);
         unlink($inputFilePath);
         unlink($outputFilePath);
     } else {
-        $output = shell_exec("C:\Users\mishr\AppData\Local\Programs\Python\Python312\python.exe $filePath 2>&1");
+        $output = shell_exec("C:\Users\mishr\AppData\Local\Programs\Python\Python38\python.exe $filePath 2>&1");
         echo $output;
-    }
 
-    if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
-        unlink($filePath);
+        if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
+            unlink($filePath);
+        }
     }
-
 } else if ($language == "nodejs") {
     rename($filePath, $filePath . ".js");
     $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");

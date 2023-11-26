@@ -99,11 +99,12 @@ $user_id = $_SESSION['user_id'];
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
                 style="width:20%;" onchange="changeLanguage()">
+                <option>Select a language</option>
                 <option value="nodejs">NodeJS</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
-                <option value="python">Python</option>
+                <option value="py">Python</option>
             </select>
             <a class="btn" style="font-size:20px;color:black;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                     class="fa fa-bars"></i></a>

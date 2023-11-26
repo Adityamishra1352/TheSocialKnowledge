@@ -1,12 +1,10 @@
-<?php 
+<?php
 include 'assets/_dbconnect.php';
-if($_SERVER['REQUEST_METHOD']=="POST"){
-    $likedWebsite=$_POST['likedWebsite'];
-    $forRecommendations=$_POST['forRecommendations'];
-    // echo $likedWebsite;
-    // echo $forRecommendations;
-    $sql="INSERT INTO `feedback` (`likewebsite`, `recommendations`, `timestamp`) VALUES ( '$likedWebsite', '$forRecommendations', current_timestamp());";
-    $result=mysqli_query($conn,$sql);
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $likedWebsite = $_POST['likedWebsite'];
+    $forRecommendations = $_POST['forRecommendations'];
+    $sql = "INSERT INTO `feedback` (`likewebsite`, `recommendations`, `timestamp`) VALUES ( '$likedWebsite', '$forRecommendations', current_timestamp());";
+    $result = mysqli_query($conn, $sql);
 }
 ?>
 <!DOCTYPE html>
@@ -14,32 +12,49 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Social Knowledge: Feedback</title>
-    <link rel="stylesheet" href="assets/css/feedback.css">
+    <title>The Social Knowledge: View Score</title>
+    <link rel="stylesheet" href="assets/modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="assets/images/websitelogo.jpg" type="image/png">
 </head>
 
 <body>
-    <div class="main_page">
-        <form class="form_input" action="feedback.php" method="post">
-            <div class="heading">
-                <h1>The Social Knowledge: Feedback</h1>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../../../index.php">The Social Knowledge</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../../contactus.php">Contact Us</a>
+                    </li>
+                </ul>
             </div>
-            <div class="content">
-                <h1>Did you like the website?</h1>
-                <select id="likedWebsite" name="likedWebsite">
+        </div>
+    </nav>
+    <div class="container p-1 my-2">
+        <form class="form_input" action="feedback.php" method="post" style="width:40%">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Did you like the website?</label>
+                <select id="likedWebsite" name="likedWebsite" class="form-select">
                     <option value="Yes">Yes</option>
                     <option value="Partially">Partially</option>
                     <option value="No">No</option>
                 </select>
-                <h1>Do you have any recomendations?</h1>
-                <textarea id="forRecomendations" cols="30" rows="10" name="forRecommendations"></textarea><br>
-                <button id="submit">Submit</button>
             </div>
-            <footer>
-                <h1>ThankYou for your visit!!</h1>
-            </footer>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="forRecomendations"
+                    name="forRecommendations"></textarea>
+                <label for="forRecommendations">Recommendations</label>
+            </div>
+            <button type="submit" id="submit" class="btn btn-primary my-2">Submit</button>
         </form>
     </div>
 </body>

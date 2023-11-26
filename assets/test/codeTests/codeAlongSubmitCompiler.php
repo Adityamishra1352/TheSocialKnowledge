@@ -20,6 +20,7 @@ if ($language == "php") {
     $isCorrect = true;
     $filenameArray[] = $filePath;
     $questionArray[] = $question_id;
+    $testCaseResults = array();
     foreach ($testCasesarray as $testCase) {
         $input = implode("\n", explode(",", $testCase["input"])) . "\n";
         $expected_output = implode("\n", explode(",", $testCase["expected_output"]));
@@ -29,21 +30,27 @@ if ($language == "php") {
         $command = "C:\php\php.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
         $actual_output = file_get_contents($outputFilePath);
-        if (trim($actual_output) != trim($expected_output)) {
+        $isTestCaseCorrect = (trim($actual_output) == trim($expected_output));
+        $testCaseResults[] = array(
+            "input" => $input,
+            "expected_output" => $expected_output,
+            "actual_output" => $actual_output,
+            "is_correct" => $isTestCaseCorrect,
+        );
+        unlink($inputFilePath);
+        unlink($outputFilePath);
+        if (!$isTestCaseCorrect) {
             $isCorrect = false;
             break;
         }
-        unlink($inputFilePath);
-        unlink($outputFilePath);
     }
-    if ($isCorrect) {
-        echo "yeah";
-    } else {
-        echo "oops";
-    }
+    $responseData = array(
+        "result" => $isCorrect ? "yeah" : "oops",
+        "test_case_results" => $testCaseResults
+    );
+    echo json_encode($responseData);
     $selectSql = "SELECT * FROM `codinganswers` WHERE `user_id`='$user_id' AND `test_id`='$test_id'";
     $selectResult = mysqli_query($conn, $selectSql);
-
     if (mysqli_num_rows($selectResult) > 0) {
         $rowCode = mysqli_fetch_assoc($selectResult);
         $existingQuestions = json_decode($rowCode['question_id'], true);

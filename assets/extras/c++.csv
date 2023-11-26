@@ -7,4 +7,4 @@ Which of the following statement is correct about identifiers in C++?,Identifier
 Which of the following language translator is used in C++?,Compiler,"Assembler","Interpreter","Compiler","Both Interpreter and Compiler"
 Which of the following whitespace characters can be used in C++?   Horizontal tab   Vertical Tab   Form Feed   New Line, All 1 2 3 4, "1 and 2", "3 and 4", "1 3 4", "All 1 2 3 4"
 Which of the following is the correct extension of the C++ source code file?,.cpp,".c++",".c",".py",".cpp"
-Which of the following command is used for the C++ compiler in Linux OS?, g++, "GCC","c++","g++","None"
+Which of the following command is used for the C++ compiler in Linux OS?,g++, "GCC","c++","g++","None"

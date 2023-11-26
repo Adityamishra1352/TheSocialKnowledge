@@ -2,7 +2,6 @@ let editor;
 window.onload = function () {
   editor = ace.edit("editor");
   editor.setTheme("ace/theme/github_dark");
-  editor.session.setMode("ace/mode/nodejs");
 };
 function saveCode() {
   const code = editor.getSession().getValue();
@@ -74,11 +73,12 @@ function changeLanguage() {
   } else if (language == "nodejs") {
     startingSyntax = "// Your JavaScript (Node.js) code here";
     editor.session.setMode("ace/mode/javascript");
-  } else if (language == "python") {
+  } else if (language == "py") {
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
   }
   editor.setValue(startingSyntax);
+  editor.clearSelection();
 }
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {
@@ -96,6 +96,7 @@ function executeCode() {
       success: function (response) {
         $(".output").text(response);
         document.querySelector("#loader").style.display = "none";
+        console.log(response);
       },
     });
   } else {

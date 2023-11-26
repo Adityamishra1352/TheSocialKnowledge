@@ -6,13 +6,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
 }
 $currentTimestamp = strtotime('now');
 $currentDateTime = date('Y-m-d H:i:s', $currentTimestamp);
+
 $updateSQL = "UPDATE `test` SET `displayed` = 0 WHERE `heldtill` <= '$currentDateTime'";
-$updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `time` <= '$currentDateTime'";
 $updateresult = mysqli_query($conn, $updateSQL);
+
+$updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `displayed` = 0 AND `time` <= '$currentDateTime'";
 $updateStartresult = mysqli_query($conn, $updateStartSQL);
-$updateStartSQL = "UPDATE `test` SET `displayed` = 1 WHERE `time` <= '$currentDateTime'";
-$updateresult = mysqli_query($conn, $updateSQL);
-$updateStartresult = mysqli_query($conn, $updateStartSQL);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +85,7 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
             $adminUser_result = mysqli_query($conn, $adminUser);
             $adminUserRow = mysqli_fetch_assoc($adminUser_result);
             $adminUser_id = $adminUserRow['sno'];
-            $sql = "SELECT * FROM test";
+            $sql = "SELECT * FROM test WHERE `displayed`=1";
             $result = mysqli_query($conn, $sql);
             if (!$result) {
                 die("Query failed: " . mysqli_error($conn));
@@ -146,9 +146,11 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                 </li>
             </ul>
             <?php
-            $codingSQL = "SELECT * FROM `codingtest`";
+            $codingSQL = "SELECT * FROM `codingtest` Where `displayed`=0";
             $codingResult = mysqli_query($conn, $codingSQL);
+            $countQuizes = 0;
             while ($rowCoding = mysqli_fetch_assoc($codingResult)) {
+                $countQuizes++;
                 echo '<div class="col"><div class="card" style="width: 18rem;height:16rem;">
                         <div class="card-header">
                             <h5 class="card-title">' . $rowCoding['heading'] . '</h5>
@@ -161,6 +163,16 @@ $updateStartresult = mysqli_query($conn, $updateStartSQL);
                             <a href="codeTests/codeQuestions.php?test_id=' . $rowCoding['test_id'] . '" class="btn btn-outline-success">Take Test</a>
                         </div>
                     </div></div>';
+            }
+            if ($countQuizes == 0) {
+                echo '<div class="card" style="max-width:500px;">
+                    <div class="card-body">
+                      <blockquote class="blockquote mb-0">
+                        <p>You dont have any coding quizes.</p>
+                        <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
+                      </blockquote>
+                    </div>
+                  </div>';
             }
             ?>
         </div>

@@ -75,7 +75,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     The answer has been submitted. Please go back!!
                 </div>
                 <div class="modal-footer">
-                    
+
                 </div>
             </div>
         </div>
@@ -173,8 +173,20 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     $row = mysqli_fetch_assoc($questionResult);
                     $question = $row["question"];
                     echo '<h6 class="my-1"> Question:' . $question . '</h6>';
+                    $testCases = json_decode($row["inputOutput"], true);
+                    $numTestCases = count($testCases);
                     ?>
+                    <div id="testCasearea">
+                    <div class="align-items-center loader" id="loader" style="display:none;width:90%;">
+                    <strong class="text-primary" role="status">Loading Test Cases...</strong>
+                            <div class="spinner-grow text-primary ms-auto" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div id="outputTerminal"></div>
             </div>
             <div class="col-md-8 m-0 p-0" style="overflow:auto;" draggable="true">
@@ -195,9 +207,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                     <div class="collapse form-floating p-1" id="collapseExample">
                         <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
                             class="form-control border" value=""></textarea>
-                        <label for="inputArea">Custom Input:</label>
+                        <label for="inputArea">Custom Input(separate multiple inputs by ,(comma)):</label>
                         <div class="outputContainer container mb-3">
-                            <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                            <div class="align-items-center loader" id="loader" style="display:none;width:95%;">
                                 <strong class="text-primary" role="status">Loading...</strong>
                                 <div class="spinner-grow text-primary ms-auto" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -245,7 +257,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     <script src="../../javascript/codeAlong.js"></script>
     <script>
         var timefortest = <?php echo $_SESSION['timeLeft']; ?>;
-        console.log(timefortest);
+        // console.log(timefortest);
     </script>
     <script>
         //timer
@@ -254,19 +266,19 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
             var elapsedTime = Math.round(currentTime - startTime);
             var remainingTime = Math.max(0, Math.round(timefortest - elapsedTime));
             if (remainingTime == 0) {
-                    timeModal.show();
-                }
+                timeModal.show();
+            }
             $.ajax({
-                    url: 'updateTimeLeft.php',
-                    type: 'POST',
-                    data: { timeLeft: Math.round((timefortest) - elapsedTime) },
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (error) {
-                        console.error('Error updating time left:', error);
-                    }
-                });
+                url: 'updateTimeLeft.php',
+                type: 'POST',
+                data: { timeLeft: Math.round((timefortest) - elapsedTime) },
+                success: function (response) {
+                    // console.log(response);
+                },
+                error: function (error) {
+                    // console.error('Error updating time left:', error);
+                }
+            });
             var minutes = Math.floor(remainingTime / 60);
             var seconds = remainingTime % 60;
             var formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
@@ -275,7 +287,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
                 clearInterval(intervalId);
             }
         }
-        
+
         var startTime = new Date().getTime() / 1000;
         var intervalId = setInterval(updateRemainingTime, 1000);
     </script>

@@ -111,23 +111,42 @@ function changeLanguage() {
 
 //test answer submit feature
 function submitCode() {
-  document.querySelector("#loader").style.display = "flex";
+  document.querySelector(".loader").style.display = "flex";
   $.ajax({
-    url: "../codeTests/codeAlongSubmitCompiler.php",
-    method: "POST",
-    data: {
-      language: $("#languages").val(),
-      code: editor.getSession().getValue(),
-      question_id: question_id,
-      test_id: test_id,
-    },
-    success: function (response) {
-      document.querySelector("#loader").style.display = "none";
-      document.querySelector("#submitCode").disabled = true;
-      gobackModal.show();
-    },
+      url: "../codeTests/codeAlongSubmitCompiler.php",
+      method: "POST",
+      data: {
+          language: $("#languages").val(),
+          code: editor.getSession().getValue(),
+          question_id: question_id,
+          test_id: test_id,
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        document.querySelector(".loader").style.display = "none";
+        document.querySelector("#submitCode").disabled = true;
+        // gobackModal.show();
+        const testResults = response.test_case_results;
+        testResults.forEach((testCase, index) => {
+            const testCaseElement = document.createElement("div");
+            testCaseElement.classList.add("test-case");
+            testCaseElement.innerHTML = `Test Case ${index + 1}:`;
+            document.getElementById("testCasearea").appendChild(testCaseElement);
+            const resultMark = document.createElement("span");
+            resultMark.innerHTML = testCase.is_correct ? " &#10004;" : " &#10008;";
+            resultMark.style.color = testCase.is_correct ? "green" : "red";
+            testCaseElement.appendChild(resultMark);
+        });
+        setTimeout(function () {
+          gobackModal.show();
+        }, 5000);
+    },       
   });
 }
+
+// ...
+
 //test answer custom input feature
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {

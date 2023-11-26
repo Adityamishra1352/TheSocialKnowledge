@@ -59,7 +59,7 @@
             </section>
         </div>
     </div>
-    <div class="helpButton">
+    <!-- <div class="helpButton">
         <button class="chat_btn">
             <i class="fas fa-comment"></i>
         </button>
@@ -82,7 +82,7 @@
                 </div>
             </form>
         </div>
-    </section>
+    </section> -->
     <script src="assets/javascript/help.js"></script>
 </body>
 

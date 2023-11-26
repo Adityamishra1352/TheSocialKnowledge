@@ -1,8 +1,8 @@
 //right-click disable
-// document.addEventListener("contextmenu", function(e) {
-//   e.preventDefault();
-//   window.alert("Right-click is not allowed on this page!");
-// }, false);
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  window.alert("Right-click is not allowed on this page!");
+}, false);
 
 //full screen feature
 function openFullscreen() {
@@ -280,14 +280,17 @@ function showQuetions(index) {
             selectOptions.push(checkbox.value);
           }
         });
+        const selectedAnswersSet=new Set(selectOptions);
+        console.log(selectedAnswersSet);
         console.log(selectOptions);
-        const correctAnswerIndices = questions[index].correct_answer;
+        const correctAnswerIndices = JSON.parse(questions[index].correct_answer);
         console.log("selectOptions:", selectOptions);
+        const correctAnswerSet=new Set(correctAnswerIndices);
+        console.log(correctAnswerSet);
         console.log("correctAnswerIndices:", correctAnswerIndices);
-        const isCorrect = arraysAreEqual(selectOptions, correctAnswerIndices);
-        console.log("isCorrect:", isCorrect);
-        if (isCorrect) {
+        if (setsAreEqual(selectedAnswersSet,correctAnswerSet)) {
           userScore += 1;
+          console.log("Yuhooo");
         }
         const questionObject = {
           question_id: questions[que_count].question_id,
@@ -320,13 +323,17 @@ function showQuetions(index) {
     counterrors += 1;
   }
 }
-function arraysAreEqual(values, array) {
-  // Check if every element in 'values' is present in 'array'
-  return values.every(value => array.includes(value));
+function setsAreEqual(set1,set2) {
+if(set1.size!==set2.size){
+  return false;
 }
-
-
-
+for (let item of set1){
+  if(!set2.has(item)){
+    return false;
+  }
+  return true;
+}
+}
 function optionSelected(answer) {
   clearInterval(counter);
   // clearInterval(counterLine);
@@ -424,32 +431,7 @@ async function sendToStorage() {
     const responseData = await response.json();
 
     console.log("Score sent to PHP:", responseData);
-
-    // Proceed to the next steps or questions here
   } catch (error) {
     console.error("Error sending score to PHP:", error);
   }
 }
-
-// function sendToStorage() {
-//   console.log(userScore);
-//   console.log(test_id);
-//   console.log(user_id);
-//   console.log(enrollment);
-
-//   fetch("storeUserData.php", {
-//     method: "POST",
-//     body: JSON.stringify(data),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log("Score sent to PHP:", data);
-//     })
-//     .catch((error) => {
-//       console.error("Error sending score to PHP:", error);
-//     });
-// }
-// const answersString=JSON.stringify(answers);
