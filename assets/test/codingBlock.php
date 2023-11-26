@@ -87,24 +87,19 @@ $user_id = $_SESSION['user_id'];
             </div>
         </div>
     </div>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Feature under maintainence.</strong> Some functions might not work. Check out the Frontend Development
-        Feature.
-    </div>
-    <div class="alert alert-warning alert-dismissible fade show input-warning" role="alert" style="display:none;">
-        You should choose wheather or not you want inputs.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Feature under maintainence.</strong> Give multiple inputs separated by comma (,)
     </div>
     <div class="container m-0 p-0" style="max-width:100%">
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
                 style="width:20%;" onchange="changeLanguage()">
                 <option>Select a language</option>
-                <option value="nodejs">NodeJS</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
                 <option value="py">Python</option>
+                <option value="java">Java</option>
             </select>
             <a class="btn" style="font-size:20px;color:black;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                     class="fa fa-bars"></i></a>
@@ -175,12 +170,12 @@ $user_id = $_SESSION['user_id'];
                         class="form-control border" value=""></textarea>
                     <label for="inputArea">Custom Input:</label>
                     <div class="outputContainer container mb-3">
-                        <div class="align-items-center" id="loader" style="display:none;width:95%;">
+                        <!-- <div class="align-items-center" id="loader" style="display:none;width:95%;">
                             <strong class="text-primary" role="status">Loading...</strong>
                             <div class="spinner-grow text-primary ms-auto" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="outputScreen container border bg-dark" style="display:none;">
                             <div class="inputDiv container my-2">
                                 <label class="text-light">Input:</label>

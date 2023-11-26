@@ -81,29 +81,98 @@ if ($language == "c" || $language == "cpp") {
         $inputFilePath = "temporary/" . "input_" . $random . ".txt";
         $outputFilePath = "temporary/" . "output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
-        $command = "C:\Users\mishr\AppData\Local\Programs\Python\Python38\python.exe $filePath < $inputFilePath > $outputFilePath";
+        $command = "C:\Users\mishr\AppData\Local\Programs\Python\Python312\python.exe $filePath < $inputFilePath > $outputFilePath";
         shell_exec($command);
         $output = file_get_contents($outputFilePath);
         echo $output;
         unlink($inputFilePath);
         unlink($outputFilePath);
     } else {
-        $output = shell_exec("C:\Users\mishr\AppData\Local\Programs\Python\Python38\python.exe $filePath 2>&1");
+        $output = shell_exec("C:\Users\mishr\AppData\Local\Programs\Python\Python312\python.exe $filePath 2>&1");
         echo $output;
+        unlink($filePath);
+    }
+} else if ($language == "java") {
+    if (isset($_POST["input"])) {
+        $className = "Main";
+        preg_match('/\bclass\s+(\w+)/', $code, $matches);
+        $className = isset($matches[1]) ? $matches[1] : "Main";
+        $userDirectory = "answers/" . $user_id . "/";
+        if (!is_dir($userDirectory)) {
+            mkdir($userDirectory, 0755, true);
+        }
+        $inputs = explode(",", $_POST['input']);
+        $formattedInputs = implode("\n", $inputs) . "\n";
+        $inputFilePath = $userDirectory . "input_" . $random . ".txt";
+        file_put_contents($inputFilePath, $formattedInputs);
+        $newFilePath = $userDirectory . $className . ".java";
+        rename($filePath, $newFilePath);
+        $filePath = $newFilePath;
+        $jdkBinPath = "\"C:\\Program Files\\Java\\jdk-17.0.2\\bin\"";
+        $compileCommand = "$jdkBinPath\\javac \"$filePath\" 2>&1";
+        exec($compileCommand, $compileOutput, $compileReturnCode);
+        if ($compileReturnCode === 0) {
+            $className = pathinfo($filePath, PATHINFO_FILENAME);
+            $runCommand = "$jdkBinPath\\java -cp $userDirectory $className < $inputFilePath 2>&1";
+            exec($runCommand, $runOutput, $runReturnCode);
 
-        if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
-            unlink($filePath);
+            if ($runReturnCode === 0) {
+                echo implode("\n", $runOutput);
+            } else {
+                echo "Execution error:<br>";
+                echo implode("\n", $runOutput);
+            }
+        } else {
+            echo "Compilation error:<br>";
+            echo implode("\n", $compileOutput);
+        }
+
+        unlink($filePath);
+        $classFilePath = $userDirectory . $className . ".class";
+        unlink($classFilePath);
+        unlink($inputFilePath);
+        rmdir($userDirectory);
+    } else {
+
+        $className = "Main";
+        preg_match('/\bclass\s+(\w+)/', $code, $matches);
+        $className = isset($matches[1]) ? $matches[1] : "Main";
+        $userDirectory = "answers/" . $user_id . "/";
+        if (!is_dir($userDirectory)) {
+            mkdir($userDirectory, 0755, true);
+        }
+
+        $newFilePath = $userDirectory . $className . ".java";
+        rename($filePath, $newFilePath);
+        $filePath = $newFilePath;
+        $jdkBinPath = "\"C:\\Program Files\\Java\\jdk-17.0.2\\bin\"";
+        $compileCommand = "$jdkBinPath\\javac \"$filePath\" 2>&1";
+        exec($compileCommand, $compileOutput, $compileReturnCode);
+
+        if ($compileReturnCode === 0) {
+            $className = pathinfo($filePath, PATHINFO_FILENAME);
+            $runCommand = "$jdkBinPath\\java -cp answers \"$filePath\" 2>&1";
+            exec($runCommand, $runOutput, $runReturnCode);
+
+            if ($runReturnCode === 0) {
+                echo implode("\n", $runOutput);
+            } else {
+                echo "Execution error:<br>";
+                echo implode("\n", $runOutput);
+            }
+        } else {
+            echo "Compilation error:<br>";
+            echo implode("\n", $compileOutput);
+        }
+        unlink($filePath);
+        $classFilePath = $userDirectory . $className . ".class";
+        unlink($classFilePath);
+        // Remove the entire user directory
+        if (is_dir($userDirectory)) {
+            rmdir($userDirectory);
         }
     }
-} else if ($language == "nodejs") {
-    rename($filePath, $filePath . ".js");
-    $output = shell_exec("C:\Program Files (x86)\nodejs\node.exe $filePath 2>&1");
-    echo $output;
-    if (strpos($output, 'error') !== false || strpos($output, 'warning') !== false) {
-        unlink($filePath . ".js");
-    }
 }
-
 $directory = "answers/";
 $twoDaysAgo = time() - (2 * 24 * 60 * 60);
 

@@ -70,9 +70,9 @@ function changeLanguage() {
   } else if (language == "php") {
     startingSyntax = "<?php\n\n// Your PHP code here\n?>";
     editor.session.setMode("ace/mode/php");
-  } else if (language == "nodejs") {
-    startingSyntax = "// Your JavaScript (Node.js) code here";
-    editor.session.setMode("ace/mode/javascript");
+  } else if (language == "java") {
+    startingSyntax = 'public class Main\n{\n   public static void main(String[] args) {\n   System.out.println("Hello World");\n   }\n}';
+    editor.session.setMode("ace/mode/java");
   } else if (language == "py") {
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
@@ -82,6 +82,7 @@ function changeLanguage() {
 }
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {
+  clearOutput();
   document.querySelector("#loader").style.display = "flex";
   inputValue = inputTextarea.value;
   if (inputValue !== "") {
