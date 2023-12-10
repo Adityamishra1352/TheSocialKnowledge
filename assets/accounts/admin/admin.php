@@ -49,34 +49,34 @@ include '../../_dbconnect.php';
     </nav>
     <nav class="navbar navbar-light bg-light">
         <form class="container-fluid justify-content-start">
-            <button class="btn btn-success me-2" type="button" id="runningCourse_btn">Running Courses</button>
+            <!-- <button class="btn btn-success me-2" type="button" id="runningCourse_btn">Running Courses</button> -->
             <button class="btn btn-outline-success me-2" type="button" id="organisers_btn">View Organisers</button>
             <button class="btn btn-outline-success me-2" type="button" id="addOrganiser_btn">Add Organisers</button>
-            <button class="btn btn-outline-success me-2" type="button" id="quiz_btn">Quizes</button>
-            <button class="btn btn-outline-success me-2" type="button" id="addCourse_btn">Add Course</button>
-            <button class="btn btn-outline-success me-2" type="button" id="courseTest_btn">Course Tests</button>
-            <button class="btn btn-outline-success me-2" type="button" id="addUsers_btn">Add Students</button>
+            <!-- <button class="btn btn-outline-success me-2" type="button" id="quiz_btn">Quizes</button> -->
+            <!-- <button class="btn btn-outline-success me-2" type="button" id="addCourse_btn">Add Course</button> -->
+            <!-- <button class="btn btn-outline-success me-2" type="button" id="courseTest_btn">Course Tests</button> -->
+            <button class="btn btn-outline-success me-2" type="button" id="addUsers_btn">Add Users</button>
         </form>
     </nav>
     <?php
-    if (isset($_GET['addCourse']) && $_GET['addCourse'] == true) {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>New Course has been added successfully!!</strong> Check it out from view courses.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>';
-    }
+    // if (isset($_GET['addCourse']) && $_GET['addCourse'] == true) {
+    //     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+    //     <strong>New Course has been added successfully!!</strong> Check it out from view courses.
+    //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    //   </div>';
+    // }
     if (isset($_GET['addOrganiser']) && $_GET['addOrganiser'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>New Organiser has been added successfully!!</strong> Check it out from view organisers.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
-    if (isset($_GET['deleteCourse']) && $_GET['deleteCourse'] == true) {
-        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Course has been deleted successfully!!</strong> Check it out from view courses.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>';
-    }
+    // if (isset($_GET['deleteCourse']) && $_GET['deleteCourse'] == true) {
+    //     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    //     <strong>Course has been deleted successfully!!</strong> Check it out from view courses.
+    //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    //   </div>';
+    // }
     if (isset($_GET['uploadUsers']) && $_GET['uploadUsers'] == true) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Users have been added successfully!!</strong>
@@ -85,7 +85,9 @@ include '../../_dbconnect.php';
     }
     ?>
     <div class="container my-2 p-1 addUsers_container" style="display:none;">
-        <ul>
+        <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give Faculty whilst adding
+            faculty as a user at the batch.</span>
+        <ul class="my-2">
             <li>
                 <h6>Add users via CSV file:</h6>
             </li>
@@ -96,14 +98,21 @@ include '../../_dbconnect.php';
                 <button type="submit" class="btn btn-success m-2">Submit</button>
             </form>
         </div>
+        <ul>
+            <li>
+                <h6>Add users individually:</h6>
+            </li>
+        </ul>
         <div class="container my-2">
             <form id="users-form" action="uploadUsers.php" method="post" enctype="multipart/form-data">
                 <div id="questions">
+                    <!-- Existing code for dynamic questions and options -->
                 </div>
                 <button type="button" class="btn btn-primary m-2" id="add-question">Add User</button>
-                <button type="submit" class="btn btn-success m-2">Submit</button>
+                <button type="submit" class="btn btn-success m-2" id="submit-form">Submit</button>
             </form>
         </div>
+
     </div>
     <div class="container my-2 p-1">
         <div class="container mx-2 runningCourses" style="display:none;grid-template-columns:1fr 1fr 1fr;">
@@ -272,29 +281,29 @@ include '../../_dbconnect.php';
     </div>
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const runningCourse_btn = document.querySelector("#runningCourse_btn");
+        // const runningCourse_btn = document.querySelector("#runningCourse_btn");
         const runningCourses = document.querySelector(".runningCourses");
         const organiser_btn = document.querySelector("#organisers_btn");
         const viewOrganisers = document.querySelector(".viewOrganisers");
         const addOrganiser_btn = document.querySelector("#addOrganiser_btn");
         const addOrganiser = document.querySelector(".addOrganisers");
         const quiz_container = document.querySelector(".quizes_container");
-        const quiz_btn = document.querySelector("#quiz_btn");
+        // const quiz_btn = document.querySelector("#quiz_btn");
         const courseTest_btn = document.querySelector("#courseTest_btn");
         const courseTest_container = document.querySelector(".courseTest");
-        const addCourse_btn = document.querySelector("#addCourse_btn");
+        // const addCourse_btn = document.querySelector("#addCourse_btn");
         const addCourse_container = document.querySelector(".addCourse_container");
         const addUsers_btn = document.querySelector("#addUsers_btn");
         const addUsers_container = document.querySelector(".addUsers_container");
-        runningCourse_btn.onclick = () => {
-            runningCourses.style.display = "grid";
-            viewOrganisers.style.display = "none";
-            addOrganiser.style.display = "none";
-            quiz_container.style.display = "none";
-            courseTest_container.style.display = "none";
-            addCourse_container.style.display = "none";
-            addUsers_container.style.display = "none";
-        }
+        // runningCourse_btn.onclick = () => {
+        //     runningCourses.style.display = "grid";
+        //     viewOrganisers.style.display = "none";
+        //     addOrganiser.style.display = "none";
+        //     quiz_container.style.display = "none";
+        //     courseTest_container.style.display = "none";
+        //     addCourse_container.style.display = "none";
+        //     addUsers_container.style.display = "none";
+        // }
         organiser_btn.onclick = () => {
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "grid";
@@ -313,33 +322,33 @@ include '../../_dbconnect.php';
             addCourse_container.style.display = "none";
             addUsers_container.style.display = "none";
         }
-        quiz_btn.onclick = () => {
-            runningCourses.style.display = "none";
-            viewOrganisers.style.display = "none";
-            addUsers_container.style.display = "none";
-            addOrganiser.style.display = "none";
-            quiz_container.style.display = "block";
-            courseTest_container.style.display = "none";
-            addCourse_container.style.display = "none";
-        }
-        addCourse_btn.onclick = () => {
-            runningCourses.style.display = "none";
-            viewOrganisers.style.display = "none";
-            addOrganiser.style.display = "none";
-            addUsers_container.style.display = "none";
-            quiz_container.style.display = "none";
-            courseTest_container.style.display = "none";
-            addCourse_container.style.display = "block";
-        }
-        courseTest_btn.onclick = () => {
-            runningCourses.style.display = "none";
-            viewOrganisers.style.display = "none";
-            addOrganiser.style.display = "none";
-            addUsers_container.style.display = "none";
-            quiz_container.style.display = "none";
-            courseTest_container.style.display = "block";
-            addCourse_container.style.display = "none";
-        }
+        // quiz_btn.onclick = () => {
+        //     runningCourses.style.display = "none";
+        //     viewOrganisers.style.display = "none";
+        //     addUsers_container.style.display = "none";
+        //     addOrganiser.style.display = "none";
+        //     quiz_container.style.display = "block";
+        //     courseTest_container.style.display = "none";
+        //     addCourse_container.style.display = "none";
+        // }
+        // addCourse_btn.onclick = () => {
+        //     runningCourses.style.display = "none";
+        //     viewOrganisers.style.display = "none";
+        //     addOrganiser.style.display = "none";
+        //     addUsers_container.style.display = "none";
+        //     quiz_container.style.display = "none";
+        //     courseTest_container.style.display = "none";
+        //     addCourse_container.style.display = "block";
+        // }
+        // courseTest_btn.onclick = () => {
+        //     runningCourses.style.display = "none";
+        //     viewOrganisers.style.display = "none";
+        //     addOrganiser.style.display = "none";
+        //     addUsers_container.style.display = "none";
+        //     quiz_container.style.display = "none";
+        //     courseTest_container.style.display = "block";
+        //     addCourse_container.style.display = "none";
+        // }
         addUsers_btn.onclick = () => {
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "none";
@@ -350,65 +359,87 @@ include '../../_dbconnect.php';
             addCourse_container.style.display = "none";
         }
         document.addEventListener("DOMContentLoaded", function () {
-    const addQuestionButton = document.getElementById("add-question");
-    const questionsContainer = document.getElementById("questions");
-  let questionCount = -1;
-  addQuestionButton.addEventListener("click", function () {
-      questionCount++;
-      const questionDiv = document.createElement("div");
-      questionDiv.classList.add("question");
-      questionDiv.innerHTML = `
+            const addQuestionButton = document.getElementById("add-question");
+            const questionsContainer = document.getElementById("questions");
+            let questionCount = -1;
+            addQuestionButton.addEventListener("click", function () {
+                addQuestionButton.style.display="none";
+                questionCount++;
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `
     <div class="row">
     <div class="col">
-            <label for="question-${questionCount}"><b>User:</b></label>
-            <textarea id="question-${questionCount}" name="questions[]" class="form-control"></textarea>
+            <label for="question-${questionCount}"><b>User Email:</b></label>
+            <textarea id="question-${questionCount}" name="questions[]" class="form-control" style="width:30%"></textarea>
         </div>
     </div>
-    <button type="button" class="btn m-2 btn-outline-danger remove-question">Remove User</button>
     <div class="options row row-cols-2"></div>
-    <button type="button" class="btn btn-outline-success add-option m-2">Add Details</button>`;
-      questionsContainer.appendChild(questionDiv);
+    <button type="button" class="btn btn-outline-success add-option m-2">Add Details</button>
+    <button type="button" class="btn m-2 btn-outline-danger remove-question">Remove User</button>`;
+                questionsContainer.appendChild(questionDiv);
 
-      const removeQuestionButton =
-        questionDiv.querySelector(".remove-question");
-      removeQuestionButton.addEventListener("click", function () {
-        questionsContainer.removeChild(questionDiv);
-      });
+                const removeQuestionButton =
+                    questionDiv.querySelector(".remove-question");
+                removeQuestionButton.addEventListener("click", function () {
+                    questionsContainer.removeChild(questionDiv);
+                });
 
-      const optionsContainer = questionDiv.querySelector(".options");
-      let optionCount = 0;
+                const optionsContainer = questionDiv.querySelector(".options");
+                let optionCount = 0;
 
-      questionDiv
-        .querySelector(".add-option")
-        .addEventListener("click", function () {
-          const optionDiv = document.createElement("div");
-          optionDiv.setAttribute("class", "row align-items-center");
-          const optionRadio = document.createElement("textarea");
-          optionRadio.setAttribute("class", "form-control col-6");
-          optionRadio.setAttribute("style", "width:60%;");
-          optionRadio.setAttribute("placeholder", `Batch`);
-          optionRadio.setAttribute("name", `batch-${questionCount}`);
-          const optionInput = document.createElement("textarea");
-          optionInput.setAttribute("class", "form-control col-6");
-          optionInput.setAttribute("style", "width:60%;");
-          optionInput.setAttribute(
-            "name",
-            `options_${questionCount}[${optionCount}]`
-          );
-          optionInput.setAttribute("placeholder", `Year`);
-          optionDiv.appendChild(optionRadio);
-          optionDiv.appendChild(optionInput);
+                questionDiv
+                    .querySelector(".add-option")
+                    .addEventListener("click", function () {
+                        const optionDiv = document.createElement("div");
+                        optionDiv.setAttribute("class", "row align-items-center p-2");
+                        // optionDiv.style.display = "flex";
+                        const optionRadio = document.createElement("textarea");
+                        optionRadio.setAttribute("class", "col form-control m-1");
+                        optionRadio.setAttribute("placeholder", `Batch/Faculty`);
+                        optionRadio.setAttribute("name", `batch-${questionCount}`);
 
-          optionsContainer.appendChild(optionDiv);
-          optionCount++;
+                        const optionInput = document.createElement("textarea");
+                        optionInput.setAttribute("class", "col form-control m-1");
+                        optionInput.setAttribute("name", `year-${questionCount}`);
+                        optionInput.setAttribute("placeholder", `Year`);
+                        
+                        const enrollInput=document.createElement("textarea");
+                        enrollInput.setAttribute("class","col form-control m-1");
+                        enrollInput.setAttribute("name",`enroll-${questionCount}`);
+                        enrollInput.setAttribute("placeholder","EnrollNo.");
+                        optionDiv.appendChild(optionRadio);
+                        optionDiv.appendChild(optionInput);
+                        optionDiv.appendChild(enrollInput);
+                        optionsContainer.appendChild(optionDiv);
+                        optionCount++;
+                        questionDiv.querySelector(".add-option").disabled = true;
+                    });
+
+            });
+            const csvFileInput = document.querySelector("input[type='file']");
+            csvFileInput.addEventListener("change", function () {
+                questionsContainer.innerHTML = "";
+                addQuestionButton.style.display = "none";
+            });
+
         });
-  });
-  const csvFileInput = document.querySelector("input[type='file']");
-  csvFileInput.addEventListener("change", function () {
-    questionsContainer.innerHTML = "";
-    addQuestionButton.style.display = "none";
-  });
-});
+        // const form = document.getElementById("users-form");
+        // form.addEventListener("submit", function (event) {
+        //     event.preventDefault();
+        //     const formData = new FormData(form);
+        //     fetch(form.action, {
+        //         method: form.method,
+        //         body: formData
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // });
     </script>
 </body>
 
