@@ -55,10 +55,10 @@ if (isset($_SESSION['startTime'])) {
 
 </head>
 
-<body>
+<body style="user-select:none;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand mx-auto" href="../../index.php">The Social Knowledge</a>
+            <a class="navbar-brand mx-auto" href="../../../index.php">The Social Knowledge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">

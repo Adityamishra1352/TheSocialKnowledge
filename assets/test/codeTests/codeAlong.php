@@ -25,7 +25,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
     </script>
 </head>
 
-<body>
+<body style="user-select:none;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand mx-auto" href="../../index.php">The Social Knowledge</a>
