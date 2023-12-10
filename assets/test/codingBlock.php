@@ -39,7 +39,8 @@ $user_id = $_SESSION['user_id'];
                         <a class="nav-link" href="htmlcssEditor.php">Frontend Development</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal" style="cursor:pointer">View Saved Files</a>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal"
+                            style="cursor:pointer" onclick="savedCodes()">View Saved Files</a>
                     </li>
                 </ul>
                 <ul class="d-flex">
@@ -58,43 +59,7 @@ $user_id = $_SESSION['user_id'];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row" style="overflow:auto">
-                    <?php
-                    $countValues=0;
-                    $sql = "SELECT * FROM `savedFiles` WHERE `user_id`='$user_id'";
-                    $result = mysqli_query($conn, $sql);
-                    $basePath = "answers";
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $countValues+=1;
-                        $filename = $row['filename'];
-                        $language=$row['language'];
-                        $time = $row['date'];
-                        $timestamp = strtotime($time);
-                        $formattedDate = date('d F Y', $timestamp);
-                        $formattedTime = date('H:i', $timestamp);
-                        $filePath = $basePath . '/' . $filename;
-                        $fileContent = file_get_contents($filePath);
-                        $previewContent = substr($fileContent, 0, 150);
-                        $downloadLink = $filePath;
-                        echo '<div class="col"><div class="card p-2" style="width: 18rem;">
-            <pre class="card-text">' . htmlspecialchars($previewContent) . '</pre>
-            <div class="card-body">
-            <h5 class="card-title">Language: ' . $language . '</h5>
-            <p class="card-text text-secondary">Saved On: ' . $formattedTime . ', ' . $formattedDate . '</p>
-            <a href="" class="btn btn-primary" download>Load File</a>
-            </div>
-            </div></div>';
-                    }
-                    if($countValues==0){
-                        echo '<div class="card" style="width:40%">
-                    <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                    <p>You have not saved any codes.</p>
-                    <footer class="blockquote-footer"><cite title="Source Title">The Social Knowledge</cite></footer>
-                    </blockquote>
-                    </div>
-                    </div>';
-                    }
-                    ?>
+                    
                 </div>
             </div>
         </div>
@@ -173,9 +138,9 @@ $user_id = $_SESSION['user_id'];
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
                     <button class="btn btn-outline-primary mr-1 ml-1" onclick="saveCode()">Save Code</button>
                 </div>
-                <p class="d-inline-flex gap-1" style="width:100%" >
-                <a class="btn border-dark" data-bs-toggle="collapse" id="customInput" href="#collapseExample" role="button"
-                        aria-expanded="false" aria-controls="collapseExample" style="width:100%">
+                <p class="d-inline-flex gap-1" style="width:100%">
+                    <a class="btn border-dark" data-bs-toggle="collapse" id="customInput" href="#collapseExample"
+                        role="button" aria-expanded="false" aria-controls="collapseExample" style="width:100%">
                         Test Against Custom Input:
                     </a>
                 </p>
@@ -219,7 +184,21 @@ $user_id = $_SESSION['user_id'];
         </div>
 
     </div>
+    <script>
+        function savedCodes() {
+            $.ajax({
+                url: 'fetch_saved_files.php', 
+                method: 'GET',
+                success: function (data) {
+                    $('#saveModal .modal-body').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching saved files:', error);
+                }
+            });
+        }
 
+    </script>
     <script src="../modules/jquery/dist/jquery.min.js"></script>
     <script src="../javascript/compiler/ace.js"></script>
     <script src="../javascript/compiler/theme-github_dark.js"></script>

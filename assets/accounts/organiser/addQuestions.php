@@ -123,6 +123,12 @@ $test_id = $_GET['test_id'];
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
     }
+    if (isset($_GET['editQuestion']) && $_GET['editQuestion'] == true) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>The question been updated successfully.</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
 
     ?>
     <?php
@@ -196,6 +202,7 @@ $test_id = $_GET['test_id'];
                         <h6>Select the Type of question:</h6>
                     </label>
                     <select name="questionType" class="form-select" id="questionType" style="width:40%;">
+                    <option value="none">Select Question Type</option>
                         <option value="singleAnswer">Single Answer</option>
                         <option value="multipleAnswer">Multiple Answer</option>
                     </select>
@@ -245,6 +252,7 @@ $test_id = $_GET['test_id'];
                             <th scope="col">Question</th>
                             <th scope="col">Options</th>
                             <th scope="col">Answer</th>
+                            <th scope="col">Edit Question</th>
                             <th scope="col">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="selectAll">
@@ -287,7 +295,7 @@ $test_id = $_GET['test_id'];
                             }
 
                             echo "</td>
-                        <td>$answer</td>
+                        <td>$answer</td><td><a href='editQuestions.php?question_id=$questionId&test_id=$test_id' class='btn btn-outline-primary'>Edit</a></td>
                         <td><input type='checkbox' name='delete[]' value='$questionId' class='form-check-input'></td>
                         </tr>";
                             $count += 1;

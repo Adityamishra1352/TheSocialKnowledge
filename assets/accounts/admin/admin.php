@@ -96,6 +96,14 @@ include '../../_dbconnect.php';
                 <button type="submit" class="btn btn-success m-2">Submit</button>
             </form>
         </div>
+        <div class="container my-2">
+            <form id="users-form" action="uploadUsers.php" method="post" enctype="multipart/form-data">
+                <div id="questions">
+                </div>
+                <button type="button" class="btn btn-primary m-2" id="add-question">Add User</button>
+                <button type="submit" class="btn btn-success m-2">Submit</button>
+            </form>
+        </div>
     </div>
     <div class="container my-2 p-1">
         <div class="container mx-2 runningCourses" style="display:none;grid-template-columns:1fr 1fr 1fr;">
@@ -276,8 +284,8 @@ include '../../_dbconnect.php';
         const courseTest_container = document.querySelector(".courseTest");
         const addCourse_btn = document.querySelector("#addCourse_btn");
         const addCourse_container = document.querySelector(".addCourse_container");
-        const addUsers_btn=document.querySelector("#addUsers_btn");
-        const addUsers_container=document.querySelector(".addUsers_container");
+        const addUsers_btn = document.querySelector("#addUsers_btn");
+        const addUsers_container = document.querySelector(".addUsers_container");
         runningCourse_btn.onclick = () => {
             runningCourses.style.display = "grid";
             viewOrganisers.style.display = "none";
@@ -285,7 +293,7 @@ include '../../_dbconnect.php';
             quiz_container.style.display = "none";
             courseTest_container.style.display = "none";
             addCourse_container.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
         }
         organiser_btn.onclick = () => {
             runningCourses.style.display = "none";
@@ -294,7 +302,7 @@ include '../../_dbconnect.php';
             quiz_container.style.display = "none";
             courseTest_container.style.display = "none";
             addCourse_container.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
         }
         addOrganiser_btn.onclick = () => {
             runningCourses.style.display = "none";
@@ -303,12 +311,12 @@ include '../../_dbconnect.php';
             quiz_container.style.display = "none";
             courseTest_container.style.display = "none";
             addCourse_container.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
         }
         quiz_btn.onclick = () => {
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
             addOrganiser.style.display = "none";
             quiz_container.style.display = "block";
             courseTest_container.style.display = "none";
@@ -318,7 +326,7 @@ include '../../_dbconnect.php';
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "none";
             addOrganiser.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
             quiz_container.style.display = "none";
             courseTest_container.style.display = "none";
             addCourse_container.style.display = "block";
@@ -327,7 +335,7 @@ include '../../_dbconnect.php';
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "none";
             addOrganiser.style.display = "none";
-            addUsers_container.style.display="none";
+            addUsers_container.style.display = "none";
             quiz_container.style.display = "none";
             courseTest_container.style.display = "block";
             addCourse_container.style.display = "none";
@@ -336,12 +344,71 @@ include '../../_dbconnect.php';
             runningCourses.style.display = "none";
             viewOrganisers.style.display = "none";
             addOrganiser.style.display = "none";
-            addUsers_container.style.display="block";
+            addUsers_container.style.display = "block";
             quiz_container.style.display = "none";
             courseTest_container.style.display = "none";
             addCourse_container.style.display = "none";
         }
+        document.addEventListener("DOMContentLoaded", function () {
+    const addQuestionButton = document.getElementById("add-question");
+    const questionsContainer = document.getElementById("questions");
+  let questionCount = -1;
+  addQuestionButton.addEventListener("click", function () {
+      questionCount++;
+      const questionDiv = document.createElement("div");
+      questionDiv.classList.add("question");
+      questionDiv.innerHTML = `
+    <div class="row">
+    <div class="col">
+            <label for="question-${questionCount}"><b>User:</b></label>
+            <textarea id="question-${questionCount}" name="questions[]" class="form-control"></textarea>
+        </div>
+    </div>
+    <button type="button" class="btn m-2 btn-outline-danger remove-question">Remove User</button>
+    <div class="options row row-cols-2"></div>
+    <button type="button" class="btn btn-outline-success add-option m-2">Add Details</button>`;
+      questionsContainer.appendChild(questionDiv);
 
+      const removeQuestionButton =
+        questionDiv.querySelector(".remove-question");
+      removeQuestionButton.addEventListener("click", function () {
+        questionsContainer.removeChild(questionDiv);
+      });
+
+      const optionsContainer = questionDiv.querySelector(".options");
+      let optionCount = 0;
+
+      questionDiv
+        .querySelector(".add-option")
+        .addEventListener("click", function () {
+          const optionDiv = document.createElement("div");
+          optionDiv.setAttribute("class", "row align-items-center");
+          const optionRadio = document.createElement("textarea");
+          optionRadio.setAttribute("class", "form-control col-6");
+          optionRadio.setAttribute("style", "width:60%;");
+          optionRadio.setAttribute("placeholder", `Batch`);
+          optionRadio.setAttribute("name", `batch-${questionCount}`);
+          const optionInput = document.createElement("textarea");
+          optionInput.setAttribute("class", "form-control col-6");
+          optionInput.setAttribute("style", "width:60%;");
+          optionInput.setAttribute(
+            "name",
+            `options_${questionCount}[${optionCount}]`
+          );
+          optionInput.setAttribute("placeholder", `Year`);
+          optionDiv.appendChild(optionRadio);
+          optionDiv.appendChild(optionInput);
+
+          optionsContainer.appendChild(optionDiv);
+          optionCount++;
+        });
+  });
+  const csvFileInput = document.querySelector("input[type='file']");
+  csvFileInput.addEventListener("change", function () {
+    questionsContainer.innerHTML = "";
+    addQuestionButton.style.display = "none";
+  });
+});
     </script>
 </body>
 

@@ -90,8 +90,8 @@ if ($language == "c" || $language == "cpp") {
     } else {
         $output = shell_exec("C:\Users\mishr\AppData\Local\Programs\Python\Python312\python.exe $filePath 2>&1");
         echo $output;
-        unlink($filePath);
     }
+    unlink($filePath);
 } else if ($language == "java") {
     if (isset($_POST["input"])) {
         $className = "Main";

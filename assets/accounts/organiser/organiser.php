@@ -402,9 +402,9 @@ $updateresult = mysqli_query($conn, $updateSQL);
     </div>
     <div class="container my-3">
         <div class="p-2 container addCodingTest_container" style="width: 40%;display:none">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Feature not available yet.</strong> Some functions might not work.
-            </div>
+            </div> -->
             <form action="createCodingTest.php" method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Topic for the Test:*</label>
