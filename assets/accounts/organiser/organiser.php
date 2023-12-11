@@ -345,6 +345,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Topic for the Quiz:*</label>
                     <input type="text" name="heading" class="form-control" required>
+                    <span class="headingError" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Description:*</label>
@@ -431,6 +432,7 @@ $updateresult = mysqli_query($conn, $updateSQL);
         </div>
     </div>
     <script src="../../modules/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../modules/jquery/dist/jquery.min.js"></script>
     <script>
         const postedQuiz = document.querySelector("#postedQuiz_btn");
         const postedQuiz_container = document.querySelector(".postedQuiz_container");

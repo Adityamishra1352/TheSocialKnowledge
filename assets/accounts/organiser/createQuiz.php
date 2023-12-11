@@ -12,7 +12,12 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $sql="INSERT INTO `test` (`heading`, `description`, `time`, `organiser_id`, `timeforeach`, `questionsforeach`,`heldtill`) VALUES ('$heading', '$description', '$time', '$user_id','$timeforeach','$questionsforeach','$heldtill')";
     $sql_result=mysqli_query($conn, $sql);
     if($sql_result){
-        header('location:organiser.php?addQuiz=true');
+        $quiz_sql="SELECT * FROM `test` WHERE `heading`='$heading' AND `organiser_id`='$user_id'";
+        $quiz_result=mysqli_query($conn,$quiz_sql);
+        $quizRow=mysqli_fetch_assoc($quiz_result);
+        $testQuiz_id=$quizRow['test_id'];
+
+        header('location:addQuestions.php?test_id='.$testQuiz_id);
     }
 }
 ?>
