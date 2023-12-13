@@ -7,5 +7,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     if($addOrganiser_result){
         header('location:admin.php?addOrganiser=true');
     }
+    else{
+        header('location:admin.php?addOrganiser=false');
+    }
 }
 ?>

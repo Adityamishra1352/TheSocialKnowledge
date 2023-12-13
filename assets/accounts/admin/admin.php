@@ -83,6 +83,12 @@ include '../../_dbconnect.php';
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
+    if (isset($_GET['addOrganiser']) && $_GET['addOrganiser'] == false) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Error while add organiser!!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
     ?>
     <div class="container my-2 p-1 addUsers_container" style="display:none;">
         <span class="fw-bold fst-italic">Note:</span><span class="fst-italic text-secondary"> Give Faculty whilst adding
@@ -370,8 +376,7 @@ include '../../_dbconnect.php';
                 questionDiv.innerHTML = `
     <div class="row">
     <div class="col">
-            <label for="question-${questionCount}"><b>User Email:</b></label>
-            <textarea id="question-${questionCount}" name="questions[]" class="form-control" style="width:30%"></textarea>
+            <input type="email" id="question-${questionCount}" name="questions[]" class="form-control" style="width:30%" placeholder="User Email"></input>
         </div>
     </div>
     <div class="options row row-cols-2"></div>
