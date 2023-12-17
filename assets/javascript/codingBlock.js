@@ -86,13 +86,22 @@ function changeLanguage() {
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
   } else if (language == "sql") {
-    document.querySelector("#customInput").style.display = "none";
+    document.querySelector(".inputSystem").style.display = "none"; 
     startingSyntax = "# Your SQL queries here";
     editor.session.setMode("ace/mode/sql");
   }
   editor.setValue(startingSyntax);
   editor.clearSelection();
 }
+// function toggleTheme() {
+//   const body = document.body;
+//   if (body.classList.contains('dark-theme')) {
+//       body.classList.remove('dark-theme');
+//   } else {
+//       body.classList.add('dark-theme');
+//   }
+// }
+
 const inputTextarea = document.querySelector("#inputArea");
 function executeCode() {
   clearOutput();

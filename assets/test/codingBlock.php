@@ -16,6 +16,16 @@ $user_id = $_SESSION['user_id'];
     <link rel="stylesheet" href="../modules/bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../images/websitelogo.jpg" type="image/png">
     <link rel="stylesheet" href="../modules/fontawesome-free-5.15.4-web/css/all.min.css">
+    <!-- <style>
+        .dark-theme {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        .light-theme {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    </style> -->
 </head>
 
 <body>
@@ -30,7 +40,7 @@ $user_id = $_SESSION['user_id'];
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../../../index.php">Home</a>
+                        <a class="nav-link active" aria-current="page" href="../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../../../contactus.php">Contact Us</a>
@@ -39,8 +49,8 @@ $user_id = $_SESSION['user_id'];
                         <a class="nav-link" href="htmlcssEditor.php">Frontend Development</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal"
-                            style="cursor:pointer" onclick="savedCodes()">View Saved Files</a>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#saveModal" style="cursor:pointer"
+                            onclick="savedCodes()">View Saved Files</a>
                     </li>
                 </ul>
                 <ul class="d-flex">
@@ -59,7 +69,7 @@ $user_id = $_SESSION['user_id'];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row" style="overflow:auto">
-                    
+
                 </div>
             </div>
         </div>
@@ -124,6 +134,16 @@ $user_id = $_SESSION['user_id'];
                                         style="width:40%">
                                 </div>
                             </div>
+                            <!-- <div class="row my-2">
+                                <div class="col-md-6">
+                                    <h6 class="text">Toggle Theme</h6>
+                                    <span class="text">Change Theme:</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-outline-secondary ms-2" onclick="toggleTheme()">Toggle
+                                        Theme</button>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -138,33 +158,17 @@ $user_id = $_SESSION['user_id'];
                     <button class="btn btn-outline-danger ml-1" onclick="clearCompiler()">Clear</button>
                     <button class="btn btn-outline-primary mr-1 ml-1" onclick="saveCode()">Save Code</button>
                 </div>
-                <p class="d-inline-flex gap-1" style="width:100%">
-                    <a class="btn border-dark" data-bs-toggle="collapse" id="customInput" href="#collapseExample"
-                        role="button" aria-expanded="false" aria-controls="collapseExample" style="width:100%">
-                        Test Against Custom Input:
-                    </a>
-                </p>
-                <div class="collapse form-floating p-1" id="collapseExample">
-                    <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
-                        class="form-control border" value=""></textarea>
-                    <label for="inputArea">Custom Input:</label>
-                    <div class="outputContainer container mb-3">
-                        <!-- <div class="align-items-center" id="loader" style="display:none;width:95%;">
-                            <strong class="text-primary" role="status">Loading...</strong>
-                            <div class="spinner-grow text-primary ms-auto" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div> -->
-                        <!-- <div class="outputScreen container border bg-dark" style="display:none;">
-                            <div class="inputDiv container my-2">
-                                <label class="text-light">Input:</label>
-                                <div class="inputGiven container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
-                            </div>
-                            <div class="outputDiv container mb-3">
-                                <label class="text-light">Output:</label>
-                                <div class="container bg-secondary text-light p-2 rounded-top" style="width:100%"></div>
-                            </div>
-                            </div> -->
+                <div class="inputSystem">
+                    <p class="d-inline-flex gap-1" style="width:100%">
+                        <a class="btn border-dark" data-bs-toggle="collapse" id="customInput" href="#collapseExample"
+                            role="button" aria-expanded="false" aria-controls="collapseExample" style="width:100%">
+                            Test Against Custom Input:
+                        </a>
+                    </p>
+                    <div class="collapse form-floating p-1" id="collapseExample">
+                        <textarea name="inputArea" id="inputArea" style="width:100%;height:100%;"
+                            class="form-control border" value=""></textarea>
+                        <label for="inputArea">Custom Input:</label>
                     </div>
                 </div>
             </div>
@@ -187,7 +191,7 @@ $user_id = $_SESSION['user_id'];
     <script>
         function savedCodes() {
             $.ajax({
-                url: 'fetch_saved_files.php', 
+                url: 'fetch_saved_files.php',
                 method: 'GET',
                 success: function (data) {
                     $('#saveModal .modal-body').html(data);
