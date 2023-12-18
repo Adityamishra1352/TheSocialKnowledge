@@ -107,27 +107,8 @@ function displayOptions() {
         optionDiv.appendChild(optionRadio);
         optionDiv.appendChild(optionText);
         optionDiv.addEventListener("click", () => {
-            const selectOptions = [];
-            const checkboxes = optionsContainer.querySelectorAll(
-              'input[type="checkbox"]'
-            );
-            checkboxes.forEach((checkbox) => {
-              if (checkbox.checked) {
-                selectOptions.push(checkbox.value);
-              }
-            });
-            const selectedAnswersSet=new Set(selectOptions);
-            console.log("select answer set",selectedAnswersSet);
-            console.log("select OPtions",selectOptions);
-            const correctAnswerIndices = JSON.parse(questions[index].correct_answer);
-            console.log("selectOptions:", selectOptions);
-            const correctAnswerSet=new Set(correctAnswerIndices);
-            console.log(correctAnswerSet);
-            console.log("correctAnswerIndices:", correctAnswerIndices);
-            if (setsAreEqual(selectedAnswersSet,correctAnswerSet)) {
-              console.log("Yuhooo");
-            }
-        });
+            optionRadio.click();
+          });
         optionsContainer.appendChild(optionDiv);
       } else {
         const optionDiv = document.createElement("div");
@@ -142,8 +123,8 @@ function displayOptions() {
         optionDiv.appendChild(optionRadio);
         optionDiv.appendChild(optionText);
         optionDiv.addEventListener("click", () => {
-          answersObject[currentQuestionIndex] = optionIndex + 1;
-        });
+            optionRadio.click();
+          });
         optionsContainer.appendChild(optionDiv);
       }
     });
