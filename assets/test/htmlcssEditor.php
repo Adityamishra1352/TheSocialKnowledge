@@ -63,6 +63,7 @@
     </div>
 
     <!-- <button class="btn btn-outline-success my-2" onclick="runCode()">Run Code</button> -->
+    <!-- <button class="btn btn-outline-success my-2" onclick="openOutputWindow()">Open Output in New Window</button> -->
 
     <div class="container my-2">
         <div class="output-container container border overflow-auto" style="width:100%">
@@ -74,6 +75,8 @@
     <script src="../javascript/compiler/theme-github.js"></script>
     <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script src="../javascript/htmlcssEditor.js"></script>
+    <script src="../javascript/compiler/ext-language_tools.js"></script>
+    <script src="../javascript/compiler/mode-snippets.js"></script>
     <script>
         $(function () {
             $(".resizable-editor").resizable({

@@ -82,7 +82,7 @@ $user_id = $_SESSION['user_id'];
         <div class="control-panel p-1 container m-0" style="max-width:100%;display:flex;justify-content:flex-end;">
             <select class="form-select languages d-flex border-dark" id="languages" aria-label="Language"
                 style="width:20%;" onchange="changeLanguage()">
-                <option>Select a language</option>
+                <option value="none">Select a language</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
                 <option value="php">PHP</option>
@@ -183,7 +183,9 @@ $user_id = $_SESSION['user_id'];
                     <div class="output container p-1" id="output" style="height:100%;overflow:auto;">
                     </div>
                 </div>
-                <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
+                <div class="container">
+                    <button class="btn btn-outline-danger mr-1 my-1" onclick="clearOutput()">Clear Output</button>
+                </div>
             </div>
         </div>
 
@@ -216,6 +218,7 @@ $user_id = $_SESSION['user_id'];
     <script src="../javascript/compiler/theme-nord_dark.js"></script>
     <script src="../javascript/compiler/theme-monokai.js"></script>
     <script src="../javascript/compiler/theme-sqlserver.js"></script>
+    <script src="../javascript/compiler/ext-language_tools.js"></script>
     <script src="../modules/bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
     <script src="../javascript/codingBlock.js"></script>
 </body>

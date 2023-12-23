@@ -26,6 +26,23 @@ $timeforeach = $testRow['timeforeach'];
 </head>
 
 <body>
+    <!-- timer modal  -->
+    <div class="modal fade timerModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">The Social Knowledge</h1>
+                </div>
+                <div class="modal-body">
+                    The time for the test has ended!! Please go back.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="timer_btn" onclick="window.location=('../test.php')">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- result modal  -->
     <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -94,8 +111,8 @@ $timeforeach = $testRow['timeforeach'];
             </div>
         </div>
     </div>
-    <div class="footer bg-primary">
-    <button id="submitTest" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#resultModal">
+    <div class="footer">
+        <button id="submitTest" data-bs-toggle="modal" data-bs-target="#resultModal">
             Submit Test
         </button>
     </div>

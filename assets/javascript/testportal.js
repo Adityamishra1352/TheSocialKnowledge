@@ -52,6 +52,9 @@ function showSummary() {
                 `;
   console.log("Answers Object:", answersObject);
 }
+var timerModal = new bootstrap.Modal(
+    document.querySelector(".timerModal")
+  );
 function updateTimer() {
   const minutes = Math.floor(totalSecondsLeft / 60);
   const seconds = totalSecondsLeft % 60;
@@ -61,6 +64,7 @@ function updateTimer() {
     totalSecondsLeft--;
   } else {
     totalTimeElement.textContent = "Time's up!";
+    timerModal.show();
     clearInterval(timerInterval);
   }
 }

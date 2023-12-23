@@ -1,8 +1,26 @@
 let startingSyntax = "";
 let editor;
+//keyboard features
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && event.key === "Enter") {
+    executeCode();
+  } else if (event.ctrlKey && event.key === "s") {
+    saveCode();
+    event.preventDefault();
+  } else if (event.shiftKey && event.key === "Tab") {
+    switchLanguage();
+    event.preventDefault();
+    console.log("event");
+  }
+});
 window.onload = function () {
   editor = ace.edit("editor");
   editor.setTheme("ace/theme/github_dark");
+  editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true,
+  });
 };
 function saveCode() {
   const code = editor.getSession().getValue();
@@ -60,6 +78,15 @@ function changeTheme() {
     editor.setTheme("ace/theme/dawn");
   }
 }
+function switchLanguage() {
+  let currentLanguage = $("#languages").val();
+  const languages = ["none", "c", "cpp", "php", "java", "py", "sql"];
+  const currentIndex = languages.indexOf(currentLanguage);
+  const nextIndex = (currentIndex + 1) % languages.length;
+  const nextLanguage = languages[nextIndex];
+  $("#languages").val(nextLanguage);
+  changeLanguage();
+}
 function changeLanguage() {
   let language = $("#languages").val();
   if (language == "c") {
@@ -86,7 +113,7 @@ function changeLanguage() {
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
   } else if (language == "sql") {
-    document.querySelector(".inputSystem").style.display = "none"; 
+    document.querySelector(".inputSystem").style.display = "none";
     startingSyntax = "# Your SQL queries here";
     editor.session.setMode("ace/mode/sql");
   }
