@@ -90,26 +90,31 @@ function switchLanguage() {
 function changeLanguage() {
   let language = $("#languages").val();
   if (language == "c") {
+    document.querySelector(".inputSystem").style.display = "block";
     document.querySelector("#customInput").style.display = "block";
     startingSyntax =
       "#include<stdio.h>\n\nint main() {\n    // Your C code here\n    return 0;\n}";
     editor.session.setMode("ace/mode/c_cpp");
   } else if (language == "cpp") {
+    document.querySelector(".inputSystem").style.display = "block";
     document.querySelector("#customInput").style.display = "block";
     startingSyntax =
       "#include<iostream>\n\nusing namespace std;\n\nint main() {\n    // Your C++ code here\n    return 0;\n}";
     editor.session.setMode("ace/mode/c_cpp");
   } else if (language == "php") {
+    document.querySelector(".inputSystem").style.display = "block";
     document.querySelector("#customInput").style.display = "block";
     startingSyntax = "<?php\n\n// Your PHP code here\n?>";
     editor.session.setMode("ace/mode/php");
   } else if (language == "java") {
+    document.querySelector(".inputSystem").style.display = "block";
     document.querySelector("#customInput").style.display = "block";
     startingSyntax =
       'public class Main\n{\n   public static void main(String[] args) {\n   System.out.println("Hello World");\n   }\n}';
     editor.session.setMode("ace/mode/java");
   } else if (language == "py") {
     document.querySelector("#customInput").style.display = "block";
+    document.querySelector(".inputSystem").style.display = "block";
     startingSyntax = "# Your Python code here";
     editor.session.setMode("ace/mode/python");
   } else if (language == "sql") {

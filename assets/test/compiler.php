@@ -42,7 +42,7 @@ if ($language == "c" || $language == "cpp") {
         $inputFilePath = "temporary/input_" . $random . ".txt";
         $outputFilePath = "temporary/output_" . $random . ".txt";
         file_put_contents($inputFilePath, $input);
-        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1";
+        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1 -lstdc++";
         exec($command, $outputCompile, $returnCode);
 
         if ($returnCode === 0) {
