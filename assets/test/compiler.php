@@ -46,7 +46,7 @@ if ($language == "c" || $language == "cpp") {
         exec($command, $outputCompile, $returnCode);
 
         if ($returnCode === 0) {
-            $command = "program.exe < $inputFilePath > $outputFilePath 2>&1";
+            $command = "program.exe < $inputFilePath > $outputFilePath 2>&1 -lstdc++";
             exec($command, $outputExecute, $returnCode);
 
             if ($returnCode === 0) {
@@ -63,7 +63,7 @@ if ($language == "c" || $language == "cpp") {
         unlink($inputFilePath);
         unlink($outputFilePath);
     } else {
-        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1";
+        $command = "C:\\TDM-GCC-64\\bin\\gcc.exe $filePath -o program.exe 2>&1 -lstdc++";
         exec($command, $outputCompile, $returnCode);
 
         if ($returnCode === 0) {

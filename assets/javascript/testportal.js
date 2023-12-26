@@ -32,6 +32,9 @@ window.onload = function () {
     fullScreenModal.hide();
   };
 };
+var summaryModal=new bootstrap.Modal(
+  document.querySelector("#resultModal")
+);
 document.getElementById("submitTest").addEventListener("click", () => {
   showSummary();
 });
@@ -50,7 +53,16 @@ function showSummary() {
                 <p>Answered Questions: ${answeredQuestions.length}</p>
                 <p>Unanswered Questions: ${unansweredQuestions.length}</p>
                 `;
-  console.log("Answers Object:", answersObject);
+  // score 
+  let userScore = 0;
+  answers.forEach((answer) => {
+    const isCorrect = answer.answer === answer.correctAnswer;
+    if (isCorrect) {
+      userScore++;
+    }
+  });
+
+  console.log("User Score:", userScore);
 }
 var timerModal = new bootstrap.Modal(
     document.querySelector(".timerModal")
@@ -91,7 +103,7 @@ function displayQuestion(index) {
     console.log("All questions have been answered");
   }
 }
-
+const answers=[];
 function displayOptions() {
   const optionsContainer = document.getElementById("options-container");
   const currentQuestion = questions[currentQuestionIndex];
@@ -105,32 +117,55 @@ function displayOptions() {
         optionRadio.setAttribute("type", "radio");
         optionRadio.setAttribute("class", "form-check-input");
         optionRadio.setAttribute("style", "margin-right:10px");
-        optionRadio.setAttribute("name", "options");
-        const optionText = document.createElement("span");
-        optionText.textContent = option;
+        optionRadio.setAttribute("id", `options-${currentQuestion.question_id}-${optionIndex}`);
+        optionRadio.setAttribute("name", `options`);
+        optionRadio.setAttribute("value", option);
+        const optionLabel=document.createElement('label');
+        optionLabel.setAttribute("class","form-check-label");
+        optionLabel.setAttribute("for",`options-${currentQuestion.question_id}-${optionIndex}`);
+        optionLabel.textContent=option;
         optionDiv.appendChild(optionRadio);
-        optionDiv.appendChild(optionText);
-        optionDiv.addEventListener("click", () => {
-            optionRadio.click();
-          });
+        optionDiv.appendChild(optionLabel);
+        if (currentQuestion.selectedOption === option) {
+          optionRadio.checked = true;
+        }
+  
+        optionRadio.addEventListener("click", () => {
+          currentQuestion.selectedOption = option;
+          const questionId = questions[currentQuestionIndex].question_id;
+          const existingAnswerIndex = answers.findIndex(answer => answer.question_id === questionId);
+          if (existingAnswerIndex !== -1) {
+            answers[existingAnswerIndex].answer = option;
+          } else {
+            const questionObject = {
+              question_id: questionId,
+              question: questions[currentQuestionIndex].question_text,
+              answer: option,
+              correctAnswer:questions[currentQuestionIndex].correct_answer
+            };
+            answers.push(questionObject);
+          }
+        });
         optionsContainer.appendChild(optionDiv);
-      } else {
-        const optionDiv = document.createElement("div");
-        optionDiv.setAttribute("class", "option");
-        const optionRadio = document.createElement("input");
-        optionRadio.setAttribute("type", "checkbox");
-        optionRadio.setAttribute("class", "form-check-input");
-        optionRadio.setAttribute("name", "options");
-        optionRadio.setAttribute("style", "margin-right:10px");
-        const optionText = document.createElement("span");
-        optionText.textContent = option;
-        optionDiv.appendChild(optionRadio);
-        optionDiv.appendChild(optionText);
-        optionDiv.addEventListener("click", () => {
-            optionRadio.click();
-          });
-        optionsContainer.appendChild(optionDiv);
+        
       }
+      // } else {
+      //   const optionDiv = document.createElement("div");
+      //   optionDiv.setAttribute("class", "option");
+      //   const optionRadio = document.createElement("input");
+      //   optionRadio.setAttribute("type", "checkbox");
+      //   optionRadio.setAttribute("class", "form-check-input");
+      //   optionRadio.setAttribute("name", "options");
+      //   optionRadio.setAttribute("style", "margin-right:10px");
+      //   const optionText = document.createElement("span");
+      //   optionText.textContent = option;
+      //   optionDiv.appendChild(optionRadio);
+      //   optionDiv.appendChild(optionText);
+      //   optionDiv.addEventListener("click", () => {
+      //       optionRadio.click();
+      //     });
+      //   optionsContainer.appendChild(optionDiv);
+      // }
     });
   }
 }
@@ -189,5 +224,9 @@ document.getElementById("nextQuestionArrow").addEventListener("click", () => {
     currentQuestionIndex++;
     displayQuestion(currentQuestionIndex);
     highlightSelectedButton();
+    console.log(answers);
+  }else{
+    summaryModal.show();
+    showSummary();
   }
 });
